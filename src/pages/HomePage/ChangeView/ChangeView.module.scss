@@ -1,0 +1,27 @@
+@import '/src/theme/breakpoint.scss';
+
+.buttonContainer {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+
+  p {
+    margin: 0;
+  }
+}
+
+@media screen and (min-width: $screen-xs) {
+  .buttonContainer {
+    bottom: 80px;
+  }
+}
+@media screen and (min-width: $screen-sm) {
+  .buttonContainer {
+    bottom: 80px;
+  }
+}
+@media screen and (min-width: $screen-md) {
+  .buttonContainer {
+    display: none;
+  }
+}

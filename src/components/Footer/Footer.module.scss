@@ -1,0 +1,78 @@
+@import '/src/theme/colors.scss';
+@import '/src/theme/breakpoint.scss';
+
+.footerContainer {
+  display: flex;
+  width: 100%;
+  height: 129px;
+  justify-content: center;
+  align-items: center;
+  background-color: $light-grey;
+  padding-left: 0;
+}
+
+.footerText {
+  font-weight: 400;
+  text-align: center;
+  font-family: Roboto;
+  color: $text-color !important;
+}
+
+.footerText:hover {
+  font-weight: bold;
+  color: #282b2e !important;
+}
+
+@media screen and (min-width: $screen-xs) {
+  .footerText {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+  }
+
+  .footerImage {
+    margin-left: 5px;
+    width: 21px !important;
+    height: 21px !important;
+  }
+}
+@media screen and (min-width: $screen-sm) {
+  .footerText {
+    font-size: 19px;
+    line-height: 35px;
+    letter-spacing: 0.8px;
+  }
+
+  .footerImage {
+    width: 34px !important;
+    height: 34px !important;
+  }
+}
+
+@media screen and (min-width: $screen-md) {
+  .footerText {
+    font-size: 22px;
+    line-height: 45px;
+    letter-spacing: 1px;
+  }
+
+  .footerImage {
+    margin-left: 10px;
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+@media screen and (min-width: $screen-lg) {
+  .footerText {
+    font-size: 24px;
+    line-height: 56px;
+    letter-spacing: 1.2px;
+  }
+
+  .footerImage {
+    margin-left: 10px;
+    width: 49px !important;
+    height: 49px !important;
+  }
+}

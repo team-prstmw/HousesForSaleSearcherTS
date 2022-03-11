@@ -1,0 +1,23 @@
+.textField {
+  width: 327px;
+  height: 55px;
+  border-radius: 4px;
+}
+
+.loginButton {
+  width: 224px;
+  height: 36px;
+}
+
+.stack__wrapper {
+  align-items: center;
+}
+
+.form {
+  display: 'flex';
+  flex-direction: 'column';
+  align-items: 'center';
+  justify-content: 'center';
+  flex-wrap: 'nowrap';
+  align-content: 'center';
+}

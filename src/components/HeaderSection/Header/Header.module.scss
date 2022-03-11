@@ -1,0 +1,52 @@
+@import '/src/theme/colors.scss';
+@import '/src/theme/breakpoint.scss';
+
+.topBarContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid $light-grey;
+}
+
+img {
+  align-self: flex-end;
+}
+
+@media screen and (min-width: $screen-xs) {
+  .topBarContainer {
+    height: 80px;
+  }
+  .switch {
+    margin-left: 0.8rem;
+  }
+
+  img {
+    width: 100px;
+    align-self: center;
+  }
+}
+
+@media screen and (min-width: $screen-sm) {
+  .topBarContainer {
+    height: 90px;
+  }
+  .switch {
+    margin-left: 3rem;
+  }
+  img {
+    width: 146px;
+  }
+}
+
+@media screen and (min-width: $screen-lg) {
+  .topBarContainer {
+    height: 106px;
+  }
+  .switch {
+    margin-left: 3.75rem;
+  }
+  img {
+    width: 176px;
+  }
+}

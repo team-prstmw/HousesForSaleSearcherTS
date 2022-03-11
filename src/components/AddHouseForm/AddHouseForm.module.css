@@ -1,0 +1,55 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  gap: 5px;
+  margin: auto;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  padding: 10px 15px 20px 15px;
+  margin-bottom: 5px;
+}
+
+.formRow {
+  display: flex;
+  min-width: 100%;
+  gap: 10px;
+}
+
+.moreParamsCheckbox {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 50%;
+}
+
+.formImagesContainer {
+  position: relative;
+  display: flex;
+}
+
+.formImage {
+  width: 100%;
+}
+
+.formImageRemoveButton {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: white;
+  border: 2px solid #7ed6df;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.formImageRemoveButton:hover {
+  background: #7ed6df;
+  cursor: pointer;
+}

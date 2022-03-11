@@ -1,0 +1,12 @@
+.googleMapContainer {
+  width: 80%;
+  height: 480px;
+  max-width: 540px;
+  min-width: 310px;
+}
+
+@media screen and (min-width: 500px) {
+  .googleMapContainer {
+    min-width: 440px;
+  }
+}
