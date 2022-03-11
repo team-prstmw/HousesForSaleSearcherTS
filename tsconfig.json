@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": false,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "allowJs": false,
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "noEmit": true,
+    "paths": {
+      "@/api/*": [
+        "src/api/*"
+      ],
+      "@/utils/*": [
+        "src/utils/*"
+      ]
+    },
+    "target": "ESNext"
+  },
+  "include": [
+    "src"
+  ]
+}
