@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { yupResolver } from '@hookform/resolvers/yup';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -24,6 +25,24 @@ import getRandomString from '/src/utils/getRandomString';
 import styles from './AddHouseForm.module.css';
 import FacilityCheckbox from './components/FacilityCheckbox/FacilityCheckbox';
 
+interface FieldsSchema {
+  streetNumber: string;
+  streetName: string;
+  streetSuffix: string;
+  city: string;
+  state: string;
+  price: number;
+  propertyType: string;
+  yearBuilt: number;
+  dimension: number;
+  floor: number;
+  floorsInBuilding: number;
+  roomsNumber: number;
+  bathroomNumber: number;
+  heating: string;
+  descriptionField: string;
+}
+
 const REQUIRED_ERROR = 'This field is required.';
 const SPECIAL_CHARACTERS_ERROR = 'No special characters allowed.';
 const NUMBER_NEEDED_ERROR = 'This field must be a number.';
@@ -45,21 +64,21 @@ const schema = yup.object({
     .string()
     .required(REQUIRED_ERROR)
     .matches(/^[A-Za-z0-9 ]+$/, SPECIAL_CHARACTERS_ERROR),
-  price: yup.number(NUMBER_NEEDED_ERROR).positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
+  price: yup.number().positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
   propertyType: yup.string().required(REQUIRED_ERROR),
-  yearBuilt: yup.number(NUMBER_NEEDED_ERROR).positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  dimension: yup.number(NUMBER_NEEDED_ERROR).positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  floor: yup.number(NUMBER_NEEDED_ERROR).min(0, NEGATIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  floorsInBuilding: yup.number(NUMBER_NEEDED_ERROR).min(0, NEGATIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  roomsNumber: yup.number(NUMBER_NEEDED_ERROR).positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  bathroomNumber: yup.number(NUMBER_NEEDED_ERROR).positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
+  yearBuilt: yup.number().positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
+  dimension: yup.number().positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
+  floor: yup.number().min(0, NEGATIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
+  floorsInBuilding: yup.number().min(0, NEGATIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
+  roomsNumber: yup.number().positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
+  bathroomNumber: yup.number().positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
   heating: yup.string().required(REQUIRED_ERROR),
   descriptionField: yup.string().required(REQUIRED_ERROR),
 });
 
-const AddHouseForm = () => {
+function AddHouseForm() {
   const [moreFacilitiesShown, setMoreFacilitiesShown] = useState(false);
-  const [images, setImages] = useState();
+  const [images, setImages] = useState<File[]>([]);
 
   const {
     register,
@@ -70,11 +89,11 @@ const AddHouseForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const addIndexToObjectKey = (propertyName) => {
+  const addIndexToObjectKey = (propertyName: string | number) => {
     return `photo_${propertyName}`;
   };
 
-  const sendHouseDataWithPhotos = (imagesToUpload, housesData) => {
+  const sendHouseDataWithPhotos = (imagesToUpload: File[], housesData: FieldsSchema) => {
     let photos = {};
     imagesToUpload.forEach((element, index) => {
       const file = element;
@@ -82,24 +101,28 @@ const AddHouseForm = () => {
       const storageRef = ref(storage, `images/${getRandomString(9)}`);
       const uploadTask = uploadBytesResumable(storageRef, file, metadata);
       uploadTask.on('state_changed', null, null, () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          photos = { [addIndexToObjectKey(index)]: downloadURL };
-          const uploadedData = Object.assign(housesData, photos);
-          if (index === imagesToUpload.length - 1) {
-            create('houses', uploadedData);
-          }
-        });
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then((downloadURL) => {
+            photos = { [addIndexToObjectKey(index)]: downloadURL };
+            const uploadedData = Object.assign(housesData, photos);
+            if (index === imagesToUpload.length - 1) {
+              create('houses', uploadedData);
+            }
+          })
+          .catch((e) => console.log(e)); // todo
       });
     });
   };
 
-  const addImages = (rawImages) => {
-    setImages(Array.from(rawImages));
+  const addImages = (rawImages: FileList | null) => {
+    if (rawImages !== null) {
+      setImages(Array.from(rawImages));
+    }
   };
 
-  const removeImage = (name) => setImages((prevState) => prevState?.filter((img) => img.name !== name));
+  const removeImage = (name: string) => setImages((prevState) => prevState?.filter((img) => img.name !== name));
 
-  const handleSend = (fields) => {
+  const handleSend = (fields: FieldsSchema) => {
     sendHouseDataWithPhotos(images, fields);
   };
 
@@ -120,6 +143,7 @@ const AddHouseForm = () => {
     'Kitchenette',
   ];
   return (
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <Box component="form" className={styles.formContainer} onSubmit={handleSubmit(handleSend)}>
       <div className={styles.formSection}>
         <Typography variant="h6" color="primary">
@@ -346,6 +370,6 @@ const AddHouseForm = () => {
       </Button>
     </Box>
   );
-};
+}
 
 export default AddHouseForm;
