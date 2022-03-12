@@ -1,58 +1,39 @@
-import './App.css';
+import { ThemeProvider } from '@mui/material/styles';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { ReactElement } from 'react';
 
-import { ReactElement, useState } from 'react';
-import { useQuery } from 'react-query';
+import theme from '/src/theme/theme';
 
-import helloRequest from './api/hello';
+import LoginProvider from './contexts/LoginProvider';
+import HomePage from './pages/HomePage/HomePage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
+import AccountSettingsView from './pages/ProfilePage/views/AccountSettingsView/AccountSettingsView';
+import SellHouseView from './pages/ProfilePage/views/SellHouseView/SellHouseView';
 
-function ServerMessage() {
-  const { data, isLoading, error } = useQuery('hello', helloRequest);
-
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (error) {
-    return <span>Some error ocurred</span>;
-  }
-
-  return <span>{data?.message}</span>;
-}
-
-function App(): ReactElement {
-  const [count, setCount] = useState(0);
+function App():ReactElement {
+  const MAP_INIT = `https://maps.googleapis.com/maps/api/js?key=${
+    import.meta.env.VITE_GOOGLE_API_KEY
+  }&callback=initMap`;
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src="/logo.svg" className="App-logo" alt="logo" />
-        <p>
-          Server says: <ServerMessage />
-        </p>
-        <p>
-          <button type="button" onClick={() => setCount((prev) => prev + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <ThemeProvider theme={theme}>
+          <LoginProvider>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/user" element={localStorage.getItem('isloggedIn') ? <ProfilePage /> : <Navigate to="/" />}>
+                <Route path="" element={<AccountSettingsView />} />
+                <Route path="favourites" element={<div>favorites</div>} />
+                <Route path="my-houses" element={<div>my house</div>} />
+                <Route path="sell-house" element={<SellHouseView />} />
+              </Route>
+            </Routes>
+          </LoginProvider>
+        </ThemeProvider>
+        <script async defer src={MAP_INIT} />
+      </div>
+    </BrowserRouter>
   );
 }
 
