@@ -7,7 +7,7 @@ import AddHouseForm from '@/components/AddHouseForm/AddHouseForm';
 
 import styles from './SellHouseView.module.css';
 
-const SellHouseView = () => {
+function SellHouseView(): JSX.Element {
   const theme = useTheme();
   return (
     <Container component={Paper} maxWidth={false} className={styles.shpContainer}>
@@ -29,6 +29,6 @@ const SellHouseView = () => {
       </div>
     </Container>
   );
-};
+}
 
 export default SellHouseView;
