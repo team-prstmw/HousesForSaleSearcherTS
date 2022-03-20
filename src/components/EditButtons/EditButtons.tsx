@@ -3,7 +3,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import IconButton from '@mui/material/IconButton';
 
-const EditButtons = ({ onSave, onCancel }) => {
+interface Props {
+  onSave: () => void;
+  onCancel: () => void;
+}
+
+function EditButtons({ onSave, onCancel }: Props): JSX.Element {
   return (
     <ButtonGroup size="small">
       {onSave && (
@@ -18,6 +23,6 @@ const EditButtons = ({ onSave, onCancel }) => {
       )}
     </ButtonGroup>
   );
-};
+}
 
 export default EditButtons;

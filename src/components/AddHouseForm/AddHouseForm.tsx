@@ -16,7 +16,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { DeepMap, FieldError, FieldValues, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { create, storage } from '/src/firebase';
@@ -84,7 +84,7 @@ function AddHouseForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FieldsSchema>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
@@ -167,7 +167,7 @@ function AddHouseForm() {
             sx={{ width: '100%' }}
             autoComplete="address-line2"
           />
-          <FormControl sx={{ minWidth: '45%' }} error={errors?.streetSuffix}>
+          <FormControl sx={{ minWidth: '45%' }} error={!!errors?.streetSuffix}>
             <InputLabel id="street-suffix">Street Suffix</InputLabel>
             <Select
               labelId="street-suffix"
