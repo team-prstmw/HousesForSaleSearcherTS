@@ -1,6 +1,6 @@
 import makeRequest from '/src/utils/services/makeRequest';
 
-export const resetPassword = async (email, signURL, changeState) => {
+export const resetPassword = async (email: string, signURL: string, changeState: (arg0: string) => string) => {
   const response = await makeRequest(signURL, {
     method: 'POST',
     body: JSON.stringify({

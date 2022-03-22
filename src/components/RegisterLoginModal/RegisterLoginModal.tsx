@@ -14,7 +14,7 @@ import RegisterLoginHeader from '@/components/RegisterLoginHeader/RegisterLoginH
 import ActionAlert from '../ActionAlert/ActionAlert';
 import styles from './RegisterLoginModal.module.css';
 
-const SignInButton = styled(Button)(({ theme }) => ({
+const SignInButton = styled(Button)((theme) => ({
   color: theme.palette.primary.muted,
   lineHeight: '16px',
   border: `2px solid ${theme.palette.primary.muted}`,
@@ -38,11 +38,11 @@ function RegisterLoginModal() {
     setOpen(false);
   };
 
-  const changeState = (stateToChange) => {
+  const changeState = (stateToChange: string) => {
     setState(mapError(stateToChange));
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: MouseEvent) => {
     setState('');
     setChecked(event.target.checked);
   };

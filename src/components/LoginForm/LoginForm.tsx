@@ -11,7 +11,6 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -21,7 +20,16 @@ import { loginSchema } from '/src/schemas/authSchemas';
 import { RESET_PASSWORD, SIGN_IN_URL } from '/src/URLs';
 import { resetPassword, signInSignUp } from '/src/utils/auth';
 
-function LoginForm({ changeStateFn }) {
+type LoginFormProps = {
+  changeStateFn: () => void;
+};
+
+type OnSubmitProps = {
+  email: string;
+  password: string;
+};
+
+function LoginForm({ changeStateFn }: LoginFormProps) {
   const login = useContext(LoginContext);
 
   const [values, setValues] = useState({
@@ -46,11 +54,11 @@ function LoginForm({ changeStateFn }) {
     });
   };
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event: MouseEvent) => {
     event.preventDefault();
   };
 
-  const onSubmit = ({ email, password }) => {
+  const onSubmit = ({ email, password }: OnSubmitProps) => {
     signInSignUp(email, password, SIGN_IN_URL, changeStateFn, login.loggedIn, login.login, login.logout);
   };
 
@@ -117,9 +125,5 @@ function LoginForm({ changeStateFn }) {
     </>
   );
 }
-
-LoginForm.propTypes = {
-  changeStateFn: PropTypes.func.isRequired,
-};
 
 export default LoginForm;

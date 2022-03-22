@@ -1,4 +1,6 @@
-const mapError = (state) => {
+type StateProps = string;
+
+const mapError = (state: StateProps): string => {
   let errorMessage = '';
   switch (state) {
     case 'EMAIL_EXISTS':

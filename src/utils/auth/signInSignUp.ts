@@ -1,13 +1,15 @@
 import makeRequest from '/src/utils/services/makeRequest';
 
 export const signInSignUp = async (
-  email,
-  password,
-  signURL,
-  changeState,
-  isLoggedIn,
-  loginFunction,
-  logoutFunction
+  email: string,
+  password: string,
+  signURL: string,
+  changeState: (arg0: string) => void,
+  // DECLARED BUT NEVER USED
+  // isLoggedIn,
+  loginFunction: () => void
+  // DECLARED BUT NEVER USED
+  // logoutFunction
 ) => {
   const response = await makeRequest(signURL, {
     method: 'POST',

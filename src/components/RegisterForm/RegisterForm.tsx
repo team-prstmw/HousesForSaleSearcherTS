@@ -11,7 +11,6 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -21,7 +20,11 @@ import { registerSchema } from '/src/schemas/authSchemas';
 import { SIGN_UP_URL } from '/src/URLs';
 import { signInSignUp } from '/src/utils/auth';
 
-function RegisterForm({ changeStateFn }) {
+type RegisterFormProps = {
+  changeStateFn: () => void;
+};
+
+function RegisterForm({ changeStateFn }: RegisterFormProps) {
   const login = useContext(LoginContext);
   const [values, setValues] = useState({
     password: '',
@@ -45,11 +48,11 @@ function RegisterForm({ changeStateFn }) {
     });
   };
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event: MouseEvent) => {
     event.preventDefault();
   };
 
-  const onSubmit = ({ email, password }) => {
+  const onSubmit = (email: string, password: string) => {
     signInSignUp(email, password, SIGN_UP_URL, changeStateFn, login.loggedIn, login.login, login.logout);
   };
 
@@ -119,9 +122,5 @@ function RegisterForm({ changeStateFn }) {
     </Box>
   );
 }
-
-RegisterForm.propTypes = {
-  changeStateFn: PropTypes.func.isRequired,
-};
 
 export default RegisterForm;

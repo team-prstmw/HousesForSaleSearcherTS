@@ -2,11 +2,10 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
 
 import styles from '/src/components/RegisterLoginHeader/RegisterLoginHeader.module.css';
 
-function RegisterLoginHeader({ checked, onChange, resetState }) {
+function RegisterLoginHeader(checked: boolean, onChange: () => void) {
   return (
     <Box className={styles.registerLoginHeader__Wrapper}>
       <Typography
@@ -23,7 +22,8 @@ function RegisterLoginHeader({ checked, onChange, resetState }) {
         <Switch
           checked={checked}
           onChange={onChange}
-          resetState={resetState}
+          // NOT SURE FROM WHERE THIS PROPERTY COMES FROM. WE ARE NOT USING IT ANYWHERE
+          // resetState={resetState}
           inputProps={{ 'aria-label': 'Login Register Switch' }}
         />
         <Typography>Register</Typography>
@@ -31,11 +31,5 @@ function RegisterLoginHeader({ checked, onChange, resetState }) {
     </Box>
   );
 }
-
-RegisterLoginHeader.propTypes = {
-  checked: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired,
-  resetState: PropTypes.func.isRequired,
-};
 
 export default RegisterLoginHeader;
