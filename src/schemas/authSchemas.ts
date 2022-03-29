@@ -4,6 +4,21 @@ import { INVALID_EMAIL_ERROR, MIN_LENGTH_ERROR } from '/src/schemas/const';
 
 import { REQUIRED_ERROR, SPECIAL_CHARACTERS_ERROR } from './validationMessages';
 
+export interface LoginSchemaInterface {
+  email: string;
+  password: string;
+}
+
+export interface RegisterSchemaInterface extends LoginSchemaInterface {
+  name: string;
+}
+
+export interface ProfilePageSchemaInterface {
+  name: string;
+  password: string;
+  email?: string;
+}
+
 const name = yup
   .string()
   .required(REQUIRED_ERROR)

@@ -8,14 +8,14 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import styles from './ProfilePage.module.css';
 
-const ProfilePage = () => {
+function ProfilePage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState(
+  const [selectedTab, setSelectedTab] = useState<string>(
     location.pathname === ('/user' || '/user/') ? '/user' : location.pathname.split('/user/')[1]
   );
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
     navigate(newValue);
   };
@@ -45,6 +45,6 @@ const ProfilePage = () => {
       </Container>
     </div>
   );
-};
+}
 
 export default ProfilePage;
