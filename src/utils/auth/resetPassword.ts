@@ -1,4 +1,5 @@
-import makeRequest from '/src/utils/services/makeRequest';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import makeRequest from 'src/utils/services/makeRequest';
 
 export const resetPassword = async (email: string, signURL: string, changeState: (arg0: string) => string) => {
   const response = await makeRequest(signURL, {
