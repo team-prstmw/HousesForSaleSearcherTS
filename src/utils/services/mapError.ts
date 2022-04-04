@@ -1,6 +1,4 @@
-type StateProps = string;
-
-const mapError = (state: StateProps): string => {
+function mapError(state: string): string {
   let errorMessage = '';
   switch (state) {
     case 'EMAIL_EXISTS':
@@ -25,6 +23,6 @@ const mapError = (state: StateProps): string => {
       errorMessage = 'An undefined Error happened.';
   }
   return errorMessage;
-};
+}
 
 export default mapError;

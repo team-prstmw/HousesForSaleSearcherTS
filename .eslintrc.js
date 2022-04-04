@@ -47,6 +47,7 @@ module.exports = {
     'import/no-absolute-path': 0,
     'no-nested-ternary': 0,
     'react/jsx-props-no-spreading': 0,
+    'react/no-children-prop': 0,
     'prettier/prettier': [
       'error',
       {

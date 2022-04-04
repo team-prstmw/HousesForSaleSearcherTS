@@ -13,15 +13,15 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import LoginContext from 'src/contexts/LoginContext';
+import { loginSchema } from 'src/schemas/authSchemas';
+import { RESET_PASSWORD, SIGN_IN_URL } from 'src/URLs';
+import { resetPassword, signInSignUp } from 'src/utils/auth';
 
 import styles from '/src/components/LoginForm/LoginForm.module.css';
-import LoginContext from '/src/contexts/LoginContext';
-import { loginSchema } from '/src/schemas/authSchemas';
-import { RESET_PASSWORD, SIGN_IN_URL } from '/src/URLs';
-import { resetPassword, signInSignUp } from '/src/utils/auth';
 
 type LoginFormProps = {
-  changeStateFn: () => void;
+  changeStateFn: (arg0: string) => string;
 };
 
 type OnSubmitProps = {

@@ -4,12 +4,11 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material/styles';
+import LoginForm from 'components/LoginForm/LoginForm';
+import RegisterForm from 'components/RegisterForm/RegisterForm';
+import RegisterLoginHeader from 'components/RegisterLoginHeader/RegisterLoginHeader';
 import { useState } from 'react';
-
-import mapError from '/src/utils/mapError';
-import LoginForm from '@/components/LoginForm/LoginForm';
-import RegisterForm from '@/components/RegisterForm/RegisterForm';
-import RegisterLoginHeader from '@/components/RegisterLoginHeader/RegisterLoginHeader';
+import mapError from 'src/utils/services/mapError';
 
 import ActionAlert from '../ActionAlert/ActionAlert';
 import styles from './RegisterLoginModal.module.css';
@@ -30,7 +29,7 @@ function RegisterLoginModal() {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
 
-  const [state, setState] = useState('');
+  const [state, setState] = useState<string>('');
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -39,10 +38,11 @@ function RegisterLoginModal() {
   };
 
   const changeState = (stateToChange: string) => {
+    // not sure why mapError type any - its typed in the another file
     setState(mapError(stateToChange));
   };
 
-  const handleChange = (event: MouseEvent) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setState('');
     setChecked(event.target.checked);
   };

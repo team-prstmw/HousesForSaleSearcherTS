@@ -1,8 +1,5 @@
 import { createTheme } from '@mui/material/styles';
 
-type PaletteProps = {
-  muted: string;
-};
 const theme = createTheme({
   palette: {
     primary: {

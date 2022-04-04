@@ -1,14 +1,17 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import LoginContext from './LoginContext';
 
-const LoginProvider = ({ children }) => {
+type Props = {
+  children: React.ReactNode;
+};
+
+const LoginProvider = ({ children }: Props) => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const login = () => {
     setLoggedIn(true);
-    localStorage.setItem('isloggedIn', true);
+    localStorage.setItem('isloggedIn', true.toString());
   };
   const logout = () => {
     localStorage.clear();
@@ -16,10 +19,6 @@ const LoginProvider = ({ children }) => {
   };
 
   return <LoginContext.Provider value={{ loggedIn, login, logout }}>{children}</LoginContext.Provider>;
-};
-
-LoginProvider.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default LoginProvider;

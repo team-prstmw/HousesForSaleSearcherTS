@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 
 import styles from '/src/components/RegisterLoginHeader/RegisterLoginHeader.module.css';
 
-function RegisterLoginHeader(checked: boolean, onChange: () => void) {
+function RegisterLoginHeader(checked: boolean, onChange: () => void, onClick: () => void) {
   return (
     <Box className={styles.registerLoginHeader__Wrapper}>
       <Typography
@@ -22,8 +22,7 @@ function RegisterLoginHeader(checked: boolean, onChange: () => void) {
         <Switch
           checked={checked}
           onChange={onChange}
-          // NOT SURE FROM WHERE THIS PROPERTY COMES FROM. WE ARE NOT USING IT ANYWHERE
-          // resetState={resetState}
+          onClick={onClick}
           inputProps={{ 'aria-label': 'Login Register Switch' }}
         />
         <Typography>Register</Typography>
