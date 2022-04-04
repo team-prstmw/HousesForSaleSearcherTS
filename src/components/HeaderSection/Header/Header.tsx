@@ -1,22 +1,20 @@
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useContext, useEffect, useState } from 'react';
-
-import Logo from '/src/assets/images/NavLogo.png';
-import ThemeSwitcher from '/src/components/HeaderSection/Switcher';
-import RegisterLoginModal from '/src/components/RegisterLoginModal/RegisterLoginModal';
-import LoginContext from '/src/contexts/LoginContext';
+import Logo from 'src/assets/images/NavLogo.png';
+import ThemeSwitcher from 'src/components/HeaderSection/Switcher';
+import RegisterLoginModal from 'src/components/RegisterLoginModal/RegisterLoginModal';
+import LoginContext from 'src/contexts/LoginContext';
 
 import styles from './Header.module.scss';
 
 function Header() {
-  const [logged, setLogged] = useState(false);
+  const [logged, setLogged] = useState<boolean | string>(false);
   const login = useContext(LoginContext);
 
   useEffect(() => {
     setLogged(localStorage.getItem('isloggedIn') || login.loggedIn);
   }, [login.loggedIn]);
-
   return (
     <Box
       component="div"

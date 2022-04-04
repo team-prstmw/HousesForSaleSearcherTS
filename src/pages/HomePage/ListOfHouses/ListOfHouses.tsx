@@ -1,24 +1,21 @@
-/* eslint-disable import/no-absolute-path */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable @typescript-eslint/no-redeclare */
 import DoneIcon from '@mui/icons-material/Done';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Autocomplete, Box, Button, Checkbox, TextField } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { useEffect, useState } from 'react';
-
-import noPhoto from '/src/assets/images/nophoto.png';
+import noPhoto from 'src/assets/images/nophoto.png';
 
 import styles from './ListOfHouses.module.scss';
 
-const options = ['Payment (Low to High)', 'Payment (High to Low)', 'A-Z', 'Z-A'];
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+const options: string[] = ['Payment (Low to High)', 'Payment (High to Low)', 'A-Z', 'Z-A'];
+const label: { inputProps: { 'aria-label': string } } = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-function ListOfHouses({ houses }) {
-  const [sortType, setSortType] = useState(null);
-  const [sortedHouses, setSortedHouses] = useState([]);
+function ListOfHouses({ houses }: { houses: HouseType[] }) {
+  const [sortType, setSortType] = useState<string | null>(null);
+  const [sortedHouses, setSortedHouses] = useState<HouseType[]>([]);
 
   const handleDelete = () => {
     setSortType(null);
@@ -55,12 +52,12 @@ function ListOfHouses({ houses }) {
           <Autocomplete
             className={styles.options}
             disableClearable
-            value={sortType}
+            value={sortType ?? ''}
             onChange={(event, newValue) => {
               setSortType(newValue);
             }}
             options={options}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => <TextField {...params} />} // To nie wiem jak rozwiązać
           />
         </div>
         <Chip
@@ -71,7 +68,7 @@ function ListOfHouses({ houses }) {
         />
       </Box>
       <Box component="div" className={styles.housesList}>
-        {sortedHouses.map((item, i) => (
+        {sortedHouses.map((item: HouseType, i: number) => (
           <Box component="div" className={styles.houseElement} key={i.toString()}>
             <h4>
               {item.city}, {item.streetName} {item.streetNumber}
@@ -84,7 +81,7 @@ function ListOfHouses({ houses }) {
             <Button className={styles.moreInfo}>more info</Button>
             <Checkbox
               color="warning"
-              {...label}
+              {...label} // Nie wiem jak to rozwiązać.
               icon={<FavoriteBorderIcon />}
               checkedIcon={<FavoriteIcon />}
               className={styles.icon}

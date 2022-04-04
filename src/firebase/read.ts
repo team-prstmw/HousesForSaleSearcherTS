@@ -1,7 +1,7 @@
 import { makeApiUrl } from './utils/makeApiUrl';
 import { objectToArray } from './utils/objectToArray';
 
-export const readAll = (key) => {
+export const readAll = (key: string) => {
   const apiUrl = makeApiUrl(key);
 
   return fetch(apiUrl)

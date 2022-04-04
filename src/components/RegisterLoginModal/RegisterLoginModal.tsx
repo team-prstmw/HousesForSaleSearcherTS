@@ -26,7 +26,7 @@ const SignInButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-function RegisterLoginModal() {
+function RegisterLoginModal(): any {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
 
