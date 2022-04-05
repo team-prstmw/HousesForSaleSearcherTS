@@ -18,11 +18,11 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { create, storage } from 'src/firebase';
-import { addHouseFormSchema, FieldsSchema } from 'src/schemas/addHouseFormSchema';
 import getRandomString from 'src/utils/getRandomString';
 
+import { addHouseFormSchema, FieldsSchema } from '../../../schemas/addHouseFormSchema';
+import FacilityCheckbox from '../FacilityCheckbox';
 import styles from './AddHouseForm.module.css';
-import FacilityCheckbox from './components/FacilityCheckbox/FacilityCheckbox';
 
 function AddHouseForm() {
   const [moreFacilitiesShown, setMoreFacilitiesShown] = useState(false);
