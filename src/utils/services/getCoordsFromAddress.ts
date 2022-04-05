@@ -1,4 +1,6 @@
-interface House {
+import { Dispatch, SetStateAction } from "react";
+
+export interface House {
     streetNumber: string;
     streetName: string;
     streetSuffix: string;
@@ -15,18 +17,21 @@ interface House {
     heating: string;
     descriptionField: string;
   }
-  type Coord = [number,number]
-export default async function getCoordsFromAddress(response:any, geocoder:any, setHouseCoords:(arg:Coord )=>any) {
+export type Coord = [number,number]|never[]
+
+export default async function getCoordsFromAddress(response:any, geocoder:any, setHouseCoords:any) {
   let coord : Coord;
   const addressesList = await response;
 
   addressesList.forEach((house:House, i:number) => {
     const address = `${house.city} ${house.streetNumber} ${house.streetName}`;
     geocoder.geocode({ address }, (results:[{geometry:{location:{lat:()=>number,lng:()=>number}}}], status:string) => {
-      if (status === 'OK') {
+      if (status === 'OK' ) {
         let lat:number = results[0].geometry.location.lat() ;
         let lng:number = results[0].geometry.location.lng() ;
-        coord.push(lat, lng);
+        if (typeof lat!=='number' && typeof lng!=='number'){
+          coord.push(lat, lng);
+        }
       } else {
         console.error(`${address} ,Geocode error: ${status}`);
       }

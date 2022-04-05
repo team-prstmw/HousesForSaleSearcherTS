@@ -1,38 +1,21 @@
-import getCoordsFromAddress from '@/utils/services/getCoordsFromAddress';
-import { useEffect, useState } from 'react';
+import getCoordsFromAddress, { Coord, House } from '@/utils/services/getCoordsFromAddress';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 import styles from './GoogleMapComponent.module.scss';
+import CSS from 'csstype';
 
-interface House {
-  streetNumber: string;
-  streetName: string;
-  streetSuffix: string;
-  city: string;
-  state: string;
-  price: number;
-  propertyType: string;
-  yearBuilt: number;
-  dimension: number;
-  floor: number;
-  floorsInBuilding: number;
-  roomsNumber: number;
-  bathroomNumber: number;
-  heating: string;
-  descriptionField: string;
-}
-type Coord = [number,number]|[]
-export default function GoogleMapComp({ houses, style }:{houses:House,style:any}) {
+
+export default function GoogleMapComp({ houses, style }:{houses:House,style:CSS.Properties}) {
   function Map() {
-    const [housesCoords, setHousesCoords] = useState<Coord>([]);
+    let [housesCoords, setHousesCoords]:[Coord[],Dispatch<SetStateAction<Coord[]>>] = useState<Coord[]>([]);
     useEffect(() => {
       let google:any
       const geocoder = new google.maps.Geocoder();
       if (!housesCoords.length) getCoordsFromAddress(houses, geocoder, setHousesCoords);
     }, [housesCoords.length]);
-
     return (
       <GoogleMap defaultZoom={6} defaultCenter={{ lat: 52.12, lng: 19.12 }}>
-        {housesCoords.map((coord:any) => {
+        {housesCoords.map((coord:Coord) => {
           return (
             <Marker
               position={{
