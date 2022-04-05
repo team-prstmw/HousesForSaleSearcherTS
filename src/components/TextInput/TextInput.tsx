@@ -5,7 +5,7 @@ import { UseFormRegister } from 'react-hook-form/dist/types/form';
 
 import styles from './TextInput.module.css';
 
-interface Error {
+interface ErrorMessage {
   message: string;
 }
 
@@ -13,7 +13,7 @@ interface Props {
   placeholder: string;
   register: UseFormRegister<Record<string, unknown>>;
   // eslint-disable-next-line react/require-default-props
-  error?: Error;
+  error?: ErrorMessage;
   password: string;
   disabled: boolean;
   defaultValue: string;
