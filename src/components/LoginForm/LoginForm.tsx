@@ -21,7 +21,10 @@ import { resetPassword, signInSignUp } from 'src/utils/auth';
 import styles from '/src/components/LoginForm/LoginForm.module.css';
 
 type LoginFormProps = {
-  changeStateFn: (arg0: string) => string;
+  changeStateFn: () => void;
+};
+type LoginFormProps2 = {
+  changeStateFn(arg0: string): string;
 };
 
 type OnSubmitProps = {
@@ -29,6 +32,7 @@ type OnSubmitProps = {
   password: string;
 };
 
+// function LoginForm({ changeStateFn }: LoginFormProps2): void;
 function LoginForm({ changeStateFn }: LoginFormProps) {
   const login = useContext(LoginContext);
 
@@ -61,10 +65,11 @@ function LoginForm({ changeStateFn }: LoginFormProps) {
   const onSubmit = ({ email, password }: OnSubmitProps) => {
     signInSignUp(email, password, SIGN_IN_URL, changeStateFn, login.loggedIn, login.login, login.logout);
   };
-
+  // if (typeof changeStateFn === 'string') {
   const onReset = () => {
     resetPassword(getValues('email'), RESET_PASSWORD, changeStateFn);
   };
+  // }
   return (
     <>
       <Box className={styles.form} component="form" onSubmit={handleSubmit(onSubmit)} noValidate>

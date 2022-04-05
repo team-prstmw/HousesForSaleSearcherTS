@@ -13,7 +13,7 @@ import mapError from 'src/utils/services/mapError';
 import ActionAlert from '../ActionAlert/ActionAlert';
 import styles from './RegisterLoginModal.module.css';
 
-const SignInButton = styled(Button)((theme) => ({
+const SignInButton = styled(Button)((theme: any) => ({
   color: theme.palette.primary.muted,
   lineHeight: '16px',
   border: `2px solid ${theme.palette.primary.muted}`,
@@ -37,7 +37,7 @@ function RegisterLoginModal() {
     setOpen(false);
   };
 
-  const changeState = (stateToChange: string) => {
+  const changeState = (stateToChange: string): void => {
     // not sure why mapError type any - its typed in the another file
     setState(mapError(stateToChange));
   };

@@ -54,11 +54,12 @@ function RegisterForm({ changeStateFn }: RegisterFormProps) {
     });
   };
 
-  const handleMouseDownPassword = (event: MouseEvent) => {
+  const handleMouseDownPassword = (event: React.SyntheticEvent) => {
     event.preventDefault();
   };
 
   const onSubmit = (email: string, password: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     signInSignUp(email, password, SIGN_UP_URL, changeStateFn, login.loggedIn, login.login, login.logout);
   };
 
@@ -68,7 +69,7 @@ function RegisterForm({ changeStateFn }: RegisterFormProps) {
         <TextField
           id="outlined-textarea-name"
           error={!!errors?.name}
-          helperText={errors?.name && errors?.name.message}
+          helperText={!!errors?.name && errors?.name.message}
           label="Name"
           placeholder="Name"
           autoComplete="Name"
@@ -80,7 +81,7 @@ function RegisterForm({ changeStateFn }: RegisterFormProps) {
         <TextField
           id="outlined-textarea-email"
           error={!!errors?.email}
-          helperText={errors?.email && errors?.email.message}
+          helperText={!!errors?.email && !!errors?.email.message}
           label="E-mail"
           placeholder="E-mail"
           required
@@ -116,7 +117,7 @@ function RegisterForm({ changeStateFn }: RegisterFormProps) {
             {...register('password')}
           />
           {errors?.password ? (
-            <FormHelperText error>{errors?.password && errors?.password.message}</FormHelperText>
+            <FormHelperText error>{errors?.password && !!errors?.password.message}</FormHelperText>
           ) : (
             <FormHelperText id="component-helper-text">At least 6 characters</FormHelperText>
           )}
