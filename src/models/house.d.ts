@@ -1,4 +1,4 @@
-type HouseType = {
+type BasicHouseType = {
   price: number;
   city: string;
   streetName: string;

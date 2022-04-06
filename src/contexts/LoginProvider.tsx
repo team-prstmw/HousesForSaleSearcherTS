@@ -1,14 +1,13 @@
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 
 import LoginContext from './LoginContext';
 
-const LoginProvider: React.FC<React.ReactNode> = ({ children }) => {
+const LoginProvider: FC = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   const login = () => {
     setLoggedIn(true);
-    localStorage.setItem('isloggedIn', 'true'); // Zmieniłem true na string
+    localStorage.setItem('isloggedIn', 'true');
   };
   const logout = () => {
     localStorage.clear();
@@ -16,10 +15,6 @@ const LoginProvider: React.FC<React.ReactNode> = ({ children }) => {
   };
 
   return <LoginContext.Provider value={{ loggedIn, login, logout }}>{children}</LoginContext.Provider>;
-};
-
-LoginProvider.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default LoginProvider;

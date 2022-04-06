@@ -10,12 +10,12 @@ import noPhoto from 'src/assets/images/nophoto.png';
 
 import styles from './ListOfHouses.module.scss';
 
-const options: string[] = ['Payment (Low to High)', 'Payment (High to Low)', 'A-Z', 'Z-A'];
+const options = ['Payment (Low to High)', 'Payment (High to Low)', 'A-Z', 'Z-A'] as const;
 const label: { inputProps: { 'aria-label': string } } = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-function ListOfHouses({ houses }: { houses: HouseType[] }) {
+function ListOfHouses({ houses }: { houses: BasicHouseType[] }) {
   const [sortType, setSortType] = useState<string | null>(null);
-  const [sortedHouses, setSortedHouses] = useState<HouseType[]>([]);
+  const [sortedHouses, setSortedHouses] = useState<BasicHouseType[]>([]);
 
   const handleDelete = () => {
     setSortType(null);
@@ -57,7 +57,7 @@ function ListOfHouses({ houses }: { houses: HouseType[] }) {
               setSortType(newValue);
             }}
             options={options}
-            renderInput={(params) => <TextField {...params} />} // To nie wiem jak rozwiązać
+            renderInput={(params) => <TextField {...params} />}
           />
         </div>
         <Chip
@@ -68,7 +68,7 @@ function ListOfHouses({ houses }: { houses: HouseType[] }) {
         />
       </Box>
       <Box component="div" className={styles.housesList}>
-        {sortedHouses.map((item: HouseType, i: number) => (
+        {sortedHouses.map((item: BasicHouseType, i: number) => (
           <Box component="div" className={styles.houseElement} key={i.toString()}>
             <h4>
               {item.city}, {item.streetName} {item.streetNumber}
@@ -81,7 +81,7 @@ function ListOfHouses({ houses }: { houses: HouseType[] }) {
             <Button className={styles.moreInfo}>more info</Button>
             <Checkbox
               color="warning"
-              {...label} // Nie wiem jak to rozwiązać.
+              {...label}
               icon={<FavoriteBorderIcon />}
               checkedIcon={<FavoriteIcon />}
               className={styles.icon}
