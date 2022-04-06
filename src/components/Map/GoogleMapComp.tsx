@@ -9,7 +9,6 @@ export default function GoogleMapComp({ houses, style }:{houses:House,style:CSS.
   function Map() {
     let [housesCoords, setHousesCoords]:[Coord[],Dispatch<SetStateAction<Coord[]>>] = useState<Coord[]>([]);
     useEffect(() => {
-      let google:any
       const geocoder = new google.maps.Geocoder();
       if (!housesCoords.length) getCoordsFromAddress(houses, geocoder, setHousesCoords);
     }, [housesCoords.length]);

@@ -1,5 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
-
+// temporary here
 export interface House {
     streetNumber: string;
     streetName: string;
@@ -17,21 +16,20 @@ export interface House {
     heating: string;
     descriptionField: string;
   }
-export type Coord = [number,number]|never[]
+export type Coord = [number,number]
 
+// markers doesnt show because Its doesnt work well and something is wrong with coord variable
+// I WILL REMOVE THIS FUNCTION and  I use our API to get location data
 export default async function getCoordsFromAddress(response:any, geocoder:any, setHouseCoords:any) {
-  let coord : Coord;
+  let coord : Coord =[0,0]
   const addressesList = await response;
 
   addressesList.forEach((house:House, i:number) => {
     const address = `${house.city} ${house.streetNumber} ${house.streetName}`;
     geocoder.geocode({ address }, (results:[{geometry:{location:{lat:()=>number,lng:()=>number}}}], status:string) => {
       if (status === 'OK' ) {
-        let lat:number = results[0].geometry.location.lat() ;
-        let lng:number = results[0].geometry.location.lng() ;
-        if (typeof lat!=='number' && typeof lng!=='number'){
-          coord.push(lat, lng);
-        }
+        coord[0] = results[0].geometry.location.lat(),
+        coord[1] = results[0].geometry.location.lng()
       } else {
         console.error(`${address} ,Geocode error: ${status}`);
       }
