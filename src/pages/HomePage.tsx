@@ -3,11 +3,10 @@ import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
 import Footer from 'src/components/Footer/Footer';
 import Header from 'src/components/HeaderSection/Header/Header';
+import ChangeView from 'src/components/HomePage/ChangeView/ChangeView';
+import ListOfHouses from 'src/components/HomePage/ListOfHouses/ListOfHouses';
+import MapHouses from 'src/components/HomePage/MapSide/MapSide';
 import { readAll } from 'src/firebase';
-
-import ChangeView from './ChangeView/ChangeView';
-import ListOfHouses from './ListOfHouses/ListOfHouses';
-import MapHouses from './MapSide/MapSide';
 
 function HomePage() {
   const [toggleView, setToggleView] = useState<boolean>(true);
