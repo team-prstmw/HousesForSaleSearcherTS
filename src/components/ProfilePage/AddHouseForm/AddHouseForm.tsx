@@ -17,64 +17,12 @@ import Typography from '@mui/material/Typography';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { create, storage } from 'src/firebase';
+import getRandomString from 'src/utils/getRandomString';
 
-import { create, storage } from '/src/firebase';
-import getRandomString from '/src/utils/getRandomString';
-
+import { AddHouseFormFields, addHouseFormSchema } from '../../../schemas/addHouseFormSchema';
+import FacilityCheckbox from '../FacilityCheckbox';
 import styles from './AddHouseForm.module.css';
-import FacilityCheckbox from './components/FacilityCheckbox/FacilityCheckbox';
-
-interface FieldsSchema {
-  streetNumber: string;
-  streetName: string;
-  streetSuffix: string;
-  city: string;
-  state: string;
-  price: number;
-  propertyType: string;
-  yearBuilt: number;
-  dimension: number;
-  floor: number;
-  floorsInBuilding: number;
-  roomsNumber: number;
-  bathroomNumber: number;
-  heating: string;
-  descriptionField: string;
-}
-
-const REQUIRED_ERROR = 'This field is required.';
-const SPECIAL_CHARACTERS_ERROR = 'No special characters allowed.';
-const NUMBER_NEEDED_ERROR = 'This field must be a number.';
-const POSITIVE_NUMBER_ERROR = 'Must be a positive number.';
-const NEGATIVE_NUMBER_ERROR = 'Cannot be a negative number.';
-
-const schema = yup.object({
-  streetNumber: yup
-    .string()
-    .required(REQUIRED_ERROR)
-    .matches(/^[A-Za-z0-9 ]+$/, SPECIAL_CHARACTERS_ERROR),
-  streetName: yup.string().required(REQUIRED_ERROR),
-  streetSuffix: yup.string().required(REQUIRED_ERROR),
-  city: yup
-    .string()
-    .required(REQUIRED_ERROR)
-    .matches(/^[A-Za-z0-9 ]+$/, SPECIAL_CHARACTERS_ERROR),
-  state: yup
-    .string()
-    .required(REQUIRED_ERROR)
-    .matches(/^[A-Za-z0-9 ]+$/, SPECIAL_CHARACTERS_ERROR),
-  price: yup.number().positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  propertyType: yup.string().required(REQUIRED_ERROR),
-  yearBuilt: yup.number().positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  dimension: yup.number().positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  floor: yup.number().min(0, NEGATIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  floorsInBuilding: yup.number().min(0, NEGATIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  roomsNumber: yup.number().positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  bathroomNumber: yup.number().positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  heating: yup.string().required(REQUIRED_ERROR),
-  descriptionField: yup.string().required(REQUIRED_ERROR),
-});
 
 function AddHouseForm() {
   const [moreFacilitiesShown, setMoreFacilitiesShown] = useState(false);
@@ -84,16 +32,16 @@ function AddHouseForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FieldsSchema>({
+  } = useForm<AddHouseFormFields>({
     mode: 'onBlur',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(addHouseFormSchema),
   });
 
   const addIndexToObjectKey = (propertyName: string | number) => {
     return `photo_${propertyName}`;
   };
 
-  const sendHouseDataWithPhotos = (imagesToUpload: File[], housesData: FieldsSchema) => {
+  const sendHouseDataWithPhotos = (imagesToUpload: File[], housesData: AddHouseFormFields) => {
     let photos = {};
     imagesToUpload.forEach((element, index) => {
       const file = element;
@@ -122,7 +70,7 @@ function AddHouseForm() {
 
   const removeImage = (name: string) => setImages((prevState) => prevState?.filter((img) => img.name !== name));
 
-  const handleSend = (fields: FieldsSchema) => {
+  const handleSend = (fields: AddHouseFormFields) => {
     sendHouseDataWithPhotos(images, fields);
   };
 

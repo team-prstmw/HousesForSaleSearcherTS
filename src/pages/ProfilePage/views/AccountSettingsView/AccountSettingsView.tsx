@@ -9,12 +9,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ProfilePageSchemaInterface } from 'src/schemas/authSchemas';
-
-import EditButtons from '/src/components/EditButtons/EditButtons';
-import FormRow from '/src/components/FormRow/FormRow';
-import TextInput from '/src/components/TextInput/TextInput';
-import { profilePageSchema } from '/src/schemas/authSchemas';
+import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
+import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
+import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
+import { profilePageSchema, ProfilePageSchemaInterface } from 'src/schemas/authSchemas';
 
 import styles from './AccountSettingsView.module.css';
 
