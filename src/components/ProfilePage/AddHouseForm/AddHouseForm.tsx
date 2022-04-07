@@ -20,7 +20,7 @@ import { useForm } from 'react-hook-form';
 import { create, storage } from 'src/firebase';
 import getRandomString from 'src/utils/getRandomString';
 
-import { addHouseFormSchema, FieldsSchema } from '../../../schemas/addHouseFormSchema';
+import { AddHouseFormFields, addHouseFormSchema } from '../../../schemas/addHouseFormSchema';
 import FacilityCheckbox from '../FacilityCheckbox';
 import styles from './AddHouseForm.module.css';
 
@@ -32,7 +32,7 @@ function AddHouseForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FieldsSchema>({
+  } = useForm<AddHouseFormFields>({
     mode: 'onBlur',
     resolver: yupResolver(addHouseFormSchema),
   });
@@ -41,7 +41,7 @@ function AddHouseForm() {
     return `photo_${propertyName}`;
   };
 
-  const sendHouseDataWithPhotos = (imagesToUpload: File[], housesData: FieldsSchema) => {
+  const sendHouseDataWithPhotos = (imagesToUpload: File[], housesData: AddHouseFormFields) => {
     let photos = {};
     imagesToUpload.forEach((element, index) => {
       const file = element;
@@ -70,7 +70,7 @@ function AddHouseForm() {
 
   const removeImage = (name: string) => setImages((prevState) => prevState?.filter((img) => img.name !== name));
 
-  const handleSend = (fields: FieldsSchema) => {
+  const handleSend = (fields: AddHouseFormFields) => {
     sendHouseDataWithPhotos(images, fields);
   };
 

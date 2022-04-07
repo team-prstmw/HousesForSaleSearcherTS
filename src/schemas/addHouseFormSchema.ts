@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 import { NEGATIVE_NUMBER_ERROR, POSITIVE_NUMBER_ERROR, REQUIRED_ERROR, SPECIAL_CHARACTERS_ERROR } from './const';
 
-export interface FieldsSchema {
+export interface AddHouseFormFields {
   streetNumber: string;
   streetName: string;
   streetSuffix: string;
