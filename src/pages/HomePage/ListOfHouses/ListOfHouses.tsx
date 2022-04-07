@@ -13,9 +13,9 @@ import styles from './ListOfHouses.module.scss';
 const options = ['Payment (Low to High)', 'Payment (High to Low)', 'A-Z', 'Z-A'] as const;
 const label: { inputProps: { 'aria-label': string } } = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-function ListOfHouses({ houses }: { houses: BasicHouseType[] }) {
+function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
   const [sortType, setSortType] = useState<string | null>(null);
-  const [sortedHouses, setSortedHouses] = useState<BasicHouseType[]>([]);
+  const [sortedHouses, setSortedHouses] = useState<BasicHouseData[]>([]);
 
   const handleDelete = () => {
     setSortType(null);
@@ -68,7 +68,7 @@ function ListOfHouses({ houses }: { houses: BasicHouseType[] }) {
         />
       </Box>
       <Box component="div" className={styles.housesList}>
-        {sortedHouses.map((item: BasicHouseType, i: number) => (
+        {sortedHouses.map((item: BasicHouseData, i) => (
           <Box component="div" className={styles.houseElement} key={i.toString()}>
             <h4>
               {item.city}, {item.streetName} {item.streetNumber}

@@ -11,7 +11,7 @@ import MapHouses from './MapSide/MapSide';
 
 function HomePage() {
   const [toggleView, setToggleView] = useState<boolean>(true);
-  const [houses, setHouses] = useState<BasicHouseType[]>([]);
+  const [houses, setHouses] = useState<BasicHouseData[]>([]);
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
