@@ -3,11 +3,10 @@ import Paper from '@mui/material/Paper';
 import useTheme from '@mui/material/styles/useTheme';
 import Typography from '@mui/material/Typography';
 
-import AddHouseForm from '@/components/AddHouseForm/AddHouseForm';
-
+import AddHouseForm from '../../../../components/ProfilePage/AddHouseForm/AddHouseForm';
 import styles from './SellHouseView.module.css';
 
-function SellHouseView(): JSX.Element {
+const SellHouseView = () => {
   const theme = useTheme();
   return (
     <Container component={Paper} maxWidth={false} className={styles.shpContainer}>
@@ -29,6 +28,6 @@ function SellHouseView(): JSX.Element {
       </div>
     </Container>
   );
-}
+};
 
 export default SellHouseView;
