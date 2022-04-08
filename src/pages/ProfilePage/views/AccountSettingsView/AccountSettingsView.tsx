@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,7 +13,8 @@ import { useForm } from 'react-hook-form';
 import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
 import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
 import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
-import { profilePageSchema, ProfilePageSchemaInterface } from 'src/schemas/authSchemas';
+import { ProfilePageSchemaInterface } from 'src/schemas/Auth';
+import { profilePageSchema } from 'src/schemas/authSchemas';
 
 import styles from './AccountSettingsView.module.css';
 
@@ -31,6 +33,8 @@ interface FormData {
   email?: string;
 }
 
+type FieldsType = keyof Pick<ProfilePageSchemaInterface, `${Fields.Name}` | `${Fields.Password}`>;
+
 function AccountSettingsView() {
   const [formData, setFormData] = useState<FormData>({ nameEditable: false, passwordEditable: false, tempImage: '' });
   const theme = useTheme();
@@ -39,7 +43,6 @@ function AccountSettingsView() {
     register,
     getValues,
     setValue,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     formState: { errors },
   } = useForm<ProfilePageSchemaInterface>({
     mode: 'onBlur',
@@ -57,7 +60,7 @@ function AccountSettingsView() {
     return '';
   };
 
-  const setEditable = (field: Fields) =>
+  const setEditable = (field: FieldsType) =>
     setFormData((prevState) => ({ ...prevState, [`${field}Editable`]: !prevState[`${field}Editable`] }));
 
   const onChangeName = () => {
@@ -72,11 +75,12 @@ function AccountSettingsView() {
     // SEND REQUEST
   };
 
-  const onCancelChange = (field: Fields) => {
-    const fieldPrev = `${field}Prev`;
+  const onCancelChange = (field: FieldsType) => {
+    const fieldPrev: keyof Pick<FormData, `${Fields.Name}Prev` | `${Fields.Password}Prev`> = `${field}Prev`;
+    const fieldPrevValue = formData[fieldPrev];
 
-    if (formData[fieldPrev as keyof FormData]) {
-      setValue(field, formData[fieldPrev as keyof FormData] as never);
+    if (fieldPrevValue) {
+      setValue(field, fieldPrevValue);
       setEditable(field);
     } else {
       setEditable(field);
@@ -146,7 +150,7 @@ function AccountSettingsView() {
                 placeholder="Name"
                 readOnly={!formData.nameEditable}
                 register={register(Fields.Name)}
-                error={errors?.name}
+                {...{ error: errors?.name }}
               />
             }
             action={
