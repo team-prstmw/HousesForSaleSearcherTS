@@ -4,16 +4,16 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material/styles';
-import LoginForm from 'components/LoginForm/LoginForm';
-import RegisterForm from 'components/RegisterForm/RegisterForm';
-import RegisterLoginHeader from 'components/RegisterLoginHeader/RegisterLoginHeader';
 import { useState } from 'react';
-import mapError from 'src/utils/services/mapError';
 
+import mapError from '../../utils/services/mapError';
 import ActionAlert from '../ActionAlert/ActionAlert';
+import LoginForm from '../LoginForm/LoginForm';
+import RegisterForm from '../RegisterForm/RegisterForm';
+import RegisterLoginHeader from '../RegisterLoginHeader/RegisterLoginHeader';
 import styles from './RegisterLoginModal.module.css';
 
-const SignInButton = styled(Button)((theme: any) => ({
+const SignInButton = styled(Button)((theme) => ({
   color: theme.palette.primary.muted,
   lineHeight: '16px',
   border: `2px solid ${theme.palette.primary.muted}`,
@@ -38,7 +38,6 @@ function RegisterLoginModal() {
   };
 
   const changeState = (stateToChange: string): void => {
-    // not sure why mapError type any - its typed in the another file
     setState(mapError(stateToChange));
   };
 
@@ -76,7 +75,7 @@ function RegisterLoginModal() {
             <CloseIcon />
           </IconButton>
           <RegisterLoginHeader checked={checked} onChange={handleChange} onClick={handleClose} state={state} />
-          {checked ? <RegisterForm changeStateFn={changeState} /> : <LoginForm changeStateFn={changeState} />}
+          {checked ? <RegisterForm changeStateFn={changeState} /> : <LoginForm changeStateFn={() => changeState} />}
           {state === 'Success' ? (
             <ActionAlert severity="success" onCloseAlertInfo={setState} children={state} />
           ) : state ? (

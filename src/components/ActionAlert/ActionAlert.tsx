@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 
 interface LabeledValue {
   severity: 'success' | 'error';
-  onCloseAlertInfo(arg0: string): void;
+  onCloseAlertInfo(state: string): void;
   children: string;
 }
 

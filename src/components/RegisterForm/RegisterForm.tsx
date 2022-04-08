@@ -20,6 +20,8 @@ import { signInSignUp } from 'src/utils/auth';
 
 import styles from '/src/components/RegisterForm/RegisterForm.module.css';
 
+import { OnSubmitProps, RegisterFormFields } from '../../schemas/loginRegisterFormSchemas';
+
 type RegisterFormProps = {
   changeStateFn: () => void;
 };
@@ -42,7 +44,7 @@ function RegisterForm({ changeStateFn }: RegisterFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<RegisterFormFields>({
     mode: 'onBlur',
     resolver: yupResolver(registerSchema),
   });
@@ -58,7 +60,7 @@ function RegisterForm({ changeStateFn }: RegisterFormProps) {
     event.preventDefault();
   };
 
-  const onSubmit = (email: string, password: string) => {
+  const onSubmit = ({ email, password }: OnSubmitProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     signInSignUp(email, password, SIGN_UP_URL, changeStateFn, login.loggedIn, login.login, login.logout);
   };

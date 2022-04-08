@@ -1,12 +1,8 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import LoginContext from './LoginContext';
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const LoginProvider = ({ children }: Props) => {
+const LoginProvider: FC = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const login = () => {

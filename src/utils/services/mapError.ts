@@ -1,6 +1,6 @@
-function mapError(state: string): string {
+function mapError(answerFromServer: string): string {
   let errorMessage = '';
-  switch (state) {
+  switch (answerFromServer) {
     case 'EMAIL_EXISTS':
       errorMessage = 'The email address is already in use by another account.';
       break;

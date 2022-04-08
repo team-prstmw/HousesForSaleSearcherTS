@@ -1,7 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import makeRequest from 'src/utils/services/makeRequest';
+import makeRequest from '../../api/makeRequest';
 
-export const resetPassword = async (email: string, signURL: string, changeState: (arg0: string) => string) => {
+export const resetPassword = async (
+  email: string,
+  signURL: string,
+  manageRequestMessage: (message: string) => string
+) => {
   const response = await makeRequest(signURL, {
     method: 'POST',
     body: JSON.stringify({
@@ -11,9 +14,9 @@ export const resetPassword = async (email: string, signURL: string, changeState:
   });
   const data = await response.json();
   if (response.ok) {
-    changeState('SUCCESS');
+    manageRequestMessage('SUCCESS');
   } else {
-    changeState(data.error.message);
+    manageRequestMessage(data.error.message);
   }
 
   return data;
