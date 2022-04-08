@@ -1,8 +1,6 @@
 import * as yup from 'yup';
 
-import { INVALID_EMAIL_ERROR, MIN_LENGTH_ERROR } from '/src/schemas/const';
-
-import { REQUIRED_ERROR, SPECIAL_CHARACTERS_ERROR } from './validationMessages';
+import { INVALID_EMAIL_ERROR, MIN_LENGTH_ERROR, REQUIRED_ERROR, SPECIAL_CHARACTERS_ERROR } from './const';
 
 const name = yup
   .string()
