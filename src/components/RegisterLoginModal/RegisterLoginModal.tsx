@@ -74,8 +74,12 @@ function RegisterLoginModal() {
           <IconButton aria-label="Close" className={styles.closeButton} onClick={handleClose}>
             <CloseIcon />
           </IconButton>
-          <RegisterLoginHeader checked={checked} onChange={handleChange} onClick={handleClose} state={state} />
-          {checked ? <RegisterForm changeStateFn={changeState} /> : <LoginForm changeStateFn={() => changeState} />}
+          <RegisterLoginHeader checked={checked} onChange={handleChange} onClick={handleClose} />
+          {checked ? (
+            <RegisterForm manageRequestMessage={changeState} />
+          ) : (
+            <LoginForm manageRequestMessage={() => changeState} />
+          )}
           {state === 'Success' ? (
             <ActionAlert severity="success" onCloseAlertInfo={setState} children={state} />
           ) : state ? (

@@ -1,10 +1,10 @@
-import makeRequest from 'src/utils/services/makeRequest';
+import makeRequest from '../makeRequest';
 
 export const signInSignUp = async (
   email: string,
   password: string,
   signURL: string,
-  changeState: () => void,
+  manageRequestMessage: (error: string) => void,
   _isLoggedIn: boolean,
   loginFunction: () => void,
   _logoutFunction: () => void
@@ -17,10 +17,9 @@ export const signInSignUp = async (
       returnSecureToken: true,
     }),
   });
-
   const data = await response.json();
   if (!response.ok) {
-    changeState(data.error.message);
+    manageRequestMessage(data.error.message);
   }
   if (response.ok) {
     loginFunction();

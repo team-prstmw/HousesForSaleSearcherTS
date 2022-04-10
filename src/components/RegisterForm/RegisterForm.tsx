@@ -16,14 +16,14 @@ import { useForm } from 'react-hook-form';
 import LoginContext from 'src/contexts/LoginContext';
 import { registerSchema } from 'src/schemas/authSchemas';
 import { SIGN_UP_URL } from 'src/URLs';
-import { signInSignUp } from 'src/utils/auth';
 
 import styles from '/src/components/RegisterForm/RegisterForm.module.css';
 
+import { signInSignUp } from '../../api/auth/signInSignUp';
 import { OnSubmitProps, RegisterFormFields } from '../../schemas/loginRegisterFormSchemas';
 
 type RegisterFormProps = {
-  changeStateFn: () => void;
+  manageRequestMessage: (message: string) => void;
 };
 
 type LoginProps = {
@@ -32,7 +32,7 @@ type LoginProps = {
   logout: () => void;
 };
 
-function RegisterForm({ changeStateFn }: RegisterFormProps) {
+function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
   const login: LoginProps = useContext(LoginContext);
   const [values, setValues] = useState({
     password: '',
@@ -62,7 +62,7 @@ function RegisterForm({ changeStateFn }: RegisterFormProps) {
 
   const onSubmit = ({ email, password }: OnSubmitProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    signInSignUp(email, password, SIGN_UP_URL, changeStateFn, login.loggedIn, login.login, login.logout);
+    signInSignUp(email, password, SIGN_UP_URL, manageRequestMessage, login.loggedIn, login.login, login.logout);
   };
 
   return (

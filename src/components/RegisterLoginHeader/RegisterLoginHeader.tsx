@@ -6,11 +6,13 @@ import { ChangeEvent } from 'react';
 
 import styles from '/src/components/RegisterLoginHeader/RegisterLoginHeader.module.css';
 
-function RegisterLoginHeader(
-  checked: boolean,
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void,
-  onClick: () => void
-): JSX.Element {
+interface Props {
+  checked: boolean;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onClick: () => void;
+}
+
+function RegisterLoginHeader({ checked, onChange, onClick }: Props): JSX.Element {
   return (
     <Box className={styles.registerLoginHeader__Wrapper}>
       <Typography

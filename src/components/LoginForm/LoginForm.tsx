@@ -19,14 +19,14 @@ import { RESET_PASSWORD, SIGN_IN_URL } from 'src/URLs';
 
 import styles from '/src/components/LoginForm/LoginForm.module.css';
 
+import { resetPassword, signInSignUp } from '../../api/auth';
 import LoginFormFields, { OnSubmitProps } from '../../schemas/loginRegisterFormSchemas';
-import { resetPassword, signInSignUp } from '../../utils/auth';
 
 type LoginFormProps = {
-  changeStateFn: () => void;
+  manageRequestMessage: (message: string) => void;
 };
 
-function LoginForm({ changeStateFn }: LoginFormProps) {
+function LoginForm({ manageRequestMessage }: LoginFormProps) {
   const login = useContext(LoginContext);
 
   const [values, setValues] = useState({
@@ -51,16 +51,16 @@ function LoginForm({ changeStateFn }: LoginFormProps) {
     });
   };
 
-  const handleMouseDownPassword = (event: MouseEvent) => {
+  const handleMouseDownPassword = (event: React.SyntheticEvent) => {
     event.preventDefault();
   };
 
   const onSubmit = ({ email, password }: OnSubmitProps) => {
-    signInSignUp(email, password, SIGN_IN_URL, changeStateFn, login.loggedIn, login.login, login.logout);
+    signInSignUp(email, password, SIGN_IN_URL, manageRequestMessage, login.loggedIn, login.login, login.logout);
   };
 
   const onReset = () => {
-    resetPassword(getValues('email'), RESET_PASSWORD, changeStateFn);
+    resetPassword(getValues('email'), RESET_PASSWORD, manageRequestMessage);
   };
 
   return (

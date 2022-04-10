@@ -1,9 +1,9 @@
-import makeRequest from '../../api/makeRequest';
+import makeRequest from '../makeRequest';
 
 export const resetPassword = async (
   email: string,
   signURL: string,
-  manageRequestMessage: (message: string) => string
+  manageRequestMessage: (message: string) => void
 ) => {
   const response = await makeRequest(signURL, {
     method: 'POST',
