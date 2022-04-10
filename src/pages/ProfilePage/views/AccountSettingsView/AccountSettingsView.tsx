@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
 import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
 import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
-import { ProfilePageSchemaInterface } from 'src/schemas/Auth';
+import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
 import { profilePageSchema } from 'src/schemas/authSchemas';
 
 import styles from './AccountSettingsView.module.css';
@@ -30,10 +30,9 @@ interface FormData {
   image?: File;
   namePrev?: string;
   passwordPrev?: string;
-  email?: string;
 }
 
-type FieldsType = keyof Pick<ProfilePageSchemaInterface, `${Fields.Name}` | `${Fields.Password}`>;
+type FieldsType = keyof Pick<ProfilePageInterface, `${Fields.Name}` | `${Fields.Password}`>;
 
 function AccountSettingsView() {
   const [formData, setFormData] = useState<FormData>({ nameEditable: false, passwordEditable: false, tempImage: '' });
@@ -44,7 +43,7 @@ function AccountSettingsView() {
     getValues,
     setValue,
     formState: { errors },
-  } = useForm<ProfilePageSchemaInterface>({
+  } = useForm<ProfilePageInterface>({
     mode: 'onBlur',
     resolver: yupResolver(profilePageSchema),
   });
@@ -81,13 +80,11 @@ function AccountSettingsView() {
 
     if (fieldPrevValue) {
       setValue(field, fieldPrevValue);
-      setEditable(field);
-    } else {
-      setEditable(field);
     }
+      setEditable(field);
   };
 
-  const onAddAvatar = (image: File | undefined) => {
+  const onAddAvatar = (image?: File) => {
     if (image) {
       setFormData((prevState) => ({ ...prevState, tempImage: image }));
     }

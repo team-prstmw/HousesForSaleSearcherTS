@@ -10,7 +10,6 @@ import styles from './TextInput.module.css';
 interface Props {
   placeholder: string;
   register?: UseFormRegisterReturn;
-  // eslint-disable-next-line react/require-default-props
   error?: FieldError;
   password?: boolean;
   disabled?: boolean;
