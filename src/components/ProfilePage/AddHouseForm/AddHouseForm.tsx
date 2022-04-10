@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { yupResolver } from '@hookform/resolvers/yup';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -16,65 +17,31 @@ import Typography from '@mui/material/Typography';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { create, storage } from 'src/firebase';
+import getRandomString from 'src/utils/getRandomString';
 
-import { create, storage } from '/src/firebase';
-import getRandomString from '/src/utils/getRandomString';
-
+import { AddHouseFormFields, addHouseFormSchema } from '../../../schemas/addHouseFormSchema';
+import FacilityCheckbox from '../FacilityCheckbox';
 import styles from './AddHouseForm.module.css';
-import FacilityCheckbox from './components/FacilityCheckbox/FacilityCheckbox';
 
-const REQUIRED_ERROR = 'This field is required.';
-const SPECIAL_CHARACTERS_ERROR = 'No special characters allowed.';
-const NUMBER_NEEDED_ERROR = 'This field must be a number.';
-const POSITIVE_NUMBER_ERROR = 'Must be a positive number.';
-const NEGATIVE_NUMBER_ERROR = 'Cannot be a negative number.';
-
-const schema = yup.object({
-  streetNumber: yup
-    .string()
-    .required(REQUIRED_ERROR)
-    .matches(/^[A-Za-z0-9 ]+$/, SPECIAL_CHARACTERS_ERROR),
-  streetName: yup.string().required(REQUIRED_ERROR),
-  streetSuffix: yup.string().required(REQUIRED_ERROR),
-  city: yup
-    .string()
-    .required(REQUIRED_ERROR)
-    .matches(/^[A-Za-z0-9 ]+$/, SPECIAL_CHARACTERS_ERROR),
-  state: yup
-    .string()
-    .required(REQUIRED_ERROR)
-    .matches(/^[A-Za-z0-9 ]+$/, SPECIAL_CHARACTERS_ERROR),
-  price: yup.number(NUMBER_NEEDED_ERROR).positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  propertyType: yup.string().required(REQUIRED_ERROR),
-  yearBuilt: yup.number(NUMBER_NEEDED_ERROR).positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  dimension: yup.number(NUMBER_NEEDED_ERROR).positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  floor: yup.number(NUMBER_NEEDED_ERROR).min(0, NEGATIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  floorsInBuilding: yup.number(NUMBER_NEEDED_ERROR).min(0, NEGATIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  roomsNumber: yup.number(NUMBER_NEEDED_ERROR).positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  bathroomNumber: yup.number(NUMBER_NEEDED_ERROR).positive(POSITIVE_NUMBER_ERROR).required(REQUIRED_ERROR),
-  heating: yup.string().required(REQUIRED_ERROR),
-  descriptionField: yup.string().required(REQUIRED_ERROR),
-});
-
-const AddHouseForm = () => {
+function AddHouseForm() {
   const [moreFacilitiesShown, setMoreFacilitiesShown] = useState(false);
-  const [images, setImages] = useState();
+  const [images, setImages] = useState<File[]>([]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<AddHouseFormFields>({
     mode: 'onBlur',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(addHouseFormSchema),
   });
 
-  const addIndexToObjectKey = (propertyName) => {
+  const addIndexToObjectKey = (propertyName: string | number) => {
     return `photo_${propertyName}`;
   };
 
-  const sendHouseDataWithPhotos = (imagesToUpload, housesData) => {
+  const sendHouseDataWithPhotos = (imagesToUpload: File[], housesData: AddHouseFormFields) => {
     let photos = {};
     imagesToUpload.forEach((element, index) => {
       const file = element;
@@ -82,24 +49,28 @@ const AddHouseForm = () => {
       const storageRef = ref(storage, `images/${getRandomString(9)}`);
       const uploadTask = uploadBytesResumable(storageRef, file, metadata);
       uploadTask.on('state_changed', null, null, () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          photos = { [addIndexToObjectKey(index)]: downloadURL };
-          const uploadedData = Object.assign(housesData, photos);
-          if (index === imagesToUpload.length - 1) {
-            create('houses', uploadedData);
-          }
-        });
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then((downloadURL) => {
+            photos = { [addIndexToObjectKey(index)]: downloadURL };
+            const uploadedData = Object.assign(housesData, photos);
+            if (index === imagesToUpload.length - 1) {
+              create('houses', uploadedData);
+            }
+          })
+          .catch((e) => console.log(e)); // todo
       });
     });
   };
 
-  const addImages = (rawImages) => {
-    setImages(Array.from(rawImages));
+  const addImages = (rawImages: FileList | null) => {
+    if (rawImages !== null) {
+      setImages(Array.from(rawImages));
+    }
   };
 
-  const removeImage = (name) => setImages((prevState) => prevState?.filter((img) => img.name !== name));
+  const removeImage = (name: string) => setImages((prevState) => prevState?.filter((img) => img.name !== name));
 
-  const handleSend = (fields) => {
+  const handleSend = (fields: AddHouseFormFields) => {
     sendHouseDataWithPhotos(images, fields);
   };
 
@@ -120,6 +91,7 @@ const AddHouseForm = () => {
     'Kitchenette',
   ];
   return (
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <Box component="form" className={styles.formContainer} onSubmit={handleSubmit(handleSend)}>
       <div className={styles.formSection}>
         <Typography variant="h6" color="primary">
@@ -143,7 +115,7 @@ const AddHouseForm = () => {
             sx={{ width: '100%' }}
             autoComplete="address-line2"
           />
-          <FormControl sx={{ minWidth: '45%' }} error={errors?.streetSuffix}>
+          <FormControl sx={{ minWidth: '45%' }} error={!!errors?.streetSuffix}>
             <InputLabel id="street-suffix">Street Suffix</InputLabel>
             <Select
               labelId="street-suffix"
@@ -346,6 +318,6 @@ const AddHouseForm = () => {
       </Button>
     </Box>
   );
-};
+}
 
 export default AddHouseForm;

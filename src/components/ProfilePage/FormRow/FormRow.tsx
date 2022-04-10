@@ -1,7 +1,18 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
+import React from 'react';
+import { UseFormRegister } from 'react-hook-form/dist/types/form';
+
 import styles from './FormRow.module.css';
 
-const FormRow = ({ label, input, action, register }) => {
+interface Props {
+  label: string | React.ReactElement;
+  input: string | number | JSX.Element;
+  action?: React.ReactElement;
+  register?: UseFormRegister<Record<string, unknown>>;
+}
+
+function FormRow({ label, input, action, register }: Props): JSX.Element {
   return (
     <div className={styles.container}>
       <div className={styles.rowLabel}>{label}</div>
@@ -13,6 +24,6 @@ const FormRow = ({ label, input, action, register }) => {
       </span>
     </div>
   );
-};
+}
 
 export default FormRow;
