@@ -1,8 +1,13 @@
 type BasicHouseData = {
   price: number;
   city: string;
-  streetName: string;
-  streetNumber: string;
-  photo_0: string;
+  street: string;
+  houseNr: string;
   descriptionField: string;
+  images: string[];
+};
+
+type BasicHouseResponseType = {
+  status: string;
+  data: BasicHouseData[];
 };

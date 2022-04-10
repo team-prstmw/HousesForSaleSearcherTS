@@ -1,18 +1,19 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Footer from 'src/components/Footer/Footer';
 import Header from 'src/components/HeaderSection/Header/Header';
 import ChangeView from 'src/components/HomePage/ChangeView/ChangeView';
 import ListOfHouses from 'src/components/HomePage/ListOfHouses/ListOfHouses';
 import MapHouses from 'src/components/HomePage/MapSide/MapSide';
-import { readAll } from 'src/firebase';
 
 function HomePage() {
   const [toggleView, setToggleView] = useState<boolean>(true);
   const [houses, setHouses] = useState<BasicHouseData[]>([]);
-  const [error, setError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleAsyncAction = async (asyncAction: () => Promise<void>) => {
     setLoading(() => true);
@@ -27,8 +28,8 @@ function HomePage() {
 
   const fetchHouses = async () => {
     await handleAsyncAction(async () => {
-      const fetchedHouses = await readAll('houses');
-      setHouses(() => fetchedHouses);
+      const resp = await axios.get<BasicHouseResponseType>('http://localhost:4000/api/houses');
+      setHouses(resp.data.data);
     });
   };
 
