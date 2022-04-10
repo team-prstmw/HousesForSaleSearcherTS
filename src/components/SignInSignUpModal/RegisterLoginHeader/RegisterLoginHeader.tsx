@@ -4,7 +4,7 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { ChangeEvent } from 'react';
 
-import styles from '/src/components/RegisterLoginHeader/RegisterLoginHeader.module.css';
+import styles from '/src/components/SignInSignUpModal/RegisterLoginHeader/RegisterLoginHeader.module.css';
 
 interface Props {
   checked: boolean;

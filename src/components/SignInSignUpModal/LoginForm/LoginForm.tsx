@@ -17,10 +17,10 @@ import LoginContext from 'src/contexts/LoginContext';
 import { loginSchema } from 'src/schemas/authSchemas';
 import { RESET_PASSWORD, SIGN_IN_URL } from 'src/URLs';
 
-import styles from '/src/components/LoginForm/LoginForm.module.css';
+import styles from '/src/components/SignInSignUpModal/LoginForm/LoginForm.module.css';
 
-import { resetPassword, signInSignUp } from '../../api/auth';
-import LoginFormFields, { OnSubmitProps } from '../../schemas/loginRegisterFormSchemas';
+import { resetPassword, signInSignUp } from '../../../api/auth';
+import LoginFormFields, { OnSubmitProps } from '../../../schemas/loginRegisterFormSchemas';
 
 type LoginFormProps = {
   manageRequestMessage: (message: string) => void;

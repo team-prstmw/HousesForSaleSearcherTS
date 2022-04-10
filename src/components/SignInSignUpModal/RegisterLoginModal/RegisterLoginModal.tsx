@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 
-import mapError from '../../utils/services/mapError';
+import mapError from '../../../utils/services/mapError';
 import ActionAlert from '../ActionAlert/ActionAlert';
 import LoginForm from '../LoginForm/LoginForm';
 import RegisterForm from '../RegisterForm/RegisterForm';
@@ -25,7 +25,7 @@ const SignInButton = styled(Button)((theme) => ({
   },
 }));
 
-function RegisterLoginModal(): any {
+function RegisterLoginModal() {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
 
