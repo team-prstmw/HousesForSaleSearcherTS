@@ -1,4 +1,4 @@
-export const objectToArray = (object, keyPropertyName = 'id') => {
+export const objectToArray = (object: { key: string; value: string | string[] }, keyPropertyName = 'id') => {
   return Object.entries(object || {}).map((entry) => {
     const key = entry[0];
     const value = entry[1];

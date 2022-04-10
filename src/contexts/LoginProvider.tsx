@@ -3,11 +3,11 @@ import { FC, useState } from 'react';
 import LoginContext from './LoginContext';
 
 const LoginProvider: FC = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   const login = () => {
     setLoggedIn(true);
-    localStorage.setItem('isloggedIn', true.toString());
+    localStorage.setItem('isloggedIn', 'true');
   };
   const logout = () => {
     localStorage.clear();

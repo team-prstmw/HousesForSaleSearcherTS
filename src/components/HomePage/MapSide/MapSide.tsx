@@ -21,7 +21,7 @@ const ButtonSearch = styled(Button)(({ theme }) => ({
   },
 }));
 
-function MapHouses({ houses }) {
+function MapHouses({ houses }): any {
   return (
     <Box component="div" className={styles.mapContainer}>
       <Box component="form">

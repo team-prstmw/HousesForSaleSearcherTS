@@ -1,24 +1,21 @@
-/* eslint-disable import/no-absolute-path */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable @typescript-eslint/no-redeclare */
 import DoneIcon from '@mui/icons-material/Done';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Autocomplete, Box, Button, Checkbox, TextField } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { useEffect, useState } from 'react';
-
-import noPhoto from '/src/assets/images/nophoto.png';
+import noPhoto from 'src/assets/images/nophoto.png';
 
 import styles from './ListOfHouses.module.scss';
 
-const options = ['Payment (Low to High)', 'Payment (High to Low)', 'A-Z', 'Z-A'];
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+const options = ['Payment (Low to High)', 'Payment (High to Low)', 'A-Z', 'Z-A'] as const;
+const label: { inputProps: { 'aria-label': string } } = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-function ListOfHouses({ houses }) {
-  const [sortType, setSortType] = useState(null);
-  const [sortedHouses, setSortedHouses] = useState([]);
+function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
+  const [sortType, setSortType] = useState<string | null>(null);
+  const [sortedHouses, setSortedHouses] = useState<BasicHouseData[]>([]);
 
   const handleDelete = () => {
     setSortType(null);
@@ -55,7 +52,7 @@ function ListOfHouses({ houses }) {
           <Autocomplete
             className={styles.options}
             disableClearable
-            value={sortType}
+            value={sortType ?? ''}
             onChange={(event, newValue) => {
               setSortType(newValue);
             }}
@@ -71,7 +68,7 @@ function ListOfHouses({ houses }) {
         />
       </Box>
       <Box component="div" className={styles.housesList}>
-        {sortedHouses.map((item, i) => (
+        {sortedHouses.map((item: BasicHouseData, i) => (
           <Box component="div" className={styles.houseElement} key={i.toString()}>
             <h4>
               {item.city}, {item.streetName} {item.streetNumber}

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,8 +13,8 @@ import { useForm } from 'react-hook-form';
 import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
 import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
 import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
-
-import { profilePageSchema } from '/src/schemas/authSchemas';
+import { profilePageSchema } from 'src/schemas/authSchemas';
+import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
 
 import styles from './AccountSettingsView.module.css';
 
@@ -29,8 +30,9 @@ interface FormData {
   image?: File;
   namePrev?: string;
   passwordPrev?: string;
-  email?: string;
 }
+
+type FieldsType = keyof Pick<ProfilePageInterface, `${Fields.Name}` | `${Fields.Password}`>;
 
 function AccountSettingsView() {
   const [formData, setFormData] = useState<FormData>({ nameEditable: false, passwordEditable: false, tempImage: '' });
@@ -40,9 +42,8 @@ function AccountSettingsView() {
     register,
     getValues,
     setValue,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     formState: { errors },
-  } = useForm<ProfilePageSchemaInterface>({
+  } = useForm<ProfilePageInterface>({
     mode: 'onBlur',
     resolver: yupResolver(profilePageSchema),
   });
@@ -58,7 +59,7 @@ function AccountSettingsView() {
     return '';
   };
 
-  const setEditable = (field: Fields) =>
+  const setEditable = (field: FieldsType) =>
     setFormData((prevState) => ({ ...prevState, [`${field}Editable`]: !prevState[`${field}Editable`] }));
 
   const onChangeName = () => {
@@ -73,18 +74,17 @@ function AccountSettingsView() {
     // SEND REQUEST
   };
 
-  const onCancelChange = (field: Fields) => {
-    const fieldPrev = `${field}Prev`;
+  const onCancelChange = (field: FieldsType) => {
+    const fieldPrev: keyof Pick<FormData, `${Fields.Name}Prev` | `${Fields.Password}Prev`> = `${field}Prev`;
+    const fieldPrevValue = formData[fieldPrev];
 
-    if (formData[fieldPrev as keyof FormData]) {
-      setValue(field, formData[fieldPrev as keyof FormData] as never);
-      setEditable(field);
-    } else {
-      setEditable(field);
+    if (fieldPrevValue) {
+      setValue(field, fieldPrevValue);
     }
+    setEditable(field);
   };
 
-  const onAddAvatar = (image: File | undefined) => {
+  const onAddAvatar = (image?: File) => {
     if (image) {
       setFormData((prevState) => ({ ...prevState, tempImage: image }));
     }
@@ -147,7 +147,7 @@ function AccountSettingsView() {
                 placeholder="Name"
                 readOnly={!formData.nameEditable}
                 register={register(Fields.Name)}
-                error={errors?.name}
+                {...{ error: errors?.name }}
               />
             }
             action={

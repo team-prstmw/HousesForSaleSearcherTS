@@ -1,13 +1,15 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
+import React from 'react';
 import { UseFormRegister } from 'react-hook-form/dist/types/form';
 
 import styles from './FormRow.module.css';
 
 interface Props {
-  label: string;
+  label: string | React.ReactElement;
   input: string | number | JSX.Element;
-  action: () => void;
-  register: UseFormRegister<Record<string, unknown>>;
+  action?: React.ReactElement;
+  register?: UseFormRegister<Record<string, unknown>>;
 }
 
 function FormRow({ label, input, action, register }: Props): JSX.Element {

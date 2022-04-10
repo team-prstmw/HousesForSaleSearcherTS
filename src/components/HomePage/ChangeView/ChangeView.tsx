@@ -20,7 +20,13 @@ const ChangerButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-function ChangeView({ toggleView, setToggleView }) {
+function ChangeView({
+  toggleView,
+  setToggleView,
+}: {
+  toggleView: boolean;
+  setToggleView: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   return (
     <Box component="div" className={styles.buttonContainer}>
       <ButtonGroup variant="contained">
