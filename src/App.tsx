@@ -1,13 +1,13 @@
 import { ThemeProvider } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import ProfilePage from 'src/pages/ProfilePage/ProfilePage';
+import AccountSettingsView from 'src/pages/ProfilePage/views/AccountSettingsView/AccountSettingsView';
+import SellHouseView from 'src/pages/ProfilePage/views/SellHouseView/SellHouseView';
+import theme from 'src/theme/theme';
 
 import LoginProvider from './contexts/LoginProvider';
-import HomePage from './pages/HomePage/HomePage';
-import ProfilePage from './pages/ProfilePage/ProfilePage';
-import AccountSettingsView from './pages/ProfilePage/views/AccountSettingsView/AccountSettingsView';
-import SellHouseView from './pages/ProfilePage/views/SellHouseView/SellHouseView';
-import theme from './theme/theme';
+import HomePage from './pages/HomePage';
 
 function App(): ReactElement {
   const MAP_INIT = `https://maps.googleapis.com/maps/api/js?key=${

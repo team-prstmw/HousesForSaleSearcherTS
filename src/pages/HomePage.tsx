@@ -1,30 +1,24 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable import/no-absolute-path */
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-unresolved */
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
-
-import Footer from '/src/components/Footer/Footer';
-import Header from '/src/components/HeaderSection/Header/Header';
-import { readAll } from '/src/firebase';
-
-import ChangeView from './ChangeView/ChangeView';
-import ListOfHouses from './ListOfHouses/ListOfHouses';
-import MapHouses from './MapSide/MapSide';
+import Footer from 'src/components/Footer/Footer';
+import Header from 'src/components/HeaderSection/Header/Header';
+import ChangeView from 'src/components/HomePage/ChangeView/ChangeView';
+import ListOfHouses from 'src/components/HomePage/ListOfHouses/ListOfHouses';
+import MapHouses from 'src/components/HomePage/MapSide/MapSide';
+import { readAll } from 'src/firebase';
 
 function HomePage() {
-  const [toggleView, setToggleView] = useState(true);
-  const [houses, setHouses] = useState([]);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [toggleView, setToggleView] = useState<boolean>(true);
+  const [houses, setHouses] = useState<BasicHouseData[]>([]);
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const handleAsyncAction = async (asyncAction) => {
+  const handleAsyncAction = async (asyncAction: () => Promise<void>) => {
     setLoading(() => true);
     try {
       await asyncAction();
-    } catch (caughtError) {
+    } catch (caughtError: unknown) {
       setError(true);
     } finally {
       setLoading(false);
@@ -32,7 +26,7 @@ function HomePage() {
   };
 
   const fetchHouses = async () => {
-    handleAsyncAction(async () => {
+    await handleAsyncAction(async () => {
       const fetchedHouses = await readAll('houses');
       setHouses(() => fetchedHouses);
     });

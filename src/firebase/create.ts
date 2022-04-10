@@ -1,6 +1,6 @@
 import { makeApiUrl } from './utils/makeApiUrl';
 
-export const create = (key, dataToSave) => {
+export const create = (key: string, dataToSave: Promise<string>) => {
   const apiUrl = makeApiUrl(key);
 
   return fetch(apiUrl, {
