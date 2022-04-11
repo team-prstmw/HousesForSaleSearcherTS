@@ -4,7 +4,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import EditIcon from '@mui/icons-material/Edit';
 import { useTheme } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -13,8 +12,10 @@ import { useForm } from 'react-hook-form';
 import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
 import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
 import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
-import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
+import UserAvatar, { AvatarSize } from 'src/components/ProfilePage&HeaderSection/UserAvatar';
+import WelcomeHeader, { WelcomeSize } from 'src/components/ProfilePage&HeaderSection/WelcomeHeader';
 import { profilePageSchema } from 'src/schemas/authSchemas';
+import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
 
 import styles from './AccountSettingsView.module.css';
 
@@ -81,7 +82,7 @@ function AccountSettingsView() {
     if (fieldPrevValue) {
       setValue(field, fieldPrevValue);
     }
-      setEditable(field);
+    setEditable(field);
   };
 
   const onAddAvatar = (image?: File) => {
@@ -91,22 +92,10 @@ function AccountSettingsView() {
     // SEND REQUEST
   };
 
-  const getInitials = () => {
-    let name = getValues(Fields.Name) as string | undefined;
-
-    if (!name) {
-      return;
-    }
-
-    name = name[0].toUpperCase();
-
-    // eslint-disable-next-line consistent-return
-    return name;
-  };
   return (
     <div className={styles.container}>
       <span className={styles.headerContent}>
-        <Typography
+        {/* <Typography
           variant="h3"
           sx={{
             [theme.breakpoints.down('sm')]: {
@@ -117,12 +106,13 @@ function AccountSettingsView() {
           mb={2}
         >
           {`Welcome${getValues(Fields.Name) ? `, ${getValues(Fields.Name) as string}` : ''}!`}
-        </Typography>
+        </Typography> */}
+        <Box sx={{ textAlign: 'center', mb: 0.5 }}>
+          <WelcomeHeader size={WelcomeSize.Large} name="Name" />
+        </Box>
       </span>
       <div className={styles.avatarContainer}>
-        <Avatar sx={{ bgcolor: '#30336b', width: 100, height: 100, fontSize: 36, margin: 2 }} src={avatarUrl()}>
-          {getInitials()}
-        </Avatar>
+        <UserAvatar name={getValues(Fields.Name)} image={avatarUrl()} size={AvatarSize.Large} />
         <input
           style={{ display: 'none' }}
           id="images-upload"
