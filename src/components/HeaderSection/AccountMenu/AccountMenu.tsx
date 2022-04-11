@@ -10,6 +10,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import WelcomeHeader from 'src/components/ProfilePage&HeaderSection/WelcomeHeader';
 
+import logout from '../../../utils/auth/logout';
 import UserAvatar, { AvatarSize } from '../../ProfilePage&HeaderSection/UserAvatar';
 
 export default function AccountMenu() {
@@ -89,7 +90,7 @@ export default function AccountMenu() {
           SELL HOUSE +
         </MenuItem>
         <Divider />
-        <MenuItem>
+        <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

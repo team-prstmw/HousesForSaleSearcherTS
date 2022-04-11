@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { yupResolver } from '@hookform/resolvers/yup';
 import EditIcon from '@mui/icons-material/Edit';
-import { useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -24,7 +23,7 @@ enum Fields {
   Password = 'password',
 }
 
-interface FormData {
+interface UserFormData {
   nameEditable: boolean;
   passwordEditable: boolean;
   tempImage: string | File;
@@ -36,8 +35,11 @@ interface FormData {
 type FieldsType = keyof Pick<ProfilePageInterface, `${Fields.Name}` | `${Fields.Password}`>;
 
 function AccountSettingsView() {
-  const [formData, setFormData] = useState<FormData>({ nameEditable: false, passwordEditable: false, tempImage: '' });
-  const theme = useTheme();
+  const [formData, setFormData] = useState<UserFormData>({
+    nameEditable: false,
+    passwordEditable: false,
+    tempImage: '',
+  });
 
   const {
     register,
@@ -76,7 +78,7 @@ function AccountSettingsView() {
   };
 
   const onCancelChange = (field: FieldsType) => {
-    const fieldPrev: keyof Pick<FormData, `${Fields.Name}Prev` | `${Fields.Password}Prev`> = `${field}Prev`;
+    const fieldPrev: keyof Pick<UserFormData, `${Fields.Name}Prev` | `${Fields.Password}Prev`> = `${field}Prev`;
     const fieldPrevValue = formData[fieldPrev];
 
     if (fieldPrevValue) {
@@ -95,18 +97,6 @@ function AccountSettingsView() {
   return (
     <div className={styles.container}>
       <span className={styles.headerContent}>
-        {/* <Typography
-          variant="h3"
-          sx={{
-            [theme.breakpoints.down('sm')]: {
-              fontSize: '2.2rem',
-            },
-            textAlign: 'center',
-          }}
-          mb={2}
-        >
-          {`Welcome${getValues(Fields.Name) ? `, ${getValues(Fields.Name) as string}` : ''}!`}
-        </Typography> */}
         <Box sx={{ textAlign: 'center', mb: 0.5 }}>
           <WelcomeHeader size={WelcomeSize.Large} name="Name" />
         </Box>
