@@ -9,10 +9,9 @@ import styles from '/src/components/SignInSignUpModal/RegisterLoginHeader/Regist
 interface Props {
   checked: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
 }
 
-function RegisterLoginHeader({ checked, onChange, onClick }: Props): JSX.Element {
+function RegisterLoginHeader({ checked, onChange }: Props): JSX.Element {
   return (
     <Box className={styles.registerLoginHeader__Wrapper}>
       <Typography
@@ -26,12 +25,7 @@ function RegisterLoginHeader({ checked, onChange, onClick }: Props): JSX.Element
 
       <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
         <Typography>Log in</Typography>
-        <Switch
-          checked={checked}
-          onChange={onChange}
-          onClick={onClick}
-          inputProps={{ 'aria-label': 'Login Register Switch' }}
-        />
+        <Switch checked={checked} onChange={onChange} inputProps={{ 'aria-label': 'Login Register Switch' }} />
         <Typography>Register</Typography>
       </Stack>
     </Box>

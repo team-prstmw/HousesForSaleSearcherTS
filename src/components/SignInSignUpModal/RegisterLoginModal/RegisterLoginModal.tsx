@@ -14,14 +14,14 @@ import RegisterLoginHeader from '../RegisterLoginHeader/RegisterLoginHeader';
 import styles from './RegisterLoginModal.module.css';
 
 const SignInButton = styled(Button)((theme) => ({
-  color: theme.palette.primary.muted,
+  // color: theme.palette.primary.muted,
   lineHeight: '16px',
-  border: `2px solid ${theme.palette.primary.muted}`,
+  // border: `2px solid ${theme.palette.primary.muted}`,
   letterSpacing: 1.25,
   fontWeight: 'bold',
   '&:hover': {
     backgroundColor: '#fff',
-    borderColor: theme.palette.primary.muted,
+    // borderColor: theme.palette.primary.muted,
   },
 }));
 
@@ -74,11 +74,11 @@ function RegisterLoginModal() {
           <IconButton aria-label="Close" className={styles.closeButton} onClick={handleClose}>
             <CloseIcon />
           </IconButton>
-          <RegisterLoginHeader checked={checked} onChange={handleChange} onClick={handleClose} />
+          <RegisterLoginHeader checked={checked} onChange={handleChange} />
           {checked ? (
             <RegisterForm manageRequestMessage={changeState} />
           ) : (
-            <LoginForm manageRequestMessage={() => changeState} />
+            <LoginForm manageRequestMessage={changeState} />
           )}
           {state === 'Success' ? (
             <ActionAlert severity="success" onCloseAlertInfo={setState} children={state} />

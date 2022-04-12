@@ -15,12 +15,11 @@ import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import LoginContext from 'src/contexts/LoginContext';
 import { registerSchema } from 'src/schemas/authSchemas';
-import { SIGN_UP_URL } from 'src/URLs';
 
 import styles from '/src/components/SignInSignUpModal/RegisterForm/RegisterForm.module.css';
 
-import { signInSignUp } from '../../../api/auth';
-import { OnSubmitProps, RegisterFormFields } from '../../../schemas/loginRegisterFormSchemas';
+import { signUp } from '../../../api/auth/signUp';
+import { RegisterFormFields } from '../../../schemas/loginRegisterFormSchemas';
 
 type RegisterFormProps = {
   manageRequestMessage: (message: string) => void;
@@ -35,8 +34,10 @@ type LoginProps = {
 function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
   const login: LoginProps = useContext(LoginContext);
   const [values, setValues] = useState({
+    name: '',
     password: '',
     email: '',
+    phone: '',
     showPassword: false,
   });
 
@@ -60,9 +61,9 @@ function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
     event.preventDefault();
   };
 
-  const onSubmit = ({ email, password }: OnSubmitProps) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    signInSignUp(email, password, SIGN_UP_URL, manageRequestMessage, login.loggedIn, login.login, login.logout);
+  const onSubmit = ({ name, email, password, phone }: RegisterFormFields) => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    signUp({ name, email, password, phone }, manageRequestMessage, login.login);
   };
 
   return (
@@ -91,6 +92,18 @@ function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
           autoComplete="email"
           className={styles.textField}
           {...register('email')}
+        />
+        <TextField
+          id="outlined-textarea-phone"
+          error={!!errors?.phone}
+          helperText={!!errors?.phone && !!errors?.phone.message}
+          label="Phone Number"
+          placeholder="Phone Number"
+          required
+          type="tel"
+          autoComplete="Phone Number"
+          className={styles.textField}
+          {...register('phone')}
         />
 
         <FormControl variant="outlined">

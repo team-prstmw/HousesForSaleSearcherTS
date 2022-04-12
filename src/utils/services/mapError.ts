@@ -1,7 +1,7 @@
 function mapError(serverErrorName: string): string {
   let errorMessage = '';
   switch (serverErrorName) {
-    case 'EMAIL_EXISTS':
+    case 'Email already exists':
       errorMessage = 'The email address is already in use by another account.';
       break;
     case 'OPERATION_NOT_ALLOWED':
