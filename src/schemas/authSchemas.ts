@@ -23,7 +23,7 @@ export const loginSchema = yup.object().shape({
 
 export const registerSchema = loginSchema.shape({
   name,
-  phone: yup.string().matches(phoneRegExp, INVALID_PHONE_ERROR).length(9).required(REQUIRED_ERROR),
+  phone: yup.string().required(REQUIRED_ERROR).matches(phoneRegExp, INVALID_PHONE_ERROR).length(9, INVALID_PHONE_ERROR),
 });
 
 export const profilePageSchema = yup.object({

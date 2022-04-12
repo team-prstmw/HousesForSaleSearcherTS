@@ -84,7 +84,7 @@ function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
         <TextField
           id="outlined-textarea-email"
           error={!!errors?.email}
-          helperText={!!errors?.email && !!errors?.email.message}
+          helperText={!!errors?.email && errors?.email.message}
           label="E-mail"
           placeholder="E-mail"
           required
@@ -96,7 +96,7 @@ function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
         <TextField
           id="outlined-textarea-phone"
           error={!!errors?.phone}
-          helperText={!!errors?.phone && !!errors?.phone.message}
+          helperText={!!errors?.phone && errors?.phone.message}
           label="Phone Number"
           placeholder="Phone Number"
           required
@@ -132,7 +132,7 @@ function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
             {...register('password')}
           />
           {errors?.password ? (
-            <FormHelperText error>{errors?.password && !!errors?.password.message}</FormHelperText>
+            <FormHelperText error>{errors?.password && errors?.password.message}</FormHelperText>
           ) : (
             <FormHelperText id="component-helper-text">At least 6 characters</FormHelperText>
           )}
