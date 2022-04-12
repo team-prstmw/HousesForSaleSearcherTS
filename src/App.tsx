@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import ProfilePage from 'src/pages/ProfilePage/ProfilePage';
 import AccountSettingsView from 'src/pages/ProfilePage/views/AccountSettingsView/AccountSettingsView';
 import SellHouseView from 'src/pages/ProfilePage/views/SellHouseView/SellHouseView';
+import MyHousesView from 'src/pages/ProfilePage/views/MyHousesView/MyHousesView';
 import theme from 'src/theme/theme';
 
 import LoginProvider from './contexts/LoginProvider';
@@ -24,7 +25,7 @@ function App(): ReactElement {
               <Route path="/user" element={localStorage.getItem('isloggedIn') ? <ProfilePage /> : <Navigate to="/" />}>
                 <Route path="" element={<AccountSettingsView />} />
                 <Route path="favourites" element={<div>favorites</div>} />
-                <Route path="my-houses" element={<div>my house</div>} />
+                <Route path="my-houses" element={<MyHousesView />} />
                 <Route path="sell-house" element={<SellHouseView />} />
               </Route>
             </Routes>
