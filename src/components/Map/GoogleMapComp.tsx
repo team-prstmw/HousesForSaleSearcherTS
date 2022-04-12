@@ -1,28 +1,26 @@
+import getCoordsFromAddress, { Coord, House } from '@/utils/services/getCoordsFromAddress';
 import { useEffect, useState } from 'react';
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
-
-import getCoordsFromAddress from '/src/utils/services/getCoordsFromAddress';
-
 import styles from './GoogleMapComponent.module.scss';
+import CSS from 'csstype';
 
-export default function GoogleMapComp({ houses, style }) {
+
+type HouseDataAndStyleCSS = {houses:House, style:CSS.Properties}
+export default function GoogleMapComp({ houses, style }:HouseDataAndStyleCSS) {
   function Map() {
-    const [housesCoords, setHousesCoords] = useState([]);
-
+    const [housesCoords, setHousesCoords] = useState<Coord[]>([]);
     useEffect(() => {
-      // eslint-disable-next-line no-undef
       const geocoder = new google.maps.Geocoder();
       if (!housesCoords.length) getCoordsFromAddress(houses, geocoder, setHousesCoords);
     }, [housesCoords.length]);
-
     return (
       <GoogleMap defaultZoom={6} defaultCenter={{ lat: 52.12, lng: 19.12 }}>
-        {housesCoords.map((coords) => {
+        {housesCoords.map((coord:Coord) => {
           return (
             <Marker
               position={{
-                lat: coords[0],
-                lng: coords[1],
+                lat: coord[0],
+                lng: coord[1],
               }}
             />
           );
