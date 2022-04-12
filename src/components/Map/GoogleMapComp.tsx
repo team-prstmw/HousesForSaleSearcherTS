@@ -1,13 +1,14 @@
 import getCoordsFromAddress, { Coord, House } from '@/utils/services/getCoordsFromAddress';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 import styles from './GoogleMapComponent.module.scss';
 import CSS from 'csstype';
 
 
-export default function GoogleMapComp({ houses, style }:{houses:House,style:CSS.Properties}) {
+type HouseDataAndStyleCSS = {houses:House, style:CSS.Properties}
+export default function GoogleMapComp({ houses, style }:HouseDataAndStyleCSS) {
   function Map() {
-    let [housesCoords, setHousesCoords]:[Coord[],Dispatch<SetStateAction<Coord[]>>] = useState<Coord[]>([]);
+    const [housesCoords, setHousesCoords] = useState<Coord[]>([]);
     useEffect(() => {
       const geocoder = new google.maps.Geocoder();
       if (!housesCoords.length) getCoordsFromAddress(houses, geocoder, setHousesCoords);
