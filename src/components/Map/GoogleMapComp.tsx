@@ -1,18 +1,24 @@
-import getCoordsFromAddress, { Coord, House } from '@/utils/services/getCoordsFromAddress';
+import { House } from '@/utils/services/getCoordsFromAddress';
 import { useEffect, useState } from 'react';
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 import styles from './GoogleMapComponent.module.scss';
 import CSS from 'csstype';
 
+type Coord = [number, number]
+type SetHousesCoord = React.Dispatch<React.SetStateAction<Coord[]>>
+
+async function fetchAndSetHousesCoords(setHousesCoords:SetHousesCoord) {
+  const res = await fetch('https://pacific-refuge-80597.herokuapp.com/api/houses');
+  const response = await res.json();
+  const housesCoords = response.data.map((house:any) => [house.lat, house.lng]);
+  setHousesCoords(housesCoords)
+}
 
 type HouseDataAndStyleCSS = {houses:House, style:CSS.Properties}
 export default function GoogleMapComp({ houses, style }:HouseDataAndStyleCSS) {
   function Map() {
     const [housesCoords, setHousesCoords] = useState<Coord[]>([]);
-    useEffect(() => {
-      const geocoder = new google.maps.Geocoder();
-      if (!housesCoords.length) getCoordsFromAddress(houses, geocoder, setHousesCoords);
-    }, [housesCoords.length]);
+    fetchAndSetHousesCoords(setHousesCoords)
     return (
       <GoogleMap defaultZoom={6} defaultCenter={{ lat: 52.12, lng: 19.12 }}>
         {housesCoords.map((coord:Coord) => {
