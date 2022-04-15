@@ -19,6 +19,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { create, storage } from 'src/firebase';
 import getRandomString from 'src/utils/getRandomString';
+import showToast from 'src/utils/showToast';
 
 import { AddHouseFormFields, addHouseFormSchema } from '../../../schemas/addHouseFormSchema';
 import FacilityCheckbox from '../FacilityCheckbox';
@@ -70,8 +71,18 @@ function AddHouseForm() {
 
   const removeImage = (name: string) => setImages((prevState) => prevState?.filter((img) => img.name !== name));
 
+  const onSuccess = () => {
+    showToast({ type: 'success', message: 'House was added! 🎉' });
+  };
+
+  const onError = () => {
+    showToast({ type: 'error', message: 'An error occured while adding house! ☹️' });
+  };
+
   const handleSend = (fields: AddHouseFormFields) => {
     sendHouseDataWithPhotos(images, fields);
+
+    // TODO: add 'onSuccess' if request was successful
   };
 
   const facilities = [
