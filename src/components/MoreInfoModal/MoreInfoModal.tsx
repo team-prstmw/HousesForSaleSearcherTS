@@ -1,23 +1,48 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/no-array-index-key */
+import 'react-slideshow-image/dist/styles.css';
+
+import CloseIcon from '@mui/icons-material/Close';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Paper } from '@mui/material';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { Slide } from 'react-slideshow-image';
+import photosHouse from 'src/assets/images/House.png';
+import photosMap from 'src/assets/images/Map.png';
+import photosNavLogo from 'src/assets/images/NavLogo.png';
+import photosNoPhoto from 'src/assets/images/nophoto.png';
 
-import InteractiveList from './FacilitiesList';
+import FacilitiesList from './FacilitiesList';
+import styles from './MoreInfoModal.module.scss';
 import PropertyInformationList from './PropertyInformationList';
 
 const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
+  p: 2,
+  pb: 4,
+};
+
+const houseImages = [photosHouse, photosNavLogo, photosMap, photosNoPhoto];
+
+type HouseInfo = {
+  url: string;
+  caption: string;
+}[];
+
+// Create array with house pohotos for modal
+const slideImages: HouseInfo = [];
+
+houseImages.forEach((houseImage, index) => {
+  slideImages.push({
+    url: houseImage,
+    caption: `Photo ${index}`,
+  });
+});
+
+const slideProperties = {
+  autoplay: false,
 };
 
 const moreInfo = {
@@ -49,35 +74,72 @@ export default function BasicModal() {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        style={{ overflow: 'scroll' }}
       >
-        <Paper sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {moreInfo.address}
-          </Typography>
-          <FavoriteIcon />
+        <Paper sx={style} className={styles.modal}>
+          <div className={styles.sideBySide}>
+            <div className={styles.modalLeftSide}>
+              <CloseIcon onClick={handleClose} className={styles.closeIcon} />
+              <div className={styles.addressAndIcon}>
+                <Typography id="modal-modal-title" variant="h4" component="h2">
+                  {moreInfo.address}
+                </Typography>
+                <FavoriteIcon className={styles.favoriteIcon} fontSize="large" />
+              </div>
 
-          <div>Here will be slider with photos</div>
+              <Slide {...slideProperties}>
+                {slideImages.map((slideImage, index) => (
+                  <div key={index}>
+                    <div style={{ backgroundImage: `url(${slideImage.url})` }} className={styles.sliderPhoto}>
+                      <span>{slideImage.caption}</span>
+                    </div>
+                  </div>
+                ))}
+              </Slide>
 
-          <Typography sx={{ mt: 2 }}>{moreInfo.price}</Typography>
+              <Typography variant="h4" className={styles.price}>
+                {moreInfo.price}
+              </Typography>
+              <Button variant="contained" disableElevation size="large" color="primary">
+                Buy House
+              </Button>
+              <div className={styles.spaceElements} />
+              <div className={styles.spaceElements} />
+            </div>
 
-          <Button variant="contained" disableElevation>
-            Buy House
-          </Button>
+            <div className={styles.modalRightSide}>
+              <Typography variant="h6" color="primary">
+                Property information
+              </Typography>
+              <PropertyInformationList
+                propertyType={propertyInformation.propertyType}
+                area={propertyInformation.area}
+                yearBuilt={propertyInformation.yearBuilt}
+                floor={propertyInformation.floor}
+                floorsInBuilding={propertyInformation.floorsInBuilding}
+                roomsNumber={propertyInformation.roomsNumber}
+                bathroomNumber={propertyInformation.bathroomNumber}
+                heating={propertyInformation.heating}
+              />
 
-          <Typography>Property information</Typography>
-          <PropertyInformationList
-            propertyType={propertyInformation.propertyType}
-            area={propertyInformation.area}
-            yearBuilt={propertyInformation.yearBuilt}
-            floor={propertyInformation.floor}
-            floorsInBuilding={propertyInformation.floorsInBuilding}
-            roomsNumber={propertyInformation.roomsNumber}
-            bathroomNumber={propertyInformation.bathroomNumber}
-            heating={propertyInformation.heating}
-          />
+              <div className={styles.spaceElements} />
+              <Typography variant="h6" color="primary">
+                More facilities
+              </Typography>
+              <FacilitiesList />
 
-          <Typography>More facilities</Typography>
-          <InteractiveList />
+              <div className={styles.spaceElements} />
+              <Typography variant="h6" color="primary">
+                More information
+              </Typography>
+              <Typography>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Commodi laudantium beatae alias perspiciatis
+                ducimus velit in officia nulla nobis. Repellendus incidunt, nobis sunt minima at ex magni possimus
+                nesciunt totam! Labore, illo obcaecati iusto atque eveniet, earum incidunt nulla cum sed aperiam,
+                necessitatibus perspiciatis numquam.
+              </Typography>
+            </div>
+          </div>
         </Paper>
       </Modal>
     </div>

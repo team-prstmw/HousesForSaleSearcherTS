@@ -1,14 +1,17 @@
+/* eslint-disable react/no-array-index-key */
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
+import styles from './MoreInfoModal.module.scss';
+
 const facilities = ['Garage', 'Balcony', 'Basement', 'Swimming Pool', 'Garden'];
 
-const itemList = facilities.map((item) => {
+const itemList = facilities.map((item, index) => {
   return (
-    <ListItem>
+    <ListItem key={index} style={{ padding: '0.1rem 0px' }}>
       <ListItemIcon>
         <CheckBoxIcon color="secondary" />
       </ListItemIcon>
@@ -17,6 +20,10 @@ const itemList = facilities.map((item) => {
   );
 });
 
-export default function InteractiveList() {
-  return <List dense>{itemList}</List>;
+export default function FacilitiesList() {
+  return (
+    <List dense className={styles.facilitiesColumn}>
+      {itemList}
+    </List>
+  );
 }

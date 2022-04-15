@@ -1,5 +1,7 @@
 import { List, ListItem, ListItemText } from '@mui/material';
 
+import styles from './MoreInfoModal.module.scss';
+
 interface PropertyInformation {
   propertyType: string;
   area: string;
@@ -14,36 +16,36 @@ interface PropertyInformation {
 function PropertyInformationList(props: PropertyInformation) {
   const { propertyType, area, yearBuilt, floor, floorsInBuilding, roomsNumber, bathroomNumber, heating } = props;
   return (
-    <List dense>
-      <ListItem divider>
+    <List dense className={styles.propInfoColumn}>
+      <ListItem divider style={{ paddingLeft: '0px' }}>
         <ListItemText primary="TYPE OF PROPERTY" secondary={propertyType} />
       </ListItem>
 
-      <ListItem divider>
+      <ListItem divider style={{ paddingLeft: '0px' }}>
         <ListItemText primary="YEAR BUILT" secondary={yearBuilt} />
       </ListItem>
 
-      <ListItem divider>
+      <ListItem divider style={{ paddingLeft: '0px' }}>
         <ListItemText primary="FLOORS IN BUILDING" secondary={floorsInBuilding} />
       </ListItem>
 
-      <ListItem divider>
+      <ListItem divider style={{ paddingLeft: '0px' }}>
         <ListItemText primary="NUMBER OF BATHROOMS" secondary={bathroomNumber} />
       </ListItem>
 
-      <ListItem divider>
+      <ListItem divider style={{ paddingLeft: '0px' }}>
         <ListItemText primary="DIMENSION (SQFT)" secondary={area} />
       </ListItem>
 
-      <ListItem divider>
+      <ListItem divider style={{ paddingLeft: '0px' }}>
         <ListItemText primary="FLOOR" secondary={floor} />
       </ListItem>
 
-      <ListItem divider>
+      <ListItem divider style={{ paddingLeft: '0px' }}>
         <ListItemText primary="NUMBER OF ROOMS" secondary={roomsNumber} />
       </ListItem>
 
-      <ListItem divider>
+      <ListItem divider style={{ paddingLeft: '0px' }}>
         <ListItemText primary="HEATING" secondary={heating} />
       </ListItem>
     </List>
