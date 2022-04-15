@@ -11,8 +11,8 @@ import { useForm } from 'react-hook-form';
 import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
 import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
 import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
-import UserAvatar, { AvatarSize } from 'src/components/ProfilePage&HeaderSection/UserAvatar';
-import WelcomeHeader, { WelcomeSize } from 'src/components/ProfilePage&HeaderSection/WelcomeHeader';
+import UserAvatar, { AvatarSize } from 'src/components/UserAvatar/UserAvatar';
+import WelcomeHeader, { WelcomeSize } from 'src/components/WelcomeHeader/WelcomeHeader';
 import { profilePageSchema } from 'src/schemas/authSchemas';
 import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
 

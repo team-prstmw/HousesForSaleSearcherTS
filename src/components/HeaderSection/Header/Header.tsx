@@ -24,7 +24,9 @@ function Header() {
       }}
     >
       <ThemeSwitcher className={styles.switch} />
-      <Box component="img" src={Logo} />
+      <a href="/">
+        <Box component="img" src={Logo} />
+      </a>
       {logged ? <AccountMenu /> : <RegisterLoginModal />}
     </Box>
   );

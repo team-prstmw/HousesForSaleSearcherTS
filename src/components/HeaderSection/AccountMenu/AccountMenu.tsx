@@ -8,14 +8,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import WelcomeHeader from 'src/components/ProfilePage&HeaderSection/WelcomeHeader';
+import WelcomeHeader from 'src/components/WelcomeHeader/WelcomeHeader';
 
 import logout from '../../../utils/auth/logout';
-import UserAvatar, { AvatarSize } from '../../ProfilePage&HeaderSection/UserAvatar';
+import UserAvatar, { AvatarSize } from '../../UserAvatar/UserAvatar';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const open = !!anchorEl;
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -25,7 +25,7 @@ export default function AccountMenu() {
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', marginRight: '3rem' }}>
-        <Tooltip title="Account settings">
+        <Tooltip title="Account menu">
           <IconButton
             onClick={handleClick}
             size="small"
