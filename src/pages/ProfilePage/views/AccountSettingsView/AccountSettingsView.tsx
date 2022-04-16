@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { yupResolver } from '@hookform/resolvers/yup';
 import EditIcon from '@mui/icons-material/Edit';
 import { useTheme } from '@mui/material';
@@ -7,16 +10,32 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import EditButtons from '/src/components/EditButtons/EditButtons';
-import FormRow from '/src/components/FormRow/FormRow';
-import TextInput from '/src/components/TextInput/TextInput';
-import { profilePageSchema } from '/src/schemas/authSchemas';
+import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
+import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
+import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
+import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
+import { profilePageSchema } from 'src/schemas/authSchemas';
 
 import styles from './AccountSettingsView.module.css';
 
-const AccountSettingsView = () => {
-  const [formData, setFormData] = useState({ nameEditable: false, passwordEditable: false, tempImage: '' });
+enum Fields {
+  Name = 'name',
+  Password = 'password',
+}
+
+interface FormData {
+  nameEditable: boolean;
+  passwordEditable: boolean;
+  tempImage: string | File;
+  image?: File;
+  namePrev?: string;
+  passwordPrev?: string;
+}
+
+type FieldsType = keyof Pick<ProfilePageInterface, `${Fields.Name}` | `${Fields.Password}`>;
+
+function AccountSettingsView() {
+  const [formData, setFormData] = useState<FormData>({ nameEditable: false, passwordEditable: false, tempImage: '' });
   const theme = useTheme();
 
   const {
@@ -24,7 +43,7 @@ const AccountSettingsView = () => {
     getValues,
     setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<ProfilePageInterface>({
     mode: 'onBlur',
     resolver: yupResolver(profilePageSchema),
   });
@@ -40,39 +59,50 @@ const AccountSettingsView = () => {
     return '';
   };
 
-  const setEditable = (field) =>
+  const setEditable = (field: FieldsType) =>
     setFormData((prevState) => ({ ...prevState, [`${field}Editable`]: !prevState[`${field}Editable`] }));
 
   const onChangeName = () => {
-    setEditable('name');
-    setFormData((prevState) => ({ ...prevState, namePrev: getValues('name') }));
+    setEditable(Fields.Name);
+    setFormData((prevState) => ({ ...prevState, namePrev: getValues(Fields.Name) as string }));
     // SEND REQUEST
   };
 
   const onChangePassword = () => {
-    setEditable('password');
-    setFormData((prevState) => ({ ...prevState, passwordPrev: getValues('password') }));
+    setEditable(Fields.Password);
+    setFormData((prevState) => ({ ...prevState, passwordPrev: getValues(Fields.Password) as string }));
     // SEND REQUEST
   };
 
-  const onCancelChange = (field) => {
-    const fieldPrev = `${field}Prev`;
+  const onCancelChange = (field: FieldsType) => {
+    const fieldPrev: keyof Pick<FormData, `${Fields.Name}Prev` | `${Fields.Password}Prev`> = `${field}Prev`;
+    const fieldPrevValue = formData[fieldPrev];
 
-    if (formData[fieldPrev]) {
-      setValue(field, formData[fieldPrev]);
-      setEditable(field);
-    } else {
-      setEditable(field);
+    if (fieldPrevValue) {
+      setValue(field, fieldPrevValue);
     }
+      setEditable(field);
   };
 
-  const onAddAvatar = (image) => {
-    setFormData((prevState) => ({ ...prevState, tempImage: image }));
+  const onAddAvatar = (image?: File) => {
+    if (image) {
+      setFormData((prevState) => ({ ...prevState, tempImage: image }));
+    }
     // SEND REQUEST
   };
 
-  const getInitials = () => (getValues('name')?.[0] ? getValues('name')[0].toUpperCase() : undefined);
+  const getInitials = () => {
+    let name = getValues(Fields.Name) as string | undefined;
 
+    if (!name) {
+      return;
+    }
+
+    name = name[0].toUpperCase();
+
+    // eslint-disable-next-line consistent-return
+    return name;
+  };
   return (
     <div className={styles.container}>
       <span className={styles.headerContent}>
@@ -86,7 +116,7 @@ const AccountSettingsView = () => {
           }}
           mb={2}
         >
-          {`Welcome${getValues('name') ? `, ${getValues('name')}` : ''}!`}
+          {`Welcome${getValues(Fields.Name) ? `, ${getValues(Fields.Name) as string}` : ''}!`}
         </Typography>
       </span>
       <div className={styles.avatarContainer}>
@@ -99,8 +129,9 @@ const AccountSettingsView = () => {
           type="file"
           multiple
           accept="image/*"
-          onChange={(e) => onAddAvatar(e.target.files[0])}
+          onChange={(e) => onAddAvatar(e.target?.files?.[0])}
         />
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="images-upload">
           <Button variant="text" component="span" startIcon={<EditIcon />}>
             EDIT PHOTO
@@ -115,21 +146,21 @@ const AccountSettingsView = () => {
               <TextInput
                 placeholder="Name"
                 readOnly={!formData.nameEditable}
-                register={register('name')}
-                error={errors.name}
+                register={register(Fields.Name)}
+                {...{ error: errors?.name }}
               />
             }
             action={
               formData.nameEditable ? (
-                <EditButtons onCancel={() => onCancelChange('name')} onSave={onChangeName} />
+                <EditButtons onCancel={() => onCancelChange(Fields.Name)} onSave={onChangeName} />
               ) : (
-                <Button onClick={() => setEditable('name')}>Edit</Button>
+                <Button onClick={() => setEditable(Fields.Name)}>Edit</Button>
               )
             }
           />
           <FormRow
             label={<Typography variant="h6">E-mail</Typography>}
-            input={<TextInput placeholder="mail@mail.com" disabled error={errors.email} />}
+            input={<TextInput placeholder="mail@mail.com" disabled error={errors?.email} />}
           />
           <FormRow
             label={<Typography variant="h6">Password</Typography>}
@@ -140,16 +171,16 @@ const AccountSettingsView = () => {
                   password
                   defaultValue={null}
                   readOnly={!formData.passwordEditable}
-                  register={register('password')}
-                  error={errors.password}
+                  register={register(Fields.Password)}
+                  error={errors?.password}
                 />
               </div>
             }
             action={
               formData.passwordEditable ? (
-                <EditButtons onCancel={() => onCancelChange('password')} onSave={onChangePassword} />
+                <EditButtons onCancel={() => onCancelChange(Fields.Password)} onSave={onChangePassword} />
               ) : (
-                <Button onClick={() => setEditable('password')}>Edit</Button>
+                <Button onClick={() => setEditable(Fields.Password)}>Edit</Button>
               )
             }
           />
@@ -157,6 +188,6 @@ const AccountSettingsView = () => {
       </main>
     </div>
   );
-};
+}
 
 export default AccountSettingsView;

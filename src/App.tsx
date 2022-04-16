@@ -11,7 +11,7 @@ import HomePage from './pages/HomePage';
 
 function App(): ReactElement {
   const MAP_INIT = `https://maps.googleapis.com/maps/api/js?key=${
-    import.meta.env.VITE_GOOGLE_API_KEY
+    import.meta.env.VITE_GOOGLE_API_KEY as string
   }&callback=initMap`;
 
   return (

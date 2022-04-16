@@ -37,6 +37,9 @@
       ],
       "@/utils/*": [
         "src/utils/*"
+      ],
+      "src/*":[
+        "src/*"
       ]
     },
     "target": "ESNext"
