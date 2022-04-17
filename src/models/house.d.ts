@@ -1,4 +1,5 @@
 type BasicHouseData = {
+  _id: string;
   price: number;
   city: string;
   street: string;

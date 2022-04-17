@@ -25,10 +25,6 @@
       "DOM",
       "DOM.Iterable"
     ],
-    "typeRoots": [
-      "./types",
-      "./node_modules/@types"
-    ],
     "module": "ESNext",
     "noEmit": true,
     "paths": {

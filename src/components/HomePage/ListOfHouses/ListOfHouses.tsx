@@ -28,6 +28,7 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
     canSwipe: true,
     autoplay: false,
     arrows: true,
+    transitionDuration: 700,
   };
 
   useEffect(() => {
@@ -77,7 +78,7 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
         />
       </Box>
       <Box component="div" className={styles.housesList}>
-        {sortedHouses.map((item: BasicHouseData, i) => {
+        {sortedHouses.map((item: BasicHouseData) => {
           if (item.images.length === 0) {
             item.images.push(noPhoto);
           }
@@ -86,7 +87,7 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
             slideProperties.canSwipe = false;
           }
           return (
-            <Box component="div" className={styles.houseElement} key={i.toString()}>
+            <Box component="div" className={styles.houseElement} key={item._id}>
               <h4>
                 {item.city}, {item.street} {item.houseNr}
               </h4>
@@ -94,17 +95,10 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
                 {item.price}zł/m<sup>2</sup>
               </p>
               <Slide {...slideProperties}>
-                {item.images.map((image, index) => {
-                  if (image) {
-                    return (
-                      <div className="each-slide" key={index.toString()}>
-                        <img src={image} alt="House" />
-                      </div>
-                    );
-                  }
+                {item.images.map((image) => {
                   return (
-                    <div className="each-slide" key={index.toString()}>
-                      <img src={noPhoto} alt="House" />
+                    <div className="each-slide" key={image}>
+                      <img src={image} alt="House" />
                     </div>
                   );
                 })}
