@@ -9,6 +9,6 @@ type BasicHouseData = {
 };
 
 type BasicHouseResponseType = {
-  status: string;
   data: BasicHouseData[];
+  status: string;
 };
