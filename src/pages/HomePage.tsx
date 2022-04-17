@@ -16,15 +16,14 @@ function HomePage() {
   // const [loading, setLoading] = useState(true);
 
   const { data, status } = useApiGet({ path: '/houses' });
-  
+
   useEffect(() => {
     if (status === 'success') {
-      const c = data.status;
-      console.log(c);
-      setHouses(data);
+      const statusData = data.status;
+      const dataData = data.data;
+      setHouses(dataData);
     }
   }, [data, status]);
-  console.log(houses);
 
   return (
     <Grid sx={{ display: 'flex', flexDirection: 'column' }} height="100vh">
