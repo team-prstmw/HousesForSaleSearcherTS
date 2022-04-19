@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { useCookies } from 'react-cookie';
 import { useMutation, useQuery } from 'react-query';
 
-const BACKEND_URL = '/api';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL as string;
 
 interface Props {
   path: string;
