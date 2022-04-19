@@ -1,13 +1,11 @@
 import { RegisterFormFields } from 'src/schemas/loginRegisterFormSchemas';
 import { SIGN_UP_URL } from 'src/URLs';
 
-interface SignUpProps {
-  requestData: RegisterFormFields;
-  manageRequestMessage: (errorMessage: string) => string;
-  loginFunction: () => void;
-}
-
-export async function signUp(requestData, manageRequestMessage, loginFunction) {
+export async function signUp(
+  requestData: RegisterFormFields,
+  manageRequestMessage: (errorMessage: string) => string,
+  loginFunction: () => void
+) {
   await fetch(SIGN_UP_URL, {
     method: 'POST',
     headers: {
@@ -22,6 +20,6 @@ export async function signUp(requestData, manageRequestMessage, loginFunction) {
     })
     .catch((error) => {
       // ERROR IS NEVER RETURNED, DO WE HAVE TO REWRITE BACKEND
-      manageRequestMessage(data.message);
+      return manageRequestMessage(data.message);
     });
 }

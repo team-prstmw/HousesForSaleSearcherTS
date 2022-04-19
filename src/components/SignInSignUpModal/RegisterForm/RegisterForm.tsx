@@ -12,7 +12,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useContext, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import LoginContext from 'src/contexts/LoginContext';
 import { registerSchema } from 'src/schemas/authSchemas';
 
@@ -22,7 +22,7 @@ import { signUp } from '../../../api/auth/signUp';
 import { RegisterFormFields } from '../../../schemas/loginRegisterFormSchemas';
 
 type RegisterFormProps = {
-  manageRequestMessage: (message: string) => void;
+  manageRequestMessage: (message: string) => string;
 };
 
 type LoginProps = {
@@ -31,13 +31,16 @@ type LoginProps = {
   logout: () => void;
 };
 
+interface IFormInput {
+  name: string;
+  password: string;
+  email: string;
+  phone: string;
+}
+
 function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
   const login: LoginProps = useContext(LoginContext);
   const [values, setValues] = useState({
-    name: '',
-    password: '',
-    email: '',
-    phone: '',
     showPassword: false,
   });
 
@@ -45,7 +48,7 @@ function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormFields>({
+  } = useForm<IFormInput>({
     mode: 'onBlur',
     resolver: yupResolver(registerSchema),
   });
@@ -61,7 +64,7 @@ function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
     event.preventDefault();
   };
 
-  const onSubmit = ({ name, email, password, phone }: RegisterFormFields) => {
+  const onSubmit: SubmitHandler<IFormInput> = ({ name, email, password, phone }: RegisterFormFields) => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     signUp({ name, email, password, phone }, manageRequestMessage, login.login);
   };
