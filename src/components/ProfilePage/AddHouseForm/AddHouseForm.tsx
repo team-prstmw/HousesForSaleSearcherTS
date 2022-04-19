@@ -14,12 +14,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { create, storage } from 'src/firebase';
 import { useApiSend } from 'src/hooks/useApi';
-import getRandomString from 'src/utils/getRandomString';
 
 import { AddHouseFormFields, addHouseFormSchema } from '../../../schemas/addHouseFormSchema';
 import FacilityCheckbox from '../FacilityCheckbox';
@@ -29,7 +26,7 @@ function AddHouseForm() {
   const [moreFacilitiesShown, setMoreFacilitiesShown] = useState(false);
   const [images, setImages] = useState<File[]>([]);
 
-  const postForm = useApiSend();
+  const apiSend = useApiSend();
 
   const {
     register,
@@ -40,31 +37,6 @@ function AddHouseForm() {
     resolver: yupResolver(addHouseFormSchema),
   });
 
-  const addIndexToObjectKey = (propertyName: string | number) => {
-    return `photo_${propertyName}`;
-  };
-
-  const sendHouseDataWithPhotos = (imagesToUpload: File[], housesData: AddHouseFormFields) => {
-    let photos = {};
-    imagesToUpload.forEach((element, index) => {
-      const file = element;
-      const metadata = { contentType: 'image/jpeg' };
-      const storageRef = ref(storage, `images/${getRandomString(9)}`);
-      const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-      uploadTask.on('state_changed', null, null, () => {
-        getDownloadURL(uploadTask.snapshot.ref)
-          .then((downloadURL) => {
-            photos = { [addIndexToObjectKey(index)]: downloadURL };
-            const uploadedData = Object.assign(housesData, photos);
-            if (index === imagesToUpload.length - 1) {
-              create('houses', uploadedData);
-            }
-          })
-          .catch((e) => console.log(e)); // todo
-      });
-    });
-  };
-
   const addImages = (rawImages: FileList | null) => {
     if (rawImages !== null) {
       setImages(Array.from(rawImages));
@@ -74,8 +46,14 @@ function AddHouseForm() {
   const removeImage = (name: string) => setImages((prevState) => prevState?.filter((img) => img.name !== name));
 
   const handleSend = (fields: AddHouseFormFields) => {
-    sendHouseDataWithPhotos(images, fields);
-    postForm.mutate({ path: '/test/path', data: fields, method: 'post' });
+    const payload = new FormData();
+
+    images.forEach((image) => payload.append('images[]', image, image.name));
+    Object.entries(fields).forEach(([key, value]: [key: string, value: string | number]) =>
+      payload.append(key, `${value}`)
+    );
+
+    apiSend.mutate({ path: '/create-new-house', data: payload, method: 'post' });
   };
 
   const facilities = [
