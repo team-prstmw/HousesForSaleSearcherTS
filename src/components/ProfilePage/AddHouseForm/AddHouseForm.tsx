@@ -18,6 +18,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { create, storage } from 'src/firebase';
+import { useApiSend } from 'src/hooks/useApi';
 import getRandomString from 'src/utils/getRandomString';
 
 import { AddHouseFormFields, addHouseFormSchema } from '../../../schemas/addHouseFormSchema';
@@ -27,6 +28,8 @@ import styles from './AddHouseForm.module.css';
 function AddHouseForm() {
   const [moreFacilitiesShown, setMoreFacilitiesShown] = useState(false);
   const [images, setImages] = useState<File[]>([]);
+
+  const postForm = useApiSend();
 
   const {
     register,
@@ -72,6 +75,7 @@ function AddHouseForm() {
 
   const handleSend = (fields: AddHouseFormFields) => {
     sendHouseDataWithPhotos(images, fields);
+    postForm.mutate({ path: '/test/path', data: fields, method: 'post' });
   };
 
   const facilities = [
