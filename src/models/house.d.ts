@@ -6,6 +6,8 @@ type BasicHouseData = {
   houseNr: string;
   descriptionField: string;
   images: string[];
+  lat: number;
+  lng: number;
 };
 
 type BasicHouseResponseType = {

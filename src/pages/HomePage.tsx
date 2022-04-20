@@ -12,18 +12,15 @@ import { useApiGet } from 'src/hooks/useApi';
 function HomePage() {
   const [toggleView, setToggleView] = useState<boolean>(true);
   const [houses, setHouses] = useState<BasicHouseData[]>([]);
-  // const [error, setError] = useState(false);
-  // const [loading, setLoading] = useState(true);
 
-  const { data, status } = useApiGet({ path: '/houses' });
+  const { data, isLoading }: { data: BasicHouseResponseType; isLoading: boolean } = useApiGet({ path: '/houses' });
 
   useEffect(() => {
-    if (status === 'success') {
-      const statusData = data.status;
+    if (!isLoading) {
       const dataData = data.data;
       setHouses(dataData);
     }
-  }, [data, status]);
+  }, [data, isLoading]);
 
   return (
     <Grid sx={{ display: 'flex', flexDirection: 'column' }} height="100vh">
