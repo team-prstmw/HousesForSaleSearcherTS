@@ -14,6 +14,12 @@
   overflow-y: scroll;
 }
 
+.favoritesList {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
 .housesList::-webkit-scrollbar {
   width: 10px;
 }

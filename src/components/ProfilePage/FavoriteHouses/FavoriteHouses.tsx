@@ -25,14 +25,14 @@ const FavoriteHouses = ({ favorites }: { favorites: BasicHouseData[] }) => {
       });
     } else {
       return (
-        <Box component="div" className={styles.housesList}>
+        <Box component="div" className={styles.favoritesList}>
           <h3>You have no favorites yet</h3>
         </Box>
       );
     }
   };
   return (
-    <Box component="div" className={styles.housesList}>
+    <Box component="div" className={styles.favoritesList}>
       {displayFavorites(favorites)}
     </Box>
   );
