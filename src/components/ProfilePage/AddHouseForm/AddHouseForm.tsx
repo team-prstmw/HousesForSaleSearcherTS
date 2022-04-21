@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import GoogleMapComp from 'src/components/Map/GoogleMapComp';
 import { create, storage } from 'src/firebase';
 import getRandomString from 'src/utils/getRandomString';
 
@@ -153,6 +154,8 @@ function AddHouseForm() {
           />
         </span>
       </div>
+      <span className={styles.formRow}>Set location of the house.</span>
+      <GoogleMapComp style={{ height: '360px', minWidth: '100%' }} />
       <div className={styles.formSection}>
         <Typography variant="h6" color="primary">
           Property Information

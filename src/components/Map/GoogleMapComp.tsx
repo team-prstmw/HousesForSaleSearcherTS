@@ -1,5 +1,5 @@
 import { House } from '@/utils/services/getCoordsFromAddress';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 import styles from './GoogleMapComponent.module.scss';
 import CSS from 'csstype';
@@ -14,8 +14,7 @@ async function fetchAndSetHousesCoords(setHousesCoords:SetHousesCoord) {
   setHousesCoords(housesCoords)
 }
 
-type HouseDataAndStyleCSS = {houses:House, style:CSS.Properties}
-export default function GoogleMapComp({ houses, style }:HouseDataAndStyleCSS) {
+export default function GoogleMapComp(style:CSS.Properties) {
   function Map() {
     const [housesCoords, setHousesCoords] = useState<Coord[]>([]);
     fetchAndSetHousesCoords(setHousesCoords)
