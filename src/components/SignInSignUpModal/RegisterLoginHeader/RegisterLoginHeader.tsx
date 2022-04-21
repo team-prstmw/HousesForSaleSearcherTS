@@ -2,16 +2,11 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import { ChangeEvent } from 'react';
+import { RegisterLoginHeaderProps } from 'src/models/profile';
 
 import styles from '/src/components/SignInSignUpModal/RegisterLoginHeader/RegisterLoginHeader.module.css';
 
-interface Props {
-  checked: boolean;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}
-
-function RegisterLoginHeader({ checked, onChange }: Props): JSX.Element {
+function RegisterLoginHeader({ checked, onChange }: RegisterLoginHeaderProps): JSX.Element {
   return (
     <Box className={styles.registerLoginHeader__Wrapper}>
       <Typography
