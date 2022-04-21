@@ -14,6 +14,7 @@ import TextField from '@mui/material/TextField';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import LoginContext from 'src/contexts/LoginContext';
+import { LoginProps, RegisterLoginFormsProps } from 'src/models/profile';
 import { registerSchema } from 'src/schemas/authSchemas';
 import { SIGN_UP_URL } from 'src/URLs';
 
@@ -22,17 +23,7 @@ import styles from '/src/components/SignInSignUpModal/RegisterForm/RegisterForm.
 import { signInSignUp } from '../../../api/auth';
 import { OnSubmitProps, RegisterFormFields } from '../../../schemas/loginRegisterFormSchemas';
 
-type RegisterFormProps = {
-  manageRequestMessage: (message: string) => void;
-};
-
-type LoginProps = {
-  loggedIn: boolean;
-  login: () => void;
-  logout: () => void;
-};
-
-function RegisterForm({ manageRequestMessage }: RegisterFormProps) {
+function RegisterForm({ manageRequestMessage }: RegisterLoginFormsProps) {
   const login: LoginProps = useContext(LoginContext);
   const [values, setValues] = useState({
     password: '',

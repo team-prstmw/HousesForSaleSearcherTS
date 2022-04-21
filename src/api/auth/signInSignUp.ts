@@ -4,7 +4,7 @@ export const signInSignUp = async (
   email: string,
   password: string,
   signURL: string,
-  manageRequestMessage: (error: string) => void,
+  manageRequestMessage: (message: string) => void,
   _isLoggedIn: boolean,
   loginFunction: () => void,
   _logoutFunction: () => void
