@@ -13,8 +13,8 @@ import { useForm } from 'react-hook-form';
 import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
 import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
 import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
-import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
 import { profilePageSchema } from 'src/schemas/authSchemas';
+import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
 
 import styles from './AccountSettingsView.module.css';
 
@@ -81,7 +81,7 @@ function AccountSettingsView() {
     if (fieldPrevValue) {
       setValue(field, fieldPrevValue);
     }
-      setEditable(field);
+    setEditable(field);
   };
 
   const onAddAvatar = (image?: File) => {
