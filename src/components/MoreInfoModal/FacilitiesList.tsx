@@ -12,7 +12,7 @@ const facilities = ['Garage', 'Balcony', 'Basement', 'Swimming Pool', 'Garden'];
 const itemList = facilities.map((item, index) => {
   return (
     <ListItem key={index} style={{ padding: '0.1rem 0px' }}>
-      <ListItemIcon>
+      <ListItemIcon style={{ minWidth: '30px' }}>
         <CheckBoxIcon color="secondary" />
       </ListItemIcon>
       <ListItemText primary={item} />
