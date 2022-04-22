@@ -13,8 +13,16 @@ interface PropertyInformation {
   heating: string;
 }
 
-function PropertyInformationList(props: PropertyInformation) {
-  const { propertyType, area, yearBuilt, floor, floorsInBuilding, roomsNumber, bathroomNumber, heating } = props;
+function PropertyInformationList({
+  propertyType,
+  area,
+  yearBuilt,
+  floor,
+  floorsInBuilding,
+  roomsNumber,
+  bathroomNumber,
+  heating,
+}: PropertyInformation) {
   return (
     <List dense className={styles.propInfoColumn}>
       <ListItem divider style={{ paddingLeft: '0px' }}>
