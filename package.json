@@ -64,6 +64,7 @@
     "react-hook-form": "7.27.1",
     "react-query": "3.34.20",
     "react-router-dom": "6.2.2",
+    "react-slideshow-image": "3.7.2",
     "sass": "1.49.9",
     "yup": "0.32.11"
   }
