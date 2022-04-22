@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import axios from 'axios';
 import { yupResolver } from '@hookform/resolvers/yup';
 import EditIcon from '@mui/icons-material/Edit';
 import { useTheme } from '@mui/material';
@@ -62,16 +63,29 @@ function AccountSettingsView() {
   const setEditable = (field: FieldsType) =>
     setFormData((prevState) => ({ ...prevState, [`${field}Editable`]: !prevState[`${field}Editable`] }));
 
-  const onChangeName = () => {
+  const onChangeName = async () => {
     setEditable(Fields.Name);
     setFormData((prevState) => ({ ...prevState, namePrev: getValues(Fields.Name) as string }));
     // SEND REQUEST
+    try {
+      const updateUserName = await axios.patch(`${URL}/api/users`, { name: Fields.Name });
+      alert(`Name updated successfully for ${updateUserName.data.name}`);
+    } catch (e) {
+      console.log(`${e}`);
+    }
   };
 
-  const onChangePassword = () => {
+  const onChangePassword = async () => {
     setEditable(Fields.Password);
     setFormData((prevState) => ({ ...prevState, passwordPrev: getValues(Fields.Password) as string }));
     // SEND REQUEST
+    // THIS ONE NEEDS CHANGES - TO UPDATE PASSWORD WE NEED 3 FIELDS, OLD PASS, NEW PASS AND REPEAT
+    try {
+      const updateUserPassword = await axios.patch(`${URL}/api/user/passwd`, { password: Fields.Password });
+      alert('Password updated');
+    } catch (e) {
+      console.log(`${e}`);
+    }
   };
 
   const onCancelChange = (field: FieldsType) => {
@@ -81,7 +95,7 @@ function AccountSettingsView() {
     if (fieldPrevValue) {
       setValue(field, fieldPrevValue);
     }
-      setEditable(field);
+    setEditable(field);
   };
 
   const onAddAvatar = (image?: File) => {
@@ -89,6 +103,7 @@ function AccountSettingsView() {
       setFormData((prevState) => ({ ...prevState, tempImage: image }));
     }
     // SEND REQUEST
+    // WELL, THERE'S NO ROUTE FOR IT
   };
 
   const getInitials = () => {
