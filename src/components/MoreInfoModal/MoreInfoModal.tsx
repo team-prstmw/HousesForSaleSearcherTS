@@ -72,9 +72,10 @@ export default function BasicModal() {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="more-info-modal"
+        aria-describedby="this-modal-contains-house-info"
         style={{ overflow: 'scroll' }}
+        className={styles.doubleColumnModal}
       >
         <Paper sx={style} className={styles.modal}>
           <div className={styles.sideBySide}>
@@ -87,7 +88,7 @@ export default function BasicModal() {
                 <FavoriteIcon className={styles.favoriteIcon} fontSize="large" />
               </div>
 
-              <Slide {...slideProperties}>
+              <Slide {...slideProperties} className={styles.sliderMaxWidth}>
                 {slideImages.map((slideImage, index) => (
                   <div key={index}>
                     <div style={{ backgroundImage: `url(${slideImage.url})` }} className={styles.sliderPhoto}>

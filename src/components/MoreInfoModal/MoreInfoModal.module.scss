@@ -109,6 +109,36 @@
   }
 }
 
+@media only screen and (min-width: 1400px) {
+  .doubleColumnModal {
+    height: 100vh;
+  }
+
+  .modal {
+    max-width: 80rem;
+    margin-top: 10vh;
+  }
+
+  .sideBySide {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+    padding: 1.5rem 2rem;
+  }
+
+  .sliderMaxWidth {
+    max-width: 36rem;
+  }
+
+  .closeIcon {
+    transform: translate(2800%, -100%);
+  }
+
+  .spaceElements {
+    height: 0;
+  }
+}
+
 // .modalContent {
 //   position: 'absolute' as const,
 //   top: '50%',
