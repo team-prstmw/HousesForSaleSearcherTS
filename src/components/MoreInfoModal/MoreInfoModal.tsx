@@ -57,7 +57,7 @@ const propertyInformation = {
 };
 
 export default function MoreInfoModal() {
-  const [open, setOpen] = React.useState(true); // ! Change this before final commit!!!
+  const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 

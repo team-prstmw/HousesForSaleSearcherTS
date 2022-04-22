@@ -7,6 +7,7 @@ import { Autocomplete, Box, Button, Checkbox, TextField } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { useEffect, useState } from 'react';
 import noPhoto from 'src/assets/images/nophoto.png';
+import MoreInfoModal from 'src/components/MoreInfoModal/MoreInfoModal';
 
 import styles from './ListOfHouses.module.scss';
 
@@ -78,7 +79,7 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
             </p>
             <img src={item.photo_0 ? item.photo_0 : noPhoto} alt="House" />
             <p className={styles.shortInfo}>{item.descriptionField}</p>
-            <Button className={styles.moreInfo}>more info</Button>
+            <MoreInfoModal />
             <Checkbox
               color="warning"
               {...label}
