@@ -19,11 +19,6 @@ import FacilitiesList from './FacilitiesList';
 import styles from './MoreInfoModal.module.scss';
 import PropertyInformationList from './PropertyInformationList';
 
-const style = {
-  p: 2,
-  pb: 4,
-};
-
 const houseImages = [photosHouse, photosNavLogo, photosMap, photosNoPhoto];
 
 type HouseInfo = {
@@ -61,23 +56,22 @@ const propertyInformation = {
   heating: 'Radiators',
 };
 
-export default function BasicModal() {
-  const [open, setOpen] = React.useState(false);
+export default function MoreInfoModal() {
+  const [open, setOpen] = React.useState(true); // ! Change this before final commit!!!
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      <Button onClick={handleOpen}>More info</Button>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="more-info-modal"
         aria-describedby="this-modal-contains-house-info"
         style={{ overflow: 'scroll' }}
-        className={styles.doubleColumnModal}
       >
-        <Paper sx={style} className={styles.modal}>
+        <Paper sx={{ p: 2, pb: 4 }} className={styles.modal}>
           <div className={styles.sideBySide}>
             <div className={styles.modalLeftSide}>
               <CloseIcon onClick={handleClose} className={styles.closeIcon} />
@@ -112,16 +106,7 @@ export default function BasicModal() {
               <Typography variant="h6" color="primary">
                 Property information
               </Typography>
-              <PropertyInformationList
-                propertyType={propertyInformation.propertyType}
-                area={propertyInformation.area}
-                yearBuilt={propertyInformation.yearBuilt}
-                floor={propertyInformation.floor}
-                floorsInBuilding={propertyInformation.floorsInBuilding}
-                roomsNumber={propertyInformation.roomsNumber}
-                bathroomNumber={propertyInformation.bathroomNumber}
-                heating={propertyInformation.heating}
-              />
+              <PropertyInformationList {...propertyInformation} />
 
               <div className={styles.spaceElements} />
               <Typography variant="h6" color="primary">
