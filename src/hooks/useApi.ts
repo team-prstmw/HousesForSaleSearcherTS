@@ -37,8 +37,11 @@ export const useApiGet = ({ path, auth }: GetProps) => {
     }
     window.location.replace('/login');
   }
+  const { data } = useQuery(path, async () => axios.get(`${BACKEND_URL}${path}`, config).then((res) => res.data));
 
-  return useQuery(path, async () => axios.get(`${BACKEND_URL}${path}`, config).then((res) => res.data));
+  if (data) return { data };
+
+  return { data: [] };
 };
 
 export const useApiPost = ({ path, data, auth }: PostProps) => {
@@ -55,7 +58,7 @@ export const useApiPost = ({ path, data, auth }: PostProps) => {
   return useMutation(path, async () => axios.post(`${BACKEND_URL}${path}`, data, config).then((res) => res?.data));
 };
 
-export const useApiPatch = ({ path, data, auth }: PatchProps) => {
+export const useApiPatch = ({ path, auth }: PatchProps) => {
   const config = <AxiosRequestConfig>{};
   const token = useGetAuthToken();
 
@@ -66,7 +69,9 @@ export const useApiPatch = ({ path, data, auth }: PatchProps) => {
     window.location.replace('/login');
   }
 
-  return useMutation(path, async () => axios.patch(`${BACKEND_URL}${path}`, data, config).then((res) => res?.data));
+  const apiPatch = ({ data }) => axios.patch(`${BACKEND_URL}${path}`, data, config).then((res) => res?.data);
+
+  return useMutation(apiPatch);
 };
 
 export const useApiPut = ({ path, data, auth }: PutProps) => {

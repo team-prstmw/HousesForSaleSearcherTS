@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import ProfilePage from 'src/pages/ProfilePage/ProfilePage';
 import AccountSettingsView from 'src/pages/ProfilePage/views/AccountSettingsView/AccountSettingsView';
@@ -37,6 +38,7 @@ function App(): ReactElement {
               </Routes>
             </LoginProvider>
           </ThemeProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
         <script async defer src={MAP_INIT} />
       </div>
