@@ -26,7 +26,7 @@ interface MyHousesListItemProps {
 
 export default function MyHousesListItem({ primaryText, secondaryText, chip, archived }: MyHousesListItemProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const open = !!anchorEl;
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -47,16 +47,20 @@ export default function MyHousesListItem({ primaryText, secondaryText, chip, arc
     if (!archived) {
       return (
         <>
-          <MenuItem onClick={handleClose}>More info</MenuItem>
-          <MenuItem onClick={handleClose}>Edit</MenuItem>
-          <MenuItem onClick={handleClose}>Archive</MenuItem>
+          <MenuItem onClick={handleClose}>
+            <Typography variant="body2">Edit</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <Typography variant="body2">Archive</Typography>
+          </MenuItem>
         </>
       );
     }
     return (
       <>
-        <MenuItem onClick={handleClose}>More info</MenuItem>
-        <MenuItem onClick={handleClose}>Re-list house</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Typography variant="body2">Re-list house</Typography>
+        </MenuItem>
       </>
     );
   };
@@ -67,7 +71,7 @@ export default function MyHousesListItem({ primaryText, secondaryText, chip, arc
           <Avatar variant="square" />
         </ListItemAvatar>
         <ListItemText
-          primary={primaryText}
+          primary={<Typography variant="subtitle1">{primaryText}</Typography>}
           secondary={
             <>
               <Typography sx={{ display: 'inline' }} component="span" variant="body2">
@@ -95,6 +99,9 @@ export default function MyHousesListItem({ primaryText, secondaryText, chip, arc
             'aria-labelledby': 'basic-button',
           }}
         >
+          <MenuItem onClick={handleClose}>
+            <Typography variant="body2">More info</Typography>
+          </MenuItem>
           {isArchived()}
         </Menu>
       </ListItem>

@@ -14,10 +14,10 @@ import styles from './MyHousesList.module.css';
 
 interface MyHousesListProps {
   title: string;
-  listItem: JSX.Element;
+  children: React.ReactChild;
 }
 
-function MyHousesList({ title, listItem }: MyHousesListProps) {
+function MyHousesList({ title, children }: MyHousesListProps) {
   const [open, setOpen] = React.useState<boolean>(true);
 
   const handleClick = () => {
@@ -26,11 +26,14 @@ function MyHousesList({ title, listItem }: MyHousesListProps) {
   return (
     <List className={styles.listContainer}>
       <ListItemButton className={styles.listButton} onClick={handleClick}>
-        <ListItemText primary={title} style={{ color: '#22a6b3' }} />
+        <ListItemText
+          primaryTypographyProps={{ variant: 'subtitle1', fontWeight: '600', color: '#22a6b3' }}
+          primary={title}
+        />
         {open ? <ExpandLess style={{ color: '#22a6b3' }} /> : <ExpandMore style={{ color: '#22a6b3' }} />}
       </ListItemButton>
       <Collapse className={styles.listCollapse} in={open} timeout="auto" unmountOnExit>
-        {listItem}
+        {children}
       </Collapse>
     </List>
   );
