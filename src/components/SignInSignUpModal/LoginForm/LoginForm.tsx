@@ -11,17 +11,19 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import LoginContext from 'src/contexts/LoginContext';
+import { RegisterLoginFormsProps } from 'src/models/profile';
+import { loginSchema } from 'src/schemas/authSchemas';
+import { RESET_PASSWORD, SIGN_IN_URL } from 'src/URLs';
 
-import styles from '/src/components/LoginForm/LoginForm.module.css';
-import LoginContext from '/src/contexts/LoginContext';
-import { loginSchema } from '/src/schemas/authSchemas';
-import { RESET_PASSWORD, SIGN_IN_URL } from '/src/URLs';
-import { resetPassword, signInSignUp } from '/src/utils/auth';
+import styles from '/src/components/SignInSignUpModal/LoginForm/LoginForm.module.css';
 
-function LoginForm({ changeStateFn }) {
+import { resetPassword, signInSignUp } from '../../../api/auth';
+import LoginFormFields, { OnSubmitProps } from '../../../schemas/loginRegisterFormSchemas';
+
+function LoginForm({ manageRequestMessage }: RegisterLoginFormsProps) {
   const login = useContext(LoginContext);
 
   const [values, setValues] = useState({
@@ -34,7 +36,7 @@ function LoginForm({ changeStateFn }) {
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm({
+  } = useForm<LoginFormFields>({
     mode: 'onBlur',
     resolver: yupResolver(loginSchema),
   });
@@ -46,17 +48,18 @@ function LoginForm({ changeStateFn }) {
     });
   };
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event: React.SyntheticEvent) => {
     event.preventDefault();
   };
 
-  const onSubmit = ({ email, password }) => {
-    signInSignUp(email, password, SIGN_IN_URL, changeStateFn, login.loggedIn, login.login, login.logout);
+  const onSubmit = ({ email, password }: OnSubmitProps) => {
+    signInSignUp(email, password, SIGN_IN_URL, manageRequestMessage, login.loggedIn, login.login, login.logout);
   };
 
   const onReset = () => {
-    resetPassword(getValues('email'), RESET_PASSWORD, changeStateFn);
+    resetPassword(getValues('email'), RESET_PASSWORD, manageRequestMessage);
   };
+
   return (
     <>
       <Box className={styles.form} component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -117,9 +120,5 @@ function LoginForm({ changeStateFn }) {
     </>
   );
 }
-
-LoginForm.propTypes = {
-  changeStateFn: PropTypes.func.isRequired,
-};
 
 export default LoginForm;

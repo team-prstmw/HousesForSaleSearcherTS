@@ -11,18 +11,20 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import LoginContext from 'src/contexts/LoginContext';
+import { LoginProps, RegisterLoginFormsProps } from 'src/models/profile';
+import { registerSchema } from 'src/schemas/authSchemas';
+import { SIGN_UP_URL } from 'src/URLs';
 
-import styles from '/src/components/RegisterForm/RegisterForm.module.css';
-import LoginContext from '/src/contexts/LoginContext';
-import { registerSchema } from '/src/schemas/authSchemas';
-import { SIGN_UP_URL } from '/src/URLs';
-import { signInSignUp } from '/src/utils/auth';
+import styles from '/src/components/SignInSignUpModal/RegisterForm/RegisterForm.module.css';
 
-function RegisterForm({ changeStateFn }) {
-  const login = useContext(LoginContext);
+import { signInSignUp } from '../../../api/auth';
+import { OnSubmitProps, RegisterFormFields } from '../../../schemas/loginRegisterFormSchemas';
+
+function RegisterForm({ manageRequestMessage }: RegisterLoginFormsProps) {
+  const login: LoginProps = useContext(LoginContext);
   const [values, setValues] = useState({
     password: '',
     email: '',
@@ -33,7 +35,7 @@ function RegisterForm({ changeStateFn }) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<RegisterFormFields>({
     mode: 'onBlur',
     resolver: yupResolver(registerSchema),
   });
@@ -45,12 +47,13 @@ function RegisterForm({ changeStateFn }) {
     });
   };
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event: React.SyntheticEvent) => {
     event.preventDefault();
   };
 
-  const onSubmit = ({ email, password }) => {
-    signInSignUp(email, password, SIGN_UP_URL, changeStateFn, login.loggedIn, login.login, login.logout);
+  const onSubmit = ({ email, password }: OnSubmitProps) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    signInSignUp(email, password, SIGN_UP_URL, manageRequestMessage, login.loggedIn, login.login, login.logout);
   };
 
   return (
@@ -59,7 +62,7 @@ function RegisterForm({ changeStateFn }) {
         <TextField
           id="outlined-textarea-name"
           error={!!errors?.name}
-          helperText={errors?.name && errors?.name.message}
+          helperText={!!errors?.name && errors?.name.message}
           label="Name"
           placeholder="Name"
           autoComplete="Name"
@@ -71,7 +74,7 @@ function RegisterForm({ changeStateFn }) {
         <TextField
           id="outlined-textarea-email"
           error={!!errors?.email}
-          helperText={errors?.email && errors?.email.message}
+          helperText={!!errors?.email && !!errors?.email.message}
           label="E-mail"
           placeholder="E-mail"
           required
@@ -107,7 +110,7 @@ function RegisterForm({ changeStateFn }) {
             {...register('password')}
           />
           {errors?.password ? (
-            <FormHelperText error>{errors?.password && errors?.password.message}</FormHelperText>
+            <FormHelperText error>{errors?.password && !!errors?.password.message}</FormHelperText>
           ) : (
             <FormHelperText id="component-helper-text">At least 6 characters</FormHelperText>
           )}
@@ -119,9 +122,5 @@ function RegisterForm({ changeStateFn }) {
     </Box>
   );
 }
-
-RegisterForm.propTypes = {
-  changeStateFn: PropTypes.func.isRequired,
-};
 
 export default RegisterForm;

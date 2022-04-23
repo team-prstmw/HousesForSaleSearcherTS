@@ -3,9 +3,9 @@ import { useContext, useEffect, useState } from 'react';
 import Logo from 'src/assets/images/NavLogo.png';
 import AccountMenu from 'src/components/HeaderSection/AccountMenu/AccountMenu';
 import ThemeSwitcher from 'src/components/HeaderSection/Switcher';
-import RegisterLoginModal from 'src/components/RegisterLoginModal/RegisterLoginModal';
 import LoginContext from 'src/contexts/LoginContext';
 
+import RegisterLoginModal from '../../SignInSignUpModal/RegisterLoginModal/RegisterLoginModal';
 import styles from './Header.module.scss';
 
 function Header() {
