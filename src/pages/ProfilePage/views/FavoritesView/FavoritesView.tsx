@@ -10,6 +10,7 @@ const FavoritesView = () => {
   // GET DATA FROM FIREBASE (TRY OUT) - DELETE AFTER SUCCESSFULLY PUTTING DATA ON THE SERVER
   const fetchHouses = async () => {
     const fetchedHouses = await readAll('houses');
+    console.log(fetchedHouses);
     setFavorites(() => fetchedHouses);
   };
 
