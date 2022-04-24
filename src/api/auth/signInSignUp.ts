@@ -1,14 +1,14 @@
-import makeRequest from '/src/utils/services/makeRequest';
+import makeRequest from '../makeRequest';
 
 export const signInSignUp = async (
-  email,
-  password,
-  signURL,
-  changeState,
-  isLoggedIn,
-  loginFunction,
-  logoutFunction
-) => {
+  email: string,
+  password: string,
+  signURL: string,
+  manageRequestMessage: (message: string) => void,
+  _isLoggedIn: boolean,
+  loginFunction: () => void,
+  _logoutFunction: () => void
+): Promise<any> => {
   const response = await makeRequest(signURL, {
     method: 'POST',
     body: JSON.stringify({
@@ -17,10 +17,9 @@ export const signInSignUp = async (
       returnSecureToken: true,
     }),
   });
-
   const data = await response.json();
   if (!response.ok) {
-    changeState(data.error.message);
+    manageRequestMessage(data.error.message);
   }
   if (response.ok) {
     loginFunction();

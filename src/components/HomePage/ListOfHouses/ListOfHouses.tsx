@@ -1,11 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-redeclare */
+import 'react-slideshow-image/dist/styles.css';
+
 import DoneIcon from '@mui/icons-material/Done';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Autocomplete, Box, Button, Checkbox, TextField } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { useEffect, useState } from 'react';
+import { Slide } from 'react-slideshow-image';
 import noPhoto from 'src/assets/images/nophoto.png';
 import MoreInfoModal from 'src/components/MoreInfoModal/MoreInfoModal';
 
@@ -20,6 +23,13 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
 
   const handleDelete = () => {
     setSortType(null);
+  };
+
+  const slideProperties = {
+    canSwipe: true,
+    autoplay: false,
+    arrows: true,
+    transitionDuration: 700,
   };
 
   useEffect(() => {
@@ -69,26 +79,43 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
         />
       </Box>
       <Box component="div" className={styles.housesList}>
-        {sortedHouses.map((item: BasicHouseData, i) => (
-          <Box component="div" className={styles.houseElement} key={i.toString()}>
-            <h4>
-              {item.city}, {item.streetName} {item.streetNumber}
-            </h4>
-            <p className={styles.price}>
-              {item.price}zł/m<sup>2</sup>
-            </p>
-            <img src={item.photo_0 ? item.photo_0 : noPhoto} alt="House" />
-            <p className={styles.shortInfo}>{item.descriptionField}</p>
-            <MoreInfoModal />
-            <Checkbox
-              color="warning"
-              {...label}
-              icon={<FavoriteBorderIcon />}
-              checkedIcon={<FavoriteIcon />}
-              className={styles.icon}
-            />
-          </Box>
-        ))}
+        {sortedHouses.map((item: BasicHouseData) => {
+          if (item.images.length === 0) {
+            item.images.push(noPhoto);
+          }
+          if (item.images.length === 1) {
+            slideProperties.arrows = false;
+            slideProperties.canSwipe = false;
+          }
+          return (
+            <Box component="div" className={styles.houseElement} key={item._id}>
+              <h4>
+                {item.city}, {item.street} {item.houseNr}
+              </h4>
+              <p className={styles.price}>
+                {item.price}zł/m<sup>2</sup>
+              </p>
+              <Slide {...slideProperties}>
+                {item.images.map((image) => {
+                  return (
+                    <div className="each-slide" key={image}>
+                      <img src={image} alt="House" />
+                    </div>
+                  );
+                })}
+              </Slide>
+              <p className={styles.shortInfo}>{item.descriptionField}</p>
+              <MoreInfoModal />
+              <Checkbox
+                color="warning"
+                {...label}
+                icon={<FavoriteBorderIcon />}
+                checkedIcon={<FavoriteIcon />}
+                className={styles.icon}
+              />
+            </Box>
+          );
+        })}
       </Box>
     </Box>
   );
