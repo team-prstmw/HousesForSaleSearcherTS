@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-redeclare */
-
+import 'react-slideshow-image/dist/styles.css';
 import { Box, Button, Checkbox } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -26,25 +26,22 @@ const House = ({ house }: { house: BasicHouseData }) => {
         {house.price}zł/m<sup>2</sup>
       </p>
       <Slide {...slideProperties}>
+        {house.images.map((image) => {
           if (house.images.length === 0) {
-            house.images.push(noPhoto)
+            house.images.push(noPhoto);
           }
           if (house.images.length === 1) {
             slideProperties.arrows = false;
             slideProperties.canSwipe = false;
           }
-          if (house.images.length > 1) {
-            house.images.map((image => {
-              return (
-                <div className="each-slide" key={image}>
-                <img src={image} alt="House" />
-              </div>
-              )
-            }))
-          }
+          return (
+            <div className="each-slide" key={image}>
+              <img src={image} alt="House" />
+            </div>
+          );
+        })}
       </Slide>
       <p className={styles.shortInfo}>{house.descriptionField}</p>
-      <Button className={styles.moreInfo}>more info</Button>
       <MoreInfoModal />
       <Checkbox
         color="warning"

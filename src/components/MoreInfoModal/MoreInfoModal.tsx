@@ -62,7 +62,7 @@ export default function MoreInfoModal() {
   const handleClose = () => setOpen(false);
 
   return (
-    <div>
+    <>
       <Button onClick={handleOpen}>More info</Button>
       <Modal open={open} onClose={handleClose} style={{ overflow: 'scroll' }}>
         <Paper sx={{ p: 2, pb: 4 }} className={styles.modal}>
@@ -122,6 +122,6 @@ export default function MoreInfoModal() {
           </div>
         </Paper>
       </Modal>
-    </div>
+    </>
   );
 }

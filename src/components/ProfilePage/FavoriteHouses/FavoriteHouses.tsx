@@ -5,8 +5,8 @@ import styles from '../../HomePage/ListOfHouses/ListOfHouses.module.scss';
 const FavoriteHouses = ({ favorites }: { favorites: BasicHouseData[] }) => {
   const displayFavorites = (usersFavorite: BasicHouseData[]) => {
     if (usersFavorite.length > 0) {
-      return usersFavorite.map((favorite: BasicHouseData, i) => {
-        return <House house={favorite} key={i} />;
+      return usersFavorite.map((favorite: BasicHouseData) => {
+        return <House house={favorite} key={favorite._id} />;
       });
     } else {
       return (

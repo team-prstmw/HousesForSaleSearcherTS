@@ -7,8 +7,6 @@ import House from '../House/House';
 import { Autocomplete, Box, TextField } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { useEffect, useState } from 'react';
-import { Slide } from 'react-slideshow-image';
-import MoreInfoModal from 'src/components/MoreInfoModal/MoreInfoModal';
 
 import styles from './ListOfHouses.module.scss';
 
@@ -20,13 +18,6 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
 
   const handleDelete = () => {
     setSortType(null);
-  };
-
-  const slideProperties = {
-    canSwipe: true,
-    autoplay: false,
-    arrows: true,
-    transitionDuration: 700,
   };
 
   useEffect(() => {
