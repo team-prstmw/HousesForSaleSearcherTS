@@ -6,12 +6,9 @@ import { useApiGet } from 'src/hooks/useApi';
 const FavoritesView = () => {
   const [favorites, setFavorites] = useState<BasicHouseData[]>([]);
 
-  // NOTE FOR BELOW CODE
-  // - THERE'S NO PATH TO GET FAVORITES ANYMORE,
-  // IDK WHO CHANGED IT BUT I CAN'T MAKE REQUEST FOR /user/my-favorites ANYMORE,
-  //  SO HERE ARE THE SAME HOUSES LIST FROM HOMEPAGE - WHICH SUCKS
-
-  const { data, isLoading }: { data: BasicHouseResponseType; isLoading: boolean } = useApiGet({ path: '/houses' });
+  const { data, isLoading }: { data: BasicHouseResponseType; isLoading: boolean } = useApiGet({
+    path: '/users/my-favorites',
+  });
 
   useEffect(() => {
     if (!isLoading) {
