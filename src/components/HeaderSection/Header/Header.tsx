@@ -5,13 +5,14 @@ import Logo from 'src/assets/images/NavLogo.png';
 import ThemeSwitcher from 'src/components/HeaderSection/Switcher';
 import LoginContext from 'src/contexts/LoginContext';
 
+import { signOut } from '@/api/auth/signOut';
+
 import RegisterLoginModal from '../../SignInSignUpModal/RegisterLoginModal/RegisterLoginModal';
 import styles from './Header.module.scss';
 
 function Header() {
   const [logged, setLogged] = useState<boolean | string>(false);
   const login = useContext(LoginContext);
-
   useEffect(() => {
     setLogged(localStorage.getItem('isloggedIn') || login.loggedIn);
   }, [login.loggedIn]);
@@ -28,7 +29,7 @@ function Header() {
       {logged ? (
         <Button
           onClick={() => {
-            login.logout();
+            signOut(login.logout());
             setLogged(false);
           }}
           sx={{
