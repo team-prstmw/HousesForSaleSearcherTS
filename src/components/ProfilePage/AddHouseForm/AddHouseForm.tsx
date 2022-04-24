@@ -62,6 +62,7 @@ function AddHouseForm() {
   useEffect(() => {
     if (isSuccess) {
       reset();
+      setImages([]);
     }
   }, [isSuccess, reset]);
 
