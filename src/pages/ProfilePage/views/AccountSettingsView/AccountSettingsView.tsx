@@ -3,8 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { yupResolver } from '@hookform/resolvers/yup';
 import EditIcon from '@mui/icons-material/Edit';
-import { useTheme } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -14,6 +12,8 @@ import { useQueryClient } from 'react-query';
 import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
 import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
 import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
+import UserAvatar, { AvatarSize } from 'src/components/UserAvatar/UserAvatar';
+import WelcomeHeader, { WelcomeSize } from 'src/components/WelcomeHeader/WelcomeHeader';
 import { useApiGet, useApiPatch } from 'src/hooks/useApi';
 import { profilePageSchema } from 'src/schemas/authSchemas';
 import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
@@ -26,7 +26,7 @@ enum Fields {
   Email = 'email',
 }
 
-interface FormDatas {
+interface UserFormData {
   nameEditable: boolean;
   passwordEditable: boolean;
   tempImage: string | File;
@@ -39,12 +39,23 @@ type FieldsType = keyof Pick<ProfilePageInterface, `${Fields.Name}` | `${Fields.
 
 function AccountSettingsView() {
   const queryClient = useQueryClient();
-  const [formData, setFormData] = useState<FormDatas>({ nameEditable: false, passwordEditable: false, tempImage: '' });
   const [img, setImg] = useState<string>('');
-  const theme = useTheme();
+  const [formData, setFormData] = useState<UserFormData>({
+    nameEditable: false,
+    passwordEditable: false,
+    tempImage: '',
+  });
+  const [user, setUser] = useState<UserData>([]);
 
-  const { data }: { data: UserData } = useApiGet({ path: `/users/625badec139559b0e43dc45e` });
+  const { data, isLoading }: { data: UserData } = useApiGet({ path: `/users/625badec139559b0e43dc45e` });
   const { mutateAsync } = useApiPatch({ path: '/users/625badec139559b0e43dc45e' });
+
+  useEffect(() => {
+    if (!isLoading) {
+      const dataData = data;
+      setUser(dataData);
+    }
+  }, [data, isLoading]);
 
   const {
     register,
@@ -57,14 +68,14 @@ function AccountSettingsView() {
   });
 
   useEffect(() => {
-    setValue('name', data.name);
-    setValue('email', data.email);
-    setImg(data.avatar);
-  }, [data, setValue]);
+    setValue('name', user.name);
+    setValue('email', user.email);
+    setImg(user.avatar);
+  }, [setValue, user.avatar, user.email, user.name]);
 
   const avatarUrl = () => {
     if (img && typeof img === 'string') {
-      return `http://localhost:4000/${data.avatar}`;
+      return `http://localhost:4000/${user.avatar}`;
     }
 
     return '';
@@ -87,7 +98,7 @@ function AccountSettingsView() {
   };
 
   const onCancelChange = (field: FieldsType) => {
-    const fieldPrev: keyof Pick<FormDatas, `${Fields.Name}Prev` | `${Fields.Password}Prev`> = `${field}Prev`;
+    const fieldPrev: keyof Pick<UserFormData, `${Fields.Name}Prev` | `${Fields.Password}Prev`> = `${field}Prev`;
     const fieldPrevValue = formData[fieldPrev];
 
     if (fieldPrevValue) {
@@ -107,38 +118,15 @@ function AccountSettingsView() {
     }
   };
 
-  const getInitials = () => {
-    let name = getValues(Fields.Name) as string | undefined;
-
-    if (!name) {
-      return;
-    }
-
-    name = name[0].toUpperCase();
-
-    // eslint-disable-next-line consistent-return
-    return name;
-  };
   return (
     <div className={styles.container}>
       <span className={styles.headerContent}>
-        <Typography
-          variant="h3"
-          sx={{
-            [theme.breakpoints.down('sm')]: {
-              fontSize: '2.2rem',
-            },
-            textAlign: 'center',
-          }}
-          mb={2}
-        >
-          {`Welcome${data.name ? `, ${data.name}` : ''}!`}
-        </Typography>
+        <Box sx={{ textAlign: 'center', mb: 0.5 }}>
+          <WelcomeHeader size={WelcomeSize.Large} name={user.name} />
+        </Box>
       </span>
       <div className={styles.avatarContainer}>
-        <Avatar sx={{ bgcolor: '#30336b', width: 100, height: 100, fontSize: 36, margin: 2 }} src={avatarUrl()}>
-          {getInitials()}
-        </Avatar>
+        <UserAvatar name={getValues(Fields.Name)} image={avatarUrl()} size={AvatarSize.Large} />
         <input
           style={{ display: 'none' }}
           id="images-upload"

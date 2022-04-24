@@ -37,11 +37,8 @@ export const useApiGet = ({ path, auth }: GetProps) => {
     }
     window.location.replace('/login');
   }
-  const { data } = useQuery(path, async () => axios.get(`${BACKEND_URL}${path}`, config).then((res) => res.data));
 
-  if (data) return { data };
-
-  return { data: [] };
+  return useQuery(path, async () => axios.get(`${BACKEND_URL}${path}`, config).then((res) => res.data));
 };
 
 export const useApiPost = ({ path, data, auth }: PostProps) => {
