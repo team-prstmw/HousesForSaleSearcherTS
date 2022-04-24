@@ -64,13 +64,7 @@ export default function MoreInfoModal() {
   return (
     <div>
       <Button onClick={handleOpen}>More info</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="more-info-modal"
-        aria-describedby="this-modal-contains-house-info"
-        style={{ overflow: 'scroll' }}
-      >
+      <Modal open={open} onClose={handleClose} style={{ overflow: 'scroll' }}>
         <Paper sx={{ p: 2, pb: 4 }} className={styles.modal}>
           <div className={styles.sideBySide}>
             <div className={styles.modalLeftSide}>
