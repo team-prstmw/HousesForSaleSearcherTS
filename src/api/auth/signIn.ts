@@ -14,9 +14,10 @@ export async function signIn(
     body: JSON.stringify(requestData),
   })
     .then((response) => response.json())
-    .then((data) => {
-      document.cookie = `auth=${data.token}; maxAge: 9000`;
+    .then((data: { id: string; token: string; status: string; message: string }) => {
       localStorage.setItem('userId', data.id);
+      const { token } = data;
+      localStorage.setItem('token', token);
       if (data.status === 'invalid') return manageRequestMessage(data.message);
       return loginFunction();
     })
