@@ -1,4 +1,4 @@
-const key = import.meta.env.VITE_FIREBASE_APP_KEY;
+const key: string | boolean | undefined = import.meta.env.VITE_FIREBASE_APP_KEY;
 
 export const SIGN_IN_URL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`;
 

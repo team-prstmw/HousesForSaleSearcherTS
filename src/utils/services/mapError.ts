@@ -1,6 +1,6 @@
-const mapError = (state) => {
+function mapError(serverErrorName: string): string {
   let errorMessage = '';
-  switch (state) {
+  switch (serverErrorName) {
     case 'EMAIL_EXISTS':
       errorMessage = 'The email address is already in use by another account.';
       break;
@@ -23,6 +23,6 @@ const mapError = (state) => {
       errorMessage = 'An undefined Error happened.';
   }
   return errorMessage;
-};
+}
 
 export default mapError;
