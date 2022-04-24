@@ -1,22 +1,51 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable @typescript-eslint/no-redeclare */
+
 import { Box, Button, Checkbox } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import noPhoto from '../../../assets/images/nophoto.png';
 import styles from './House.module.scss';
+import MoreInfoModal from '../../MoreInfoModal/MoreInfoModal';
+import { Slide } from 'react-slideshow-image';
 
 const label: { inputProps: { 'aria-label': string } } = { inputProps: { 'aria-label': 'Checkbox demo' } };
 const House = ({ house }: { house: BasicHouseData }) => {
+  const slideProperties = {
+    canSwipe: true,
+    autoplay: false,
+    arrows: true,
+    transitionDuration: 700,
+  };
   return (
     <Box component="div" className={styles.houseElement}>
       <h4>
-        {house.city}, {house.streetName} {house.streetNumber}
+        {house.city}, {house.street} {house.houseNr}
       </h4>
       <p className={styles.price}>
         {house.price}zł/m<sup>2</sup>
       </p>
-      <img src={house.photo_0 ? house.photo_0 : noPhoto} alt={`House in ${house.city} at ${house.streetName}`} />
+      <Slide {...slideProperties}>
+          if (house.images.length === 0) {
+            house.images.push(noPhoto)
+          }
+          if (house.images.length === 1) {
+            slideProperties.arrows = false;
+            slideProperties.canSwipe = false;
+          }
+          if (house.images.length > 1) {
+            house.images.map((image => {
+              return (
+                <div className="each-slide" key={image}>
+                <img src={image} alt="House" />
+              </div>
+              )
+            }))
+          }
+      </Slide>
       <p className={styles.shortInfo}>{house.descriptionField}</p>
       <Button className={styles.moreInfo}>more info</Button>
+      <MoreInfoModal />
       <Checkbox
         color="warning"
         {...label}

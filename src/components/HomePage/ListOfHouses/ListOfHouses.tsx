@@ -1,10 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-redeclare */
+import 'react-slideshow-image/dist/styles.css';
+
 import DoneIcon from '@mui/icons-material/Done';
 import House from '../House/House';
 import { Autocomplete, Box, TextField } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { useEffect, useState } from 'react';
+import { Slide } from 'react-slideshow-image';
+import MoreInfoModal from 'src/components/MoreInfoModal/MoreInfoModal';
 
 import styles from './ListOfHouses.module.scss';
 
@@ -16,6 +20,13 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
 
   const handleDelete = () => {
     setSortType(null);
+  };
+
+  const slideProperties = {
+    canSwipe: true,
+    autoplay: false,
+    arrows: true,
+    transitionDuration: 700,
   };
 
   useEffect(() => {
@@ -65,8 +76,8 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
         />
       </Box>
       <Box component="div" className={styles.housesList}>
-        {sortedHouses.map((item: BasicHouseData, i) => (
-          <House house={item} key={i} />
+        {sortedHouses.map((item: BasicHouseData) => (
+          <House house={item} key={item._id} />
         ))}
       </Box>
     </Box>
