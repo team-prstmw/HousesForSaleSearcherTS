@@ -36,7 +36,9 @@ function AddHouseForm() {
     'addressQuery',
     async () => {
       const response = await axios.get(
-        `http://api.positionstack.com/v1/forward?access_key=44a67a35a2d54479b3006a56b14711a2&query=${addressQuery}`
+        `http://api.positionstack.com/v1/forward?access_key=${
+          import.meta.env.VITE_POSITIONSTACK as string
+        }&query=${addressQuery}`
       );
 
       return response;
@@ -124,23 +126,26 @@ function AddHouseForm() {
           Address Information
         </Typography>
         <TextField
-          id="street-number"
-          {...register('streetNumber')}
-          label="Street number"
-          error={!!errors?.streetNumber}
-          helperText={errors?.streetNumber && errors?.streetNumber.message}
-          autoComplete="address-line1"
+          id="street-name"
+          {...register('streetName')}
+          label="Street name"
+          error={!!errors?.streetName}
+          helperText={errors?.streetName && errors?.streetName.message}
+          sx={{ width: '100%' }}
+          autoComplete="address-line2"
+          onBlur={fetchAdditionalData}
         />
         <span className={styles.formRow}>
           <TextField
-            id="street-name"
-            {...register('streetName')}
-            label="Street name"
-            error={!!errors?.streetName}
-            helperText={errors?.streetName && errors?.streetName.message}
-            sx={{ width: '100%' }}
-            autoComplete="address-line2"
+            id="street-number"
+            {...register('streetNumber')}
+            label="Street number"
+            error={!!errors?.streetNumber}
+            helperText={errors?.streetNumber && errors?.streetNumber.message}
+            autoComplete="address-line1"
+            onBlur={fetchAdditionalData}
           />
+
           <FormControl sx={{ minWidth: '45%' }} error={!!errors?.streetSuffix}>
             <InputLabel id="street-suffix">Street Suffix</InputLabel>
             <Select
