@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable react/jsx-props-no-spreading */
 import { yupResolver } from '@hookform/resolvers/yup';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -14,8 +15,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 import { useApiSend } from 'src/hooks/useApi';
 
 import { AddHouseFormFields, addHouseFormSchema } from '../../../schemas/addHouseFormSchema';
@@ -25,17 +28,40 @@ import styles from './AddHouseForm.module.css';
 function AddHouseForm() {
   const [moreFacilitiesShown, setMoreFacilitiesShown] = useState(false);
   const [images, setImages] = useState<File[]>([]);
+  const [addressQuery, setAddressQuery] = useState('');
 
-  const apiSend = useApiSend();
+  const { mutate: apiSend, isSuccess } = useApiSend();
+
+  const { data: fetchedAddressOptions } = useQuery(
+    'addressQuery',
+    async () => {
+      const response = await axios.get(
+        `http://api.positionstack.com/v1/forward?access_key=44a67a35a2d54479b3006a56b14711a2&query=${addressQuery}`
+      );
+
+      return response;
+    },
+    {
+      enabled: !!addressQuery,
+    }
+  );
 
   const {
     register,
     handleSubmit,
+    getValues,
+    reset,
     formState: { errors },
   } = useForm<AddHouseFormFields>({
     mode: 'onBlur',
     resolver: yupResolver(addHouseFormSchema),
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+    }
+  }, [isSuccess, reset]);
 
   const addImages = (rawImages: FileList | null) => {
     if (rawImages !== null) {
@@ -49,11 +75,29 @@ function AddHouseForm() {
     const payload = new FormData();
 
     images.forEach((image) => payload.append('images[]', image, image.name));
-    Object.entries(fields).forEach(([key, value]: [key: string, value: string | number]) =>
+
+    const additionalDetails = fetchedAddressOptions?.data?.data?.[0] || {};
+
+    const extendedFields = {
+      ...fields,
+      owner: '623c418ae3d719b1b508d835',
+      country: additionalDetails.country as string,
+      lat: additionalDetails.latitude as number,
+      lng: additionalDetails.longitude as number,
+    };
+
+    Object.entries(extendedFields).forEach(([key, value]: [key: string, value: string | number]) =>
       payload.append(key, `${value}`)
     );
 
-    apiSend.mutate({ path: '/create-new-house', data: payload, method: 'post' });
+    apiSend({ path: '/create-new-house', data: payload, method: 'post' });
+  };
+
+  const fetchAdditionalData = () => {
+    const { streetName, streetNumber, city, state } = getValues();
+    if (streetName && streetNumber && city && state) {
+      setAddressQuery([streetName, streetNumber, city, state].join(' '));
+    }
   };
 
   const facilities = [
@@ -124,6 +168,7 @@ function AddHouseForm() {
             error={!!errors?.city}
             helperText={errors?.city && errors?.city.message}
             autoComplete="address-level12"
+            onBlur={fetchAdditionalData}
           />
           <TextField
             id="state"
@@ -132,6 +177,7 @@ function AddHouseForm() {
             error={!!errors?.state}
             helperText={errors?.state && errors?.state.message}
             autoComplete="state"
+            onBlur={fetchAdditionalData}
           />
         </span>
       </div>
