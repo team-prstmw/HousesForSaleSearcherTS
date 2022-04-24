@@ -10,6 +10,7 @@ import Chip from '@mui/material/Chip';
 import { useEffect, useState } from 'react';
 import { Slide } from 'react-slideshow-image';
 import noPhoto from 'src/assets/images/nophoto.png';
+import MoreInfoModal from 'src/components/MoreInfoModal/MoreInfoModal';
 
 import styles from './ListOfHouses.module.scss';
 
@@ -104,7 +105,7 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
                 })}
               </Slide>
               <p className={styles.shortInfo}>{item.descriptionField}</p>
-              <Button className={styles.moreInfo}>more info</Button>
+              <MoreInfoModal />
               <Checkbox
                 color="warning"
                 {...label}
