@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import noPhoto from '../../../assets/images/noPhoto.png';
+import noPhoto from '../../../assets/images/nophoto.png';
 import styles from './House.module.scss';
 
 const label: { inputProps: { 'aria-label': string } } = { inputProps: { 'aria-label': 'Checkbox demo' } };
