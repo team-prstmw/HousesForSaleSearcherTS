@@ -7,13 +7,18 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import WelcomeHeader from 'src/components/WelcomeHeader/WelcomeHeader';
+import LoginContext from 'src/contexts/LoginContext';
+
+import { signOut } from '@/api/auth/signOut';
 
 import logout from '../../../utils/auth/logout';
 import UserAvatar, { AvatarSize } from '../../UserAvatar/UserAvatar';
 
-export default function AccountMenu() {
+export default function AccountMenu(changeLoginFn) {
+  const login = useContext(LoginContext);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = !!anchorEl;
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -34,7 +39,7 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <UserAvatar name="M" size={AvatarSize.Small} />
+            <UserAvatar name="P" size={AvatarSize.Small} />
           </IconButton>
         </Tooltip>
       </Box>
@@ -90,7 +95,11 @@ export default function AccountMenu() {
           SELL HOUSE +
         </MenuItem>
         <Divider />
-        <MenuItem onClick={logout}>
+        <MenuItem
+          onClick={() => {
+            signOut(login.logout());
+          }}
+        >
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

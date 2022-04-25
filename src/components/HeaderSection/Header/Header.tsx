@@ -28,7 +28,7 @@ function Header() {
       <a href="/">
         <Box component="img" src={Logo} />
       </a>
-      {logged ? <AccountMenu /> : <RegisterLoginModal />}
+      {logged ? <AccountMenu changeLoginStatusFn={setLogged} /> : <RegisterLoginModal />}
     </Box>
   );
 }
