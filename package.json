@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "buildsite": "vite build",
+    "build": "vite build",
     "netlify": "vite build",
     "start": "vite preview",
     "typecheck": "tsc --noEmit"
