@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Slide } from 'react-slideshow-image';
 import { useApiGet } from 'src/hooks/useApi';
 
@@ -27,12 +27,12 @@ const slideProperties = {
 };
 
 export default function MoreInfoModal(props) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [houseData, setHouseData] = React.useState<any[]>([]);
-  const [housePhotos, setHousePhotos] = React.useState([{}]);
+  const [houseData, setHouseData] = useState<any[]>([]);
+  const [housePhotos, setHousePhotos] = useState([{}]);
 
   const { data, isLoading } = useApiGet({ path: `/houses/${props.id}` });
 
