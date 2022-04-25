@@ -1,13 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-redeclare */
 import 'react-slideshow-image/dist/styles.css';
-import { Box, Button, Checkbox } from '@mui/material';
+
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import noPhoto from '../../../assets/images/nophoto.png';
-import styles from './House.module.scss';
-import MoreInfoModal from '../../MoreInfoModal/MoreInfoModal';
+import { Box, Button, Checkbox } from '@mui/material';
 import { Slide } from 'react-slideshow-image';
+
+import noPhoto from '../../../assets/images/nophoto.png';
+import MoreInfoModal from '../../MoreInfoModal/MoreInfoModal';
+import styles from './House.module.scss';
 
 const label: { inputProps: { 'aria-label': string } } = { inputProps: { 'aria-label': 'Checkbox demo' } };
 const House = ({ house }: { house: BasicHouseData }) => {
@@ -42,7 +44,7 @@ const House = ({ house }: { house: BasicHouseData }) => {
         })}
       </Slide>
       <p className={styles.shortInfo}>{house.descriptionField}</p>
-      <MoreInfoModal />
+      <MoreInfoModal id={house._id} />
       <Checkbox
         color="warning"
         {...label}
