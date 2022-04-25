@@ -19,6 +19,10 @@ interface Mutation {
   method: 'post' | 'put' | 'patch' | 'delete';
 }
 
+interface PatchTypeData {
+  users?: UserData;
+}
+
 const useGetAuthToken = () => {
   const [cookies] = useCookies(['auth']);
 
@@ -67,7 +71,8 @@ export const useApiPatch = ({ path, auth }: Props) => {
     }
   }
 
-  const apiPatch = ({ data }) => axios.patch(`${BACKEND_URL}${path}`, data, config).then((res) => res?.data);
+  const apiPatch = ({ data }: { data: PatchTypeData }) =>
+    axios.patch(`${BACKEND_URL}${path}`, data, config).then((res) => res?.data);
 
   return useMutation(apiPatch);
 };
