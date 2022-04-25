@@ -22,6 +22,13 @@ import styles from '/src/components/SignInSignUpModal/RegisterForm/RegisterForm.
 import { signUp } from '../../../api/auth/signUp';
 import { RegisterFormFields } from '../../../schemas/loginRegisterFormSchemas';
 
+interface IFormInput {
+  name: string;
+  password: string;
+  email: string;
+  phone: string;
+}
+
 function RegisterForm({ manageRequestMessage }: RegisterLoginFormsProps) {
   const login: LoginProps = useContext(LoginContext);
   const [values, setValues] = useState({

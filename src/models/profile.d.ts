@@ -16,7 +16,6 @@ export interface ProfilePageInterface extends RegisterInterface {
 export interface RegisterLoginHeaderProps {
   checked: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
 }
 
 export interface RegisterLoginFormsProps {

@@ -6,7 +6,7 @@ import { RegisterLoginHeaderProps } from 'src/models/profile';
 
 import styles from '/src/components/SignInSignUpModal/RegisterLoginHeader/RegisterLoginHeader.module.css';
 
-function RegisterLoginHeader({ checked, onChange, onClick }: RegisterLoginHeaderProps): JSX.Element {
+function RegisterLoginHeader({ checked, onChange }: RegisterLoginHeaderProps): JSX.Element {
   return (
     <Box className={styles.registerLoginHeader__Wrapper}>
       <Typography
