@@ -18,6 +18,7 @@ export async function signIn(
       localStorage.setItem('userId', data.id);
       const { token } = data;
       localStorage.setItem('token', token);
+      document.cookie = `auth=${token}`;
       if (data.status === 'invalid') return manageRequestMessage(data.message);
       return loginFunction();
     })
