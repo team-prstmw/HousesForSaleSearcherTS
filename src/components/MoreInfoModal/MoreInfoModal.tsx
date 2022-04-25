@@ -31,8 +31,8 @@ export default function MoreInfoModal(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [houseData, setHouseData] = React.useState();
-  const [housePhotos, setHousePhotos] = React.useState([]);
+  const [houseData, setHouseData] = React.useState<any[]>([]);
+  const [housePhotos, setHousePhotos] = React.useState([{}]);
 
   const { data, isLoading } = useApiGet({ path: `/houses/${props.id}` });
 
