@@ -20,6 +20,8 @@ import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
 
 import styles from './AccountSettingsView.module.css';
 
+const HOST_URL = import.meta.env.VITE_HOST_URL as string;
+
 enum Fields {
   Name = 'name',
   Password = 'password',
@@ -47,8 +49,9 @@ function AccountSettingsView() {
   });
   const [user, setUser] = useState<UserData>([]);
 
-  const { data, isLoading }: { data: UserData } = useApiGet({ path: `/users/625badec139559b0e43dc45e` });
-  const { mutateAsync } = useApiPatch({ path: '/users/625badec139559b0e43dc45e' });
+  const { data, isLoading }: { data: UserData } = useApiGet({ path: `/users`, auth: true });
+
+  const { mutateAsync } = useApiPatch({ path: '/users', auth: true });
 
   useEffect(() => {
     if (!isLoading) {
@@ -75,7 +78,7 @@ function AccountSettingsView() {
 
   const avatarUrl = () => {
     if (img && typeof img === 'string') {
-      return `http://localhost:4000/${user.avatar}`;
+      return `${HOST_URL}${user.avatar}`;
     }
 
     return '';
@@ -87,7 +90,7 @@ function AccountSettingsView() {
     setEditable(Fields.Name);
     setFormData((prevState) => ({ ...prevState, namePrev: getValues(Fields.Name) as string }));
     mutateAsync({ data: { name: getValues(Fields.Name) } }).then(() => {
-      queryClient.invalidateQueries('/users/625badec139559b0e43dc45e');
+      queryClient.invalidateQueries('/users');
     });
   };
 
@@ -106,13 +109,12 @@ function AccountSettingsView() {
     }
     setEditable(field);
   };
-
   const onAddAvatar = (image?: File) => {
     if (image) {
       const formDatas = new FormData();
-      formDatas.append('avatar', image, image.name);
+      formDatas.append('images', image, image.name);
       mutateAsync({ data: formDatas }).then(() => {
-        queryClient.invalidateQueries('/users/625badec139559b0e43dc45e');
+        queryClient.invalidateQueries('/users');
       });
       setFormData((prevState) => ({ ...prevState, tempImage: image }));
     }
