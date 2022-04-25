@@ -14,6 +14,7 @@ import TextField from '@mui/material/TextField';
 import { useContext, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import LoginContext from 'src/contexts/LoginContext';
+import { RegisterLoginFormsProps } from 'src/models/profile';
 import { loginSchema } from 'src/schemas/authSchemas';
 import { RESET_PASSWORD } from 'src/URLs';
 
@@ -23,11 +24,7 @@ import { signIn } from '@/api/auth/signIn';
 import { resetPassword } from '../../../api/auth';
 import LoginFormFields, { OnSubmitProps } from '../../../schemas/loginRegisterFormSchemas';
 
-type LoginFormProps = {
-  manageRequestMessage: (message: string) => string;
-};
-
-function LoginForm({ manageRequestMessage }: LoginFormProps) {
+function LoginForm({ manageRequestMessage }: RegisterLoginFormsProps) {
   const login = useContext(LoginContext);
 
   const [values, setValues] = useState({

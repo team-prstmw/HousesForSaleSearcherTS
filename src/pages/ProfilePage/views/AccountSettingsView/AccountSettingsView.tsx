@@ -3,27 +3,32 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { yupResolver } from '@hookform/resolvers/yup';
 import EditIcon from '@mui/icons-material/Edit';
-import { useTheme } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useQueryClient } from 'react-query';
 import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
 import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
 import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
+import UserAvatar, { AvatarSize } from 'src/components/UserAvatar/UserAvatar';
+import WelcomeHeader, { WelcomeSize } from 'src/components/WelcomeHeader/WelcomeHeader';
+import { useApiGet, useApiPatch } from 'src/hooks/useApi';
 import { profilePageSchema } from 'src/schemas/authSchemas';
 import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
 
 import styles from './AccountSettingsView.module.css';
 
+const HOST_URL = import.meta.env.VITE_HOST_URL as string;
+
 enum Fields {
   Name = 'name',
   Password = 'password',
+  Email = 'email',
 }
 
-interface FormData {
+interface UserFormData {
   nameEditable: boolean;
   passwordEditable: boolean;
   tempImage: string | File;
@@ -35,8 +40,25 @@ interface FormData {
 type FieldsType = keyof Pick<ProfilePageInterface, `${Fields.Name}` | `${Fields.Password}`>;
 
 function AccountSettingsView() {
-  const [formData, setFormData] = useState<FormData>({ nameEditable: false, passwordEditable: false, tempImage: '' });
-  const theme = useTheme();
+  const queryClient = useQueryClient();
+  const [img, setImg] = useState<string>('');
+  const [formData, setFormData] = useState<UserFormData>({
+    nameEditable: false,
+    passwordEditable: false,
+    tempImage: '',
+  });
+  const [user, setUser] = useState<UserData>([]);
+
+  const { data, isLoading }: { data: UserData } = useApiGet({ path: `/users`, auth: true });
+
+  const { mutateAsync } = useApiPatch({ path: '/users', auth: true });
+
+  useEffect(() => {
+    if (!isLoading) {
+      const dataData = data;
+      setUser(dataData);
+    }
+  }, [data, isLoading]);
 
   const {
     register,
@@ -48,24 +70,28 @@ function AccountSettingsView() {
     resolver: yupResolver(profilePageSchema),
   });
 
+  useEffect(() => {
+    setValue('name', user.name);
+    setValue('email', user.email);
+    setImg(user.avatar);
+  }, [setValue, user.avatar, user.email, user.name]);
+
   const avatarUrl = () => {
-    if (formData?.image && typeof formData?.image === 'string') {
-      return formData.image;
+    if (img && typeof img === 'string') {
+      return `${HOST_URL}${user.avatar}`;
     }
 
-    if (formData?.tempImage instanceof File) {
-      return URL.createObjectURL(formData.tempImage);
-    }
     return '';
   };
-
   const setEditable = (field: FieldsType) =>
     setFormData((prevState) => ({ ...prevState, [`${field}Editable`]: !prevState[`${field}Editable`] }));
 
   const onChangeName = () => {
     setEditable(Fields.Name);
     setFormData((prevState) => ({ ...prevState, namePrev: getValues(Fields.Name) as string }));
-    // SEND REQUEST
+    mutateAsync({ data: { name: getValues(Fields.Name) } }).then(() => {
+      queryClient.invalidateQueries('/users');
+    });
   };
 
   const onChangePassword = () => {
@@ -75,7 +101,7 @@ function AccountSettingsView() {
   };
 
   const onCancelChange = (field: FieldsType) => {
-    const fieldPrev: keyof Pick<FormData, `${Fields.Name}Prev` | `${Fields.Password}Prev`> = `${field}Prev`;
+    const fieldPrev: keyof Pick<UserFormData, `${Fields.Name}Prev` | `${Fields.Password}Prev`> = `${field}Prev`;
     const fieldPrevValue = formData[fieldPrev];
 
     if (fieldPrevValue) {
@@ -83,51 +109,30 @@ function AccountSettingsView() {
     }
     setEditable(field);
   };
-
   const onAddAvatar = (image?: File) => {
     if (image) {
+      const formDatas = new FormData();
+      formDatas.append('images', image, image.name);
+      mutateAsync({ data: formDatas }).then(() => {
+        queryClient.invalidateQueries('/users');
+      });
       setFormData((prevState) => ({ ...prevState, tempImage: image }));
     }
-    // SEND REQUEST
   };
 
-  const getInitials = () => {
-    let name = getValues(Fields.Name) as string | undefined;
-
-    if (!name) {
-      return;
-    }
-
-    name = name[0].toUpperCase();
-
-    // eslint-disable-next-line consistent-return
-    return name;
-  };
   return (
     <div className={styles.container}>
       <span className={styles.headerContent}>
-        <Typography
-          variant="h3"
-          sx={{
-            [theme.breakpoints.down('sm')]: {
-              fontSize: '2.2rem',
-            },
-            textAlign: 'center',
-          }}
-          mb={2}
-        >
-          {`Welcome${getValues(Fields.Name) ? `, ${getValues(Fields.Name) as string}` : ''}!`}
-        </Typography>
+        <Box sx={{ textAlign: 'center', mb: 0.5 }}>
+          <WelcomeHeader size={WelcomeSize.Large} name={user.name} />
+        </Box>
       </span>
       <div className={styles.avatarContainer}>
-        <Avatar sx={{ bgcolor: '#30336b', width: 100, height: 100, fontSize: 36, margin: 2 }} src={avatarUrl()}>
-          {getInitials()}
-        </Avatar>
+        <UserAvatar name={getValues(Fields.Name)} image={avatarUrl()} size={AvatarSize.Large} />
         <input
           style={{ display: 'none' }}
           id="images-upload"
           type="file"
-          multiple
           accept="image/*"
           onChange={(e) => onAddAvatar(e.target?.files?.[0])}
         />
@@ -160,7 +165,9 @@ function AccountSettingsView() {
           />
           <FormRow
             label={<Typography variant="h6">E-mail</Typography>}
-            input={<TextInput placeholder="mail@mail.com" disabled error={errors?.email} />}
+            input={
+              <TextInput placeholder="mail@mail.com" disabled register={register(Fields.Email)} error={errors?.email} />
+            }
           />
           <FormRow
             label={<Typography variant="h6">Password</Typography>}

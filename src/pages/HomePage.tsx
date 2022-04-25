@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
@@ -6,35 +7,20 @@ import Header from 'src/components/HeaderSection/Header/Header';
 import ChangeView from 'src/components/HomePage/ChangeView/ChangeView';
 import ListOfHouses from 'src/components/HomePage/ListOfHouses/ListOfHouses';
 import MapHouses from 'src/components/HomePage/MapSide/MapSide';
-import { readAll } from 'src/firebase';
+import { useApiGet } from 'src/hooks/useApi';
 
 function HomePage() {
   const [toggleView, setToggleView] = useState<boolean>(true);
   const [houses, setHouses] = useState<BasicHouseData[]>([]);
-  const [error, setError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
 
-  const handleAsyncAction = async (asyncAction: () => Promise<void>) => {
-    setLoading(() => true);
-    try {
-      await asyncAction();
-    } catch (caughtError: unknown) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchHouses = async () => {
-    await handleAsyncAction(async () => {
-      const fetchedHouses = await readAll('houses');
-      setHouses(() => fetchedHouses);
-    });
-  };
+  const { data, isSuccess }: { data: BasicHouseResponseType; isSuccess: boolean } = useApiGet({ path: '/houses' });
 
   useEffect(() => {
-    fetchHouses();
-  }, []);
+    if (isSuccess) {
+      const dataData = data?.data;
+      setHouses(dataData);
+    }
+  }, [data, isSuccess]);
 
   return (
     <Grid sx={{ display: 'flex', flexDirection: 'column' }} height="100vh">
