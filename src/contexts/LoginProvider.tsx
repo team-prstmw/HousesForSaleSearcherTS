@@ -10,7 +10,7 @@ const LoginProvider: FC = ({ children }) => {
     localStorage.setItem('isloggedIn', 'true');
   };
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem('isloggedIn');
     setLoggedIn(false);
   };
 

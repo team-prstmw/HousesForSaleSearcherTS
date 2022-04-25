@@ -1,0 +1,136 @@
+@import '/src/theme/colors.scss';
+@import '/src/theme/breakpoint.scss';
+
+.closeIcon {
+  align-self: flex-end;
+  color: $light-grey;
+  margin-bottom: 5px;
+  transform: translate(35%, -35%);
+}
+
+.closeIcon:hover {
+  cursor: pointer;
+  color: gray;
+}
+
+.modalLeftSide {
+  display: flex;
+  flex-direction: column;
+}
+
+.addressAndIcon {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sliderPhoto {
+  overflow: auto;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  aspect-ratio: 4/3;
+}
+
+.price {
+  align-self: flex-end;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+
+.buyHouseButton {
+  padding: 3rem;
+  background-color: black;
+  margin-bottom: 4rem;
+}
+
+.spaceElements {
+  height: 1rem;
+}
+
+.modalRightSide {
+  display: flex;
+  flex-direction: column;
+}
+
+.facilitiesColumn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1rem;
+}
+
+.infoSeciton {
+  padding-top: 10rem;
+}
+
+// Media queries
+@media only screen and (min-width: $screen-sm) {
+  .sideBySide {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .propInfoColumn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+  }
+
+  .facilitiesColumn {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .modal {
+    max-width: 60rem;
+  }
+
+  .sideBySide {
+    padding: 1rem 2rem;
+  }
+
+  .closeIcon {
+    font-size: large;
+  }
+}
+
+@media only screen and (min-width: $screen-md) {
+  .modal {
+    margin: 2rem auto;
+    padding: 2rem 2rem 4rem 2rem;
+    border: 2px solid rgba(0, 0, 0, 0.67);
+  }
+
+  .closeIcon {
+    position: absolute;
+    transform: translate(160%, -100%);
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .modal {
+    max-width: 80rem;
+    margin-top: 10vh;
+  }
+
+  .sideBySide {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+    padding: 1.5rem 2rem;
+  }
+
+  .sliderMaxWidth {
+    max-width: 36rem;
+  }
+
+  .closeIcon {
+    transform: translate(2800%, -100%);
+  }
+
+  .spaceElements {
+    height: 0;
+  }
+}
