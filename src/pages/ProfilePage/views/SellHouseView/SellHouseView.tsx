@@ -2,8 +2,8 @@ import { Container } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import useTheme from '@mui/material/styles/useTheme';
 import Typography from '@mui/material/Typography';
-import AddHouseForm from '../../../../components/ProfilePage/AddHouseForm/AddHouseForm';
 
+import AddHouseForm from '../../../../components/ProfilePage/AddHouseForm/AddHouseForm';
 import styles from './SellHouseView.module.css';
 
 const SellHouseView = () => {
