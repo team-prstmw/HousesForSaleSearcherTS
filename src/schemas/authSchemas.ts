@@ -1,6 +1,15 @@
 import * as yup from 'yup';
 
-import { INVALID_EMAIL_ERROR, MIN_LENGTH_ERROR, REQUIRED_ERROR, SPECIAL_CHARACTERS_ERROR } from './const';
+import {
+  INVALID_EMAIL_ERROR,
+  INVALID_PHONE_ERROR,
+  MIN_LENGTH_ERROR,
+  REQUIRED_ERROR,
+  SPECIAL_CHARACTERS_ERROR,
+} from './const';
+
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const name = yup
   .string()
@@ -14,6 +23,7 @@ export const loginSchema = yup.object().shape({
 
 export const registerSchema = loginSchema.shape({
   name,
+  phone: yup.string().required(REQUIRED_ERROR).matches(phoneRegExp, INVALID_PHONE_ERROR).length(9, INVALID_PHONE_ERROR),
 });
 
 export const profilePageSchema = yup.object({

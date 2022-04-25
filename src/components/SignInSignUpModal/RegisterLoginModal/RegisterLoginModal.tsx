@@ -74,7 +74,7 @@ function RegisterLoginModal() {
           <IconButton aria-label="Close" className={styles.closeButton} onClick={handleClose}>
             <CloseIcon />
           </IconButton>
-          <RegisterLoginHeader checked={checked} onChange={handleChange} onClick={handleClose} />
+          <RegisterLoginHeader checked={checked} onChange={handleChange} />
           {checked ? (
             <RegisterForm manageRequestMessage={changeState} />
           ) : (

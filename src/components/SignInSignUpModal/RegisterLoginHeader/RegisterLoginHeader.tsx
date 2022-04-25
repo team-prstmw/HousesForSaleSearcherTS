@@ -20,12 +20,7 @@ function RegisterLoginHeader({ checked, onChange, onClick }: RegisterLoginHeader
 
       <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
         <Typography>Log in</Typography>
-        <Switch
-          checked={checked}
-          onChange={onChange}
-          onClick={onClick}
-          inputProps={{ 'aria-label': 'Login Register Switch' }}
-        />
+        <Switch checked={checked} onChange={onChange} inputProps={{ 'aria-label': 'Login Register Switch' }} />
         <Typography>Register</Typography>
       </Stack>
     </Box>
