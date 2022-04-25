@@ -10,7 +10,10 @@ export async function signOut(logoutFunction: () => void) {
   })
     .then((response) => response.json())
     .then((data: { message: string }) => {
-      if (data.message === 'Logged out') localStorage.clear();
+      if (data.message === 'Logged out') {
+        document.cookie = 'auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        localStorage.clear();
+      }
       return logoutFunction();
     });
 }
