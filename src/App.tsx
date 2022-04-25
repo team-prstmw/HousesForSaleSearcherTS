@@ -1,11 +1,13 @@
 import { ThemeProvider } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import ProfilePage from 'src/pages/ProfilePage/ProfilePage';
 import AccountSettingsView from 'src/pages/ProfilePage/views/AccountSettingsView/AccountSettingsView';
 import FavoritesView from 'src/pages/ProfilePage/views/FavoritesView/FavoritesView';
+import MyHousesView from 'src/pages/ProfilePage/views/MyHousesView/MyHousesView';
 import SellHouseView from 'src/pages/ProfilePage/views/SellHouseView/SellHouseView';
 import theme from 'src/theme/theme';
 
@@ -34,13 +36,15 @@ function App(): ReactElement {
                 >
                   <Route path="" element={<AccountSettingsView />} />
                   <Route path="favourites" element={<FavoritesView />} />
-                  <Route path="my-houses" element={<div>my house</div>} />
+                  <Route path="my-houses" element={<MyHousesView />} />
                   <Route path="sell-house" element={<SellHouseView />} />
                 </Route>
               </Routes>
             </LoginProvider>
           </ThemeProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
+
         <script async defer src={MAP_INIT} />
       </div>
     </BrowserRouter>

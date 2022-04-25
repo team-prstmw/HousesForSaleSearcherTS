@@ -12,22 +12,22 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useContext, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import LoginContext from 'src/contexts/LoginContext';
 import { RegisterLoginFormsProps } from 'src/models/profile';
 import { loginSchema } from 'src/schemas/authSchemas';
-import { RESET_PASSWORD, SIGN_IN_URL } from 'src/URLs';
+import { RESET_PASSWORD } from 'src/URLs';
 
 import styles from '/src/components/SignInSignUpModal/LoginForm/LoginForm.module.css';
+import { signIn } from '@/api/auth/signIn';
 
-import { resetPassword, signInSignUp } from '../../../api/auth';
+import { resetPassword } from '../../../api/auth';
 import LoginFormFields, { OnSubmitProps } from '../../../schemas/loginRegisterFormSchemas';
 
 function LoginForm({ manageRequestMessage }: RegisterLoginFormsProps) {
   const login = useContext(LoginContext);
 
   const [values, setValues] = useState({
-    password: '',
     showPassword: false,
   });
 
@@ -52,8 +52,9 @@ function LoginForm({ manageRequestMessage }: RegisterLoginFormsProps) {
     event.preventDefault();
   };
 
-  const onSubmit = ({ email, password }: OnSubmitProps) => {
-    signInSignUp(email, password, SIGN_IN_URL, manageRequestMessage, login.loggedIn, login.login, login.logout);
+  const onSubmit: SubmitHandler<LoginFormFields> = ({ email, password }: OnSubmitProps) => {
+    signIn({ email, password }, manageRequestMessage, login.login);
+    // signInSignUp(email, password, SIGN_IN_URL, manageRequestMessage, login.loggedIn, login.login, login.logout);
   };
 
   const onReset = () => {

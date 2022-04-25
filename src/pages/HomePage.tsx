@@ -13,14 +13,14 @@ function HomePage() {
   const [toggleView, setToggleView] = useState<boolean>(true);
   const [houses, setHouses] = useState<BasicHouseData[]>([]);
 
-  const { data, isLoading }: { data: BasicHouseResponseType; isLoading: boolean } = useApiGet({ path: '/houses' });
+  const { data, isSuccess }: { data: BasicHouseResponseType; isSuccess: boolean } = useApiGet({ path: '/houses' });
 
   useEffect(() => {
-    if (!isLoading) {
-      const dataData = data.data;
+    if (isSuccess) {
+      const dataData = data?.data;
       setHouses(dataData);
     }
-  }, [data, isLoading]);
+  }, [data, isSuccess]);
 
   return (
     <Grid sx={{ display: 'flex', flexDirection: 'column' }} height="100vh">

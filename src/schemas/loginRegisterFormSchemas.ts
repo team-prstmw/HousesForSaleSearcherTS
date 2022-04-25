@@ -5,6 +5,7 @@ export default interface LoginFormFields {
 
 export interface RegisterFormFields extends LoginFormFields {
   name: string;
+  phone: string;
 }
 
 export interface OnSubmitProps {

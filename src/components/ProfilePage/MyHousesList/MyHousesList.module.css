@@ -1,0 +1,24 @@
+.listContainer {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.listButton {
+  width: 90%;
+}
+
+.listCollapse {
+  width: 90%;
+  color: #535c68;
+}
+
+@media screen and (min-width: 900px) {
+  .listButton {
+    width: 662px;
+  }
+  .listCollapse {
+    width: 662px;
+  }
+}
