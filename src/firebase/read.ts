@@ -1,4 +1,4 @@
-import { makeApiUrl } from './utils/makeApiUrl';
+import { makeApiUrl } from '../api/makeApiUrl';
 import { objectToArray } from './utils/objectToArray';
 
 export const readAll = (key: string) => {

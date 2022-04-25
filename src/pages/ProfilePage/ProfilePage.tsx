@@ -5,6 +5,8 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import Footer from 'src/components/Footer/Footer';
+import Header from 'src/components/HeaderSection/Header/Header';
 
 import styles from './ProfilePage.module.css';
 
@@ -22,6 +24,7 @@ function ProfilePage() {
 
   return (
     <div>
+      <Header />
       <Container component={Paper} maxWidth={false} className={styles.container}>
         <div className={styles.headerContainer}>
           <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
@@ -43,6 +46,7 @@ function ProfilePage() {
         </div>
         <Outlet />
       </Container>
+      <Footer />
     </div>
   );
 }
