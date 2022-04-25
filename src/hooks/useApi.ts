@@ -19,6 +19,10 @@ interface Mutation {
   method: 'post' | 'put' | 'patch' | 'delete';
 }
 
+interface PatchTypeData {
+  users?: UserData;
+}
+
 const useGetAuthToken = () => {
   const [cookies] = useCookies(['auth']);
 
@@ -35,7 +39,6 @@ export const useApiGet = ({ path, auth }: Props) => {
     if (token) {
       config.headers = getAuthHeader(token);
     }
-    window.location.replace('/login');
   }
 
   return useQuery(path, async () => axios.get(`${BACKEND_URL}${path}`, config).then((res) => res.data));
@@ -49,7 +52,6 @@ export const useApiSend = ({ auth }: PostProps = {}) => {
     if (token) {
       config.headers = getAuthHeader(token);
     }
-    window.location.replace('/login');
   }
 
   const mutation = useMutation(({ path, data, method }: Mutation) =>
@@ -57,4 +59,20 @@ export const useApiSend = ({ auth }: PostProps = {}) => {
   );
 
   return mutation;
+};
+
+export const useApiPatch = ({ path, auth }: Props) => {
+  const config = <AxiosRequestConfig>{};
+  const token = useGetAuthToken();
+
+  if (auth) {
+    if (token) {
+      config.headers = getAuthHeader(token);
+    }
+  }
+
+  const apiPatch = ({ data }: { data: PatchTypeData }) =>
+    axios.patch(`${BACKEND_URL}${path}`, data, config).then((res) => res?.data);
+
+  return useMutation(apiPatch);
 };
