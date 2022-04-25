@@ -12,22 +12,26 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useContext, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import LoginContext from 'src/contexts/LoginContext';
 import { LoginProps, RegisterLoginFormsProps } from 'src/models/profile';
 import { registerSchema } from 'src/schemas/authSchemas';
-import { SIGN_UP_URL } from 'src/URLs';
 
 import styles from '/src/components/SignInSignUpModal/RegisterForm/RegisterForm.module.css';
 
-import { signInSignUp } from '../../../api/auth';
-import { OnSubmitProps, RegisterFormFields } from '../../../schemas/loginRegisterFormSchemas';
+import { signUp } from '../../../api/auth/signUp';
+import { RegisterFormFields } from '../../../schemas/loginRegisterFormSchemas';
+
+interface IFormInput {
+  name: string;
+  password: string;
+  email: string;
+  phone: string;
+}
 
 function RegisterForm({ manageRequestMessage }: RegisterLoginFormsProps) {
   const login: LoginProps = useContext(LoginContext);
   const [values, setValues] = useState({
-    password: '',
-    email: '',
     showPassword: false,
   });
 
@@ -35,7 +39,7 @@ function RegisterForm({ manageRequestMessage }: RegisterLoginFormsProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormFields>({
+  } = useForm<IFormInput>({
     mode: 'onBlur',
     resolver: yupResolver(registerSchema),
   });
@@ -51,9 +55,9 @@ function RegisterForm({ manageRequestMessage }: RegisterLoginFormsProps) {
     event.preventDefault();
   };
 
-  const onSubmit = ({ email, password }: OnSubmitProps) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    signInSignUp(email, password, SIGN_UP_URL, manageRequestMessage, login.loggedIn, login.login, login.logout);
+  const onSubmit: SubmitHandler<IFormInput> = ({ name, email, password, phone }: RegisterFormFields) => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    signUp({ name, email, password, phone }, manageRequestMessage, login.login);
   };
 
   return (
@@ -74,7 +78,7 @@ function RegisterForm({ manageRequestMessage }: RegisterLoginFormsProps) {
         <TextField
           id="outlined-textarea-email"
           error={!!errors?.email}
-          helperText={!!errors?.email && !!errors?.email.message}
+          helperText={!!errors?.email && errors?.email.message}
           label="E-mail"
           placeholder="E-mail"
           required
@@ -82,6 +86,18 @@ function RegisterForm({ manageRequestMessage }: RegisterLoginFormsProps) {
           autoComplete="email"
           className={styles.textField}
           {...register('email')}
+        />
+        <TextField
+          id="outlined-textarea-phone"
+          error={!!errors?.phone}
+          helperText={!!errors?.phone && errors?.phone.message}
+          label="Phone Number"
+          placeholder="Phone Number"
+          required
+          type="tel"
+          autoComplete="Phone Number"
+          className={styles.textField}
+          {...register('phone')}
         />
 
         <FormControl variant="outlined">
@@ -110,7 +126,7 @@ function RegisterForm({ manageRequestMessage }: RegisterLoginFormsProps) {
             {...register('password')}
           />
           {errors?.password ? (
-            <FormHelperText error>{errors?.password && !!errors?.password.message}</FormHelperText>
+            <FormHelperText error>{errors?.password && errors?.password.message}</FormHelperText>
           ) : (
             <FormHelperText id="component-helper-text">At least 6 characters</FormHelperText>
           )}

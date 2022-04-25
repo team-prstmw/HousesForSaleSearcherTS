@@ -1,11 +1,11 @@
 function mapError(serverErrorName: string): string {
   let errorMessage = '';
   switch (serverErrorName) {
-    case 'EMAIL_EXISTS':
+    case 'Email already exists':
       errorMessage = 'The email address is already in use by another account.';
       break;
-    case 'OPERATION_NOT_ALLOWED':
-      errorMessage = 'Password sign-in is disabled for this project.';
+    case 'Email or password is wrong':
+      errorMessage = 'Email or password is wrong';
       break;
     case 'TOO_MANY_ATTEMPTS_TRY_LATER':
       errorMessage = 'We have blocked all requests from this device due to unusual activity. Try again later.';

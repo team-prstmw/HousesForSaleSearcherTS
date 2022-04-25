@@ -6,21 +6,26 @@ import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useQueryClient } from 'react-query';
 import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
 import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
 import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
 import UserAvatar, { AvatarSize } from 'src/components/UserAvatar/UserAvatar';
 import WelcomeHeader, { WelcomeSize } from 'src/components/WelcomeHeader/WelcomeHeader';
+import { useApiGet, useApiPatch } from 'src/hooks/useApi';
 import { profilePageSchema } from 'src/schemas/authSchemas';
 import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
 
 import styles from './AccountSettingsView.module.css';
 
+const HOST_URL = import.meta.env.VITE_HOST_URL as string;
+
 enum Fields {
   Name = 'name',
   Password = 'password',
+  Email = 'email',
 }
 
 interface UserFormData {
@@ -35,11 +40,25 @@ interface UserFormData {
 type FieldsType = keyof Pick<ProfilePageInterface, `${Fields.Name}` | `${Fields.Password}`>;
 
 function AccountSettingsView() {
+  const queryClient = useQueryClient();
+  const [img, setImg] = useState<string>('');
   const [formData, setFormData] = useState<UserFormData>({
     nameEditable: false,
     passwordEditable: false,
     tempImage: '',
   });
+  const [user, setUser] = useState<UserData>([]);
+
+  const { data, isLoading }: { data: UserData } = useApiGet({ path: `/users`, auth: true });
+
+  const { mutateAsync } = useApiPatch({ path: '/users', auth: true });
+
+  useEffect(() => {
+    if (!isLoading) {
+      const dataData = data;
+      setUser(dataData);
+    }
+  }, [data, isLoading]);
 
   const {
     register,
@@ -51,24 +70,28 @@ function AccountSettingsView() {
     resolver: yupResolver(profilePageSchema),
   });
 
+  useEffect(() => {
+    setValue('name', user.name);
+    setValue('email', user.email);
+    setImg(user.avatar);
+  }, [setValue, user.avatar, user.email, user.name]);
+
   const avatarUrl = () => {
-    if (formData?.image && typeof formData?.image === 'string') {
-      return formData.image;
+    if (img && typeof img === 'string') {
+      return `${HOST_URL}${user.avatar}`;
     }
 
-    if (formData?.tempImage instanceof File) {
-      return URL.createObjectURL(formData.tempImage);
-    }
     return '';
   };
-
   const setEditable = (field: FieldsType) =>
     setFormData((prevState) => ({ ...prevState, [`${field}Editable`]: !prevState[`${field}Editable`] }));
 
   const onChangeName = () => {
     setEditable(Fields.Name);
     setFormData((prevState) => ({ ...prevState, namePrev: getValues(Fields.Name) as string }));
-    // SEND REQUEST
+    mutateAsync({ data: { name: getValues(Fields.Name) } }).then(() => {
+      queryClient.invalidateQueries('/users');
+    });
   };
 
   const onChangePassword = () => {
@@ -86,19 +109,22 @@ function AccountSettingsView() {
     }
     setEditable(field);
   };
-
   const onAddAvatar = (image?: File) => {
     if (image) {
+      const formDatas = new FormData();
+      formDatas.append('images', image, image.name);
+      mutateAsync({ data: formDatas }).then(() => {
+        queryClient.invalidateQueries('/users');
+      });
       setFormData((prevState) => ({ ...prevState, tempImage: image }));
     }
-    // SEND REQUEST
   };
 
   return (
     <div className={styles.container}>
       <span className={styles.headerContent}>
         <Box sx={{ textAlign: 'center', mb: 0.5 }}>
-          <WelcomeHeader size={WelcomeSize.Large} name="Name" />
+          <WelcomeHeader size={WelcomeSize.Large} name={user.name} />
         </Box>
       </span>
       <div className={styles.avatarContainer}>
@@ -107,7 +133,6 @@ function AccountSettingsView() {
           style={{ display: 'none' }}
           id="images-upload"
           type="file"
-          multiple
           accept="image/*"
           onChange={(e) => onAddAvatar(e.target?.files?.[0])}
         />
@@ -140,7 +165,9 @@ function AccountSettingsView() {
           />
           <FormRow
             label={<Typography variant="h6">E-mail</Typography>}
-            input={<TextInput placeholder="mail@mail.com" disabled error={errors?.email} />}
+            input={
+              <TextInput placeholder="mail@mail.com" disabled register={register(Fields.Email)} error={errors?.email} />
+            }
           />
           <FormRow
             label={<Typography variant="h6">Password</Typography>}

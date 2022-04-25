@@ -16,7 +16,11 @@ interface PostProps {
 interface Mutation {
   path: string;
   data: any;
-  method: 'post' | 'put' | 'patch' | 'delete';
+  method: 'post' | 'put' | 'patch';
+}
+
+interface PatchTypeData {
+  users?: UserData;
 }
 
 const useGetAuthToken = () => {
@@ -35,7 +39,6 @@ export const useApiGet = ({ path, auth }: Props) => {
     if (token) {
       config.headers = getAuthHeader(token);
     }
-    window.location.replace('/login');
   }
 
   return useQuery(path, async () => axios.get(`${BACKEND_URL}${path}`, config).then((res) => res.data));
@@ -49,7 +52,6 @@ export const useApiSend = ({ auth }: PostProps = {}) => {
     if (token) {
       config.headers = getAuthHeader(token);
     }
-    window.location.replace('/login');
   }
 
   const mutation = useMutation(({ path, data, method }: Mutation) =>
@@ -57,4 +59,38 @@ export const useApiSend = ({ auth }: PostProps = {}) => {
   );
 
   return mutation;
+};
+
+export const useApiDelete = ({ auth }: PostProps = {}) => {
+  const config = <AxiosRequestConfig>{};
+  const token = useGetAuthToken();
+
+  if (auth) {
+    if (token) {
+      config.headers = getAuthHeader(token);
+    }
+    // window.location.replace('/login');
+  }
+
+  const mutation = useMutation(({ path }: Mutation) =>
+    axios.delete(`${BACKEND_URL}${path}`, config).then((res) => res?.data)
+  );
+
+  return mutation;
+};
+
+export const useApiPatch = ({ path, auth }: Props) => {
+  const config = <AxiosRequestConfig>{};
+  const token = useGetAuthToken();
+
+  if (auth) {
+    if (token) {
+      config.headers = getAuthHeader(token);
+    }
+  }
+
+  const apiPatch = ({ data }: { data: PatchTypeData }) =>
+    axios.patch(`${BACKEND_URL}${path}`, data, config).then((res) => res?.data);
+
+  return useMutation(apiPatch);
 };

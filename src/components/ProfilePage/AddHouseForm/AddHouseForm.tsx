@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import { useApiSend } from 'src/hooks/useApi';
+import showToast from 'src/utils/showToast';
 
 import { AddHouseFormFields, addHouseFormSchema } from '../../../schemas/addHouseFormSchema';
 import FacilityCheckbox from '../FacilityCheckbox';
@@ -30,7 +31,7 @@ function AddHouseForm() {
   const [images, setImages] = useState<File[]>([]);
   const [addressQuery, setAddressQuery] = useState('');
 
-  const { mutate: apiSend, isSuccess } = useApiSend();
+  const { mutate: apiSend, isSuccess, isError } = useApiSend();
 
   const { data: fetchedAddressOptions } = useQuery(
     'addressQuery',
@@ -63,8 +64,12 @@ function AddHouseForm() {
     if (isSuccess) {
       reset();
       setImages([]);
+      showToast({ type: 'success', message: 'House was added! 🎉' });
     }
-  }, [isSuccess, reset]);
+    if (isError) {
+      showToast({ type: 'error', message: 'An error occured while adding house! ☹️' });
+    }
+  }, [isSuccess, isError, reset]);
 
   const addImages = (rawImages: FileList | null) => {
     if (rawImages !== null) {
