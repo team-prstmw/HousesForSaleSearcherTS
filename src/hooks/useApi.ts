@@ -16,7 +16,7 @@ interface PostProps {
 interface Mutation {
   path: string;
   data: any;
-  method: 'post' | 'put' | 'patch' | 'delete';
+  method: 'post' | 'put' | 'patch';
 }
 
 interface PatchTypeData {
@@ -56,6 +56,24 @@ export const useApiSend = ({ auth }: PostProps = {}) => {
 
   const mutation = useMutation(({ path, data, method }: Mutation) =>
     axios[method](`${BACKEND_URL}${path}`, data, config).then((res) => res?.data)
+  );
+
+  return mutation;
+};
+
+export const useApiDelete = ({ auth }: PostProps = {}) => {
+  const config = <AxiosRequestConfig>{};
+  const token = useGetAuthToken();
+
+  if (auth) {
+    if (token) {
+      config.headers = getAuthHeader(token);
+    }
+    // window.location.replace('/login');
+  }
+
+  const mutation = useMutation(({ path }: Mutation) =>
+    axios.delete(`${BACKEND_URL}${path}`, config).then((res) => res?.data)
   );
 
   return mutation;
