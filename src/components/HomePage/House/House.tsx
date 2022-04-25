@@ -5,7 +5,9 @@ import 'react-slideshow-image/dist/styles.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box, Button, Checkbox } from '@mui/material';
+import { useQueryClient } from 'react-query';
 import { Slide } from 'react-slideshow-image';
+import { useApiDelete, useApiGet, useApiSend } from 'src/hooks/useApi';
 
 import noPhoto from '../../../assets/images/nophoto.png';
 import MoreInfoModal from '../../MoreInfoModal/MoreInfoModal';
@@ -13,12 +15,37 @@ import styles from './House.module.scss';
 
 const label: { inputProps: { 'aria-label': string } } = { inputProps: { 'aria-label': 'Checkbox demo' } };
 const House = ({ house }: { house: BasicHouseData }) => {
+  const { data }: { data: BasicHouseResponseType } = useApiGet({
+    path: '/users/my-favorites',
+    auth: true,
+  });
+  const { mutateAsync: apiDelete, isSuccess: isDeleted }: { data: any } = useApiDelete({
+    path: '/favorites',
+    auth: true,
+  });
+  const { mutateAsync: apiSend } = useApiSend({ auth: true });
+
+  const queryClient = useQueryClient();
+
   const slideProperties = {
     canSwipe: true,
     autoplay: false,
     arrows: true,
     transitionDuration: 700,
   };
+
+  const favoriteObject = data?.favorites && data.favorites.filter((fav) => fav._id == house._id)?.[0];
+  const isFavorite = !!favoriteObject?._id;
+
+  const handleFavoriteAction = async () => {
+    if (!isFavorite) {
+      await apiSend({ path: '/favorites', data: { houseId: house._id }, method: 'post' });
+      return queryClient.invalidateQueries(`/users/my-favorites`);
+    }
+    await apiDelete({ path: `/favorites/${favoriteObject?.favoriteId}` });
+    return queryClient.invalidateQueries(`/users/my-favorites`);
+  };
+
   return (
     <Box component="div" className={styles.houseElement}>
       <h4>
@@ -48,9 +75,11 @@ const House = ({ house }: { house: BasicHouseData }) => {
       <Checkbox
         color="warning"
         {...label}
+        checked={!!isFavorite}
         icon={<FavoriteBorderIcon />}
         checkedIcon={<FavoriteIcon />}
         className={styles.icon}
+        onClick={handleFavoriteAction}
       />
     </Box>
   );
