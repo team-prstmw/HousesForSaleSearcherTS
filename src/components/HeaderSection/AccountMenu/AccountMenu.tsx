@@ -14,10 +14,9 @@ import LoginContext from 'src/contexts/LoginContext';
 
 import { signOut } from '@/api/auth/signOut';
 
-import logout from '../../../utils/auth/logout';
 import UserAvatar, { AvatarSize } from '../../UserAvatar/UserAvatar';
 
-export default function AccountMenu(changeLoginFn) {
+export default function AccountMenu() {
   const login = useContext(LoginContext);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = !!anchorEl;
@@ -27,6 +26,18 @@ export default function AccountMenu(changeLoginFn) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const { user } = login;
+  const HOST_URL = import.meta.env.VITE_HOST_URL as string;
+
+  const avatarUrl = () => {
+    if (user.avatar && typeof user.avatar === 'string') {
+      return `${HOST_URL}${user.avatar}`;
+    }
+
+    return '';
+  };
+
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', marginRight: '3rem' }}>
@@ -39,7 +50,7 @@ export default function AccountMenu(changeLoginFn) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <UserAvatar name="P" size={AvatarSize.Small} />
+            <UserAvatar name={user.name} image={avatarUrl()} size={AvatarSize.Small} />
           </IconButton>
         </Tooltip>
       </Box>
