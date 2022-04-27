@@ -1,12 +1,12 @@
 import { createContext } from 'react';
 
-interface X {
+interface UserManagment {
   loggedIn: boolean;
   login: () => void;
   logout: () => void;
   user: UserData;
 }
-const LoginContext = createContext<X>({
+const LoginContext = createContext<UserManagment>({
   loggedIn: false,
   login: () => {},
   logout: () => {},
