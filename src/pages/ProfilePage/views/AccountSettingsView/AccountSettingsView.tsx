@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQueryClient } from 'react-query';
 import EditButtons from 'src/components/ProfilePage/EditButtons/EditButtons';
@@ -14,7 +14,8 @@ import FormRow from 'src/components/ProfilePage/FormRow/FormRow';
 import TextInput from 'src/components/ProfilePage/TextInput/TextInput';
 import UserAvatar, { AvatarSize } from 'src/components/UserAvatar/UserAvatar';
 import WelcomeHeader, { WelcomeSize } from 'src/components/WelcomeHeader/WelcomeHeader';
-import { useApiGet, useApiPatch } from 'src/hooks/useApi';
+import LoginContext from 'src/contexts/LoginContext';
+import { useApiPatch } from 'src/hooks/useApi';
 import { profilePageSchema } from 'src/schemas/authSchemas';
 import { ProfilePageInterface } from 'src/schemas/ProfilePageInterface';
 
@@ -41,24 +42,14 @@ type FieldsType = keyof Pick<ProfilePageInterface, `${Fields.Name}` | `${Fields.
 
 function AccountSettingsView() {
   const queryClient = useQueryClient();
+  const { user } = useContext(LoginContext);
   const [img, setImg] = useState<string>('');
   const [formData, setFormData] = useState<UserFormData>({
     nameEditable: false,
     passwordEditable: false,
     tempImage: '',
   });
-  const [user, setUser] = useState<UserData>([]);
-
-  const { data, isLoading }: { data: UserData } = useApiGet({ path: `/users`, auth: true });
-
   const { mutateAsync } = useApiPatch({ path: '/users', auth: true });
-
-  useEffect(() => {
-    if (!isLoading) {
-      const dataData = data;
-      setUser(dataData);
-    }
-  }, [data, isLoading]);
 
   const {
     register,
@@ -78,7 +69,7 @@ function AccountSettingsView() {
 
   const avatarUrl = () => {
     if (img && typeof img === 'string') {
-      return `${HOST_URL}${user.avatar}`;
+      return `${HOST_URL}${img}`;
     }
 
     return '';
