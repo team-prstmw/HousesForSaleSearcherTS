@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import Logout from '@mui/icons-material/Logout';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
