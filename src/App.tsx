@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ThemeProvider } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
