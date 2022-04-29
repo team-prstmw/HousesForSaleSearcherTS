@@ -21,9 +21,5 @@ export async function signIn(
       document.cookie = `auth=${token}`;
       if (data.status === 'invalid') return manageRequestMessage(data.message);
       return loginFunction();
-    })
-    .catch((error) => {
-      // ERROR IS NEVER RETURNED, DO WE HAVE TO REWRITE BACKEND
-      return manageRequestMessage(data.message);
     });
 }

@@ -12,12 +12,12 @@ import { Link } from 'react-router-dom';
 import WelcomeHeader from 'src/components/WelcomeHeader/WelcomeHeader';
 import LoginContext from 'src/contexts/LoginContext';
 
+// eslint-disable-next-line import/extensions
 import { signOut } from '@/api/auth/signOut';
 
-import logout from '../../../utils/auth/logout';
 import UserAvatar, { AvatarSize } from '../../UserAvatar/UserAvatar';
 
-export default function AccountMenu(changeLoginFn) {
+export default function AccountMenu() {
   const login = useContext(LoginContext);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = !!anchorEl;
@@ -97,6 +97,7 @@ export default function AccountMenu(changeLoginFn) {
         <Divider />
         <MenuItem
           onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
             signOut(login.logout());
           }}
         >

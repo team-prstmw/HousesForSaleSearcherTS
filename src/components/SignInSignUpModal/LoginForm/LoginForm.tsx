@@ -1,3 +1,8 @@
+/* eslint-disable import/extensions */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { yupResolver } from '@hookform/resolvers/yup';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -54,7 +59,6 @@ function LoginForm({ manageRequestMessage }: RegisterLoginFormsProps) {
 
   const onSubmit: SubmitHandler<LoginFormFields> = ({ email, password }: OnSubmitProps) => {
     signIn({ email, password }, manageRequestMessage, login.login);
-    // signInSignUp(email, password, SIGN_IN_URL, manageRequestMessage, login.loggedIn, login.login, login.logout);
   };
 
   const onReset = () => {
