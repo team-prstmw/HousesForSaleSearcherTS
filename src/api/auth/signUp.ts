@@ -17,6 +17,5 @@ export async function signUp(
     .then((data) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (data.status === 'invalid') return manageRequestMessage(data.message);
-      return loginFunction();
     });
 }
