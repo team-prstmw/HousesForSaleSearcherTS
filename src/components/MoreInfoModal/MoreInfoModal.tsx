@@ -60,7 +60,7 @@ export default function MoreInfoModal(props) {
       });
       setHousePhotos(slideImages);
     }
-  }, [data.data, isLoading, open, slideImages]);
+  }, [open]);
 
   return (
     <>
