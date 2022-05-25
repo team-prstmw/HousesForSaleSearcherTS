@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import Logout from '@mui/icons-material/Logout';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -12,6 +15,7 @@ import { Link } from 'react-router-dom';
 import WelcomeHeader from 'src/components/WelcomeHeader/WelcomeHeader';
 import LoginContext from 'src/contexts/LoginContext';
 
+// eslint-disable-next-line import/extensions
 import { signOut } from '@/api/auth/signOut';
 
 import UserAvatar, { AvatarSize } from '../../UserAvatar/UserAvatar';
@@ -108,6 +112,7 @@ export default function AccountMenu() {
         <Divider />
         <MenuItem
           onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
             signOut(login.logout());
           }}
         >

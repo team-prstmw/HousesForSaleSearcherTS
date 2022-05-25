@@ -1,11 +1,12 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import Box from '@mui/material/Box';
 import { useContext, useEffect, useState } from 'react';
 import Logo from 'src/assets/images/NavLogo.png';
 import AccountMenu from 'src/components/HeaderSection/AccountMenu/AccountMenu';
 import ThemeSwitcher from 'src/components/HeaderSection/Switcher';
 import LoginContext from 'src/contexts/LoginContext';
-
-import { signOut } from '@/api/auth/signOut';
 
 import RegisterLoginModal from '../../SignInSignUpModal/RegisterLoginModal/RegisterLoginModal';
 import styles from './Header.module.scss';

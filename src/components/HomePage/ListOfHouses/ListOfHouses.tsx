@@ -3,11 +3,11 @@
 import 'react-slideshow-image/dist/styles.css';
 
 import DoneIcon from '@mui/icons-material/Done';
-import House from '../House/House';
 import { Autocomplete, Box, TextField } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { useEffect, useState } from 'react';
 
+import House from '../House/House';
 import styles from './ListOfHouses.module.scss';
 
 const options = ['Payment (Low to High)', 'Payment (High to Low)', 'A-Z', 'Z-A'] as const;
@@ -52,7 +52,7 @@ function ListOfHouses({ houses }: { houses: BasicHouseData[] }) {
             className={styles.options}
             disableClearable
             value={sortType ?? ''}
-            onChange={(event, newValue) => {
+            onChange={(_event, newValue) => {
               setSortType(newValue);
             }}
             options={options}
