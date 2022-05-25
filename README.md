@@ -22,7 +22,7 @@ The created project aims to facilitate the search for an apartment in the locati
 
 Projekt jest połączony i pracuje z naszym API [app](https://pacific-refuge-80597.herokuapp.com/api).
 
-## III. [DEMO]()
+## III. [DEMO](https://unique-kleicha-400068.netlify.app/)
 
 ## IV. Tech stack
 
@@ -48,7 +48,7 @@ To run the project on the local machine, type in the terminal:
 Clone SSH
 
 ```bash
-git clone git@github.com:team-prstmw/HousesForSaleSearcher.git
+git clone https://github.com/team-prstmw/HousesForSaleSearcherTS.git
 ```
 
 or HTTPS
@@ -73,13 +73,19 @@ The application will be available at `localhost:3000`
 
 ## VIII. Illustrations
 
-- Home Page
-  ![Home Page]()
-- Login Page  
-  ![Login Page]()
-- Registration Page  
-  ![Registration Page]()
-- User Panel  
-  ![User Panel]()
-- Sell House Form  
-  ![Sell House Form]()
+- Home Page     
+  ![Home Page](https://i.ibb.co/68PXF4d/index-Page.png)
+- Houses Details     
+  ![Houses Details](https://i.ibb.co/H7tJqQf/details.png)
+- Login Page    
+  ![Login Page](https://i.ibb.co/XWY0SpM/login-Form.png)
+- Registration Page    
+  ![Registration Page](https://i.ibb.co/0jGz53T/register-Form.png)
+- User Panel     
+  ![User Panel](https://i.ibb.co/12B0t5f/userPage.png)
+- Favourites      
+  ![Favourites](https://i.ibb.co/FHF8Rk1/swed2.png)
+- My Houses     
+  ![My Houses](https://i.ibb.co/BgR3Bmr/dsade.png)
+- Sell House Form     
+  ![Sell House Form](https://i.ibb.co/2n4NWP7/sell-House-Form.png)
